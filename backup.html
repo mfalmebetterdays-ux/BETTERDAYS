@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Fusion-Force-LLC</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    
+    <!-- Replace local paths with CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/lib/owl.carousel.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/static/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/static/lib/owlcarousel/lib/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #053e91;
+        }
+        
+        .text-primary {
+            color: var(--primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #042c6b;
+            border-color: #042c6b;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary) !important;
+        }
+        
+        .border-primary {
+            border-color: var(--primary) !important;
+        }
+        
+        .section-title::after {
+            background: var(--primary);
+        }
+        
+        .contact-option {
+            transition: all 0.3s ease;
+        }
+        .contact-option:hover {
+            background: rgba(255,255,255,0.2) !important;
+            transform: translateX(5px);
+        }
+        
+        /* Footer centering */
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        /* Infinite testimonial slider */
+        .testimonial-slider {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .testimonial-track {
+            display: flex;
+            animation: slide 30s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .testimonial-item {
+            min-width: 33.333%;
+            padding: 0 15px;
+        }
+        
+        @media (max-width: 992px) {
+            .testimonial-item {
+                min-width: 50%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .testimonial-item {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="#home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <img src="/static/images/plogo.png" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;">
+            <h2 class="m-0 text-primary">FUSION FORCE</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="#home" class="nav-item nav-link active">Home</a>
+                <a href="#about" class="nav-item nav-link">About</a>
+                <a href="#services" class="nav-item nav-link">Services</a>
+                <a href="#events" class="nav-item nav-link">Events</a>
+                <a href="#testimonials" class="nav-item nav-link">Testimonials</a>
+                <a href="#contact" class="nav-item nav-link">Contact</a>
+            </div>
+            <a href="#contact" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Book Pamela<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Hero Section Start -->
+    <div class="container-fluid p-0 mb-5" id="home">
+        <div class="position-relative">
+            <img class="img-fluid" src="/static/images/aboutz.JPG" alt="Pamela speaking to an audience" style="height: 788px; width: 100%; object-fit: cover;">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .5);">
+                <div class="container">
+                    <div class="row justify-content-center" style="margin-top: 180px;">
+                        <div class="col-sm-10 col-lg-8 text-center">
+                            <h1 class="display-3 text-white animated slideInDown" style="font-size: 2.6rem;">
+                                The Heart to Lead<br>
+                                The Power to Train<br>
+                                The Courage to Inspire
+                            </h1>
+                            <p class="fs-5 text-white mb-4 pb-2">Pamela Robinson - Making the <span style="font-weight:bold;">Impossible Possible</span> through transformative speaking, corporate training, and leadership development.</p>
+                            <a href="#contact" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Book Pamela</a>
+                            <a href="#about" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Section End -->
+    
+    <!-- About Start -->
+    <div class="container-xxl py-5" id="about">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="img-fluid position-absolute w-100 h-100" src="/static/images/Speech.jpeg" alt="Pamela Robinson - Founder of Fusion Force" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <h6 class="section-title bg-white text-start text-primary pe-3">About Pamela</h6>
+                    <h1 class="mb-4">Pamela Robinson</h1>
+                    <p class="mb-4">Pamela Robinson is a keynote speaker, corporate and leadership trainer, founder of <strong>Fusion Force</strong> and a recognized expert in sales and marketing support for hospitality companies.</p>
+                    <div class="row gy-2 gx-4 mb-4">
+                        <div class="col-sm-6"><p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Keynote Speaker</p></div>
+                        <div class="col-sm-6"><p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Leadership Trainer</p></div>
+                        <div class="col-sm-6"><p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Hospitality Expert</p></div>
+                        <div class="col-sm-6"><p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Global Experience</p></div>
+                    </div>
+                    <a class="btn btn-primary py-3 px-5 mt-2" href="#contact">Book Pamela</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+    
+    <!-- Services Start -->
+<div class="container-xxl py-5" id="services">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Transform Your Organization</h6>
+            <h1 class="mb-5">Signature Services</h1>
+            <p class="lead mb-5">Inspiring talks. Transformative training. Strategic guidance.</p>
+        </div>
+
+        <!-- Key Services Grid -->
+        <div class="row g-4">
+            <!-- Default services -->
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="service-simple text-center p-4 h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-microphone fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Keynote Speaking</h4>
+                    <p class="mb-4">Inspire your team with powerful messages that drive action and create lasting change.</p>
+                    <div class="service-topics">
+                        <span class="topic-tag">Emotional Intelligence</span>
+                        <span class="topic-tag">Leadership Trust</span>
+                        <span class="topic-tag">Guest Experience</span>
+                        <span class="topic-tag">Women in Leadership</span>
+                        <span class="topic-tag">Extraordinary Leadership</span>
+                    </div>
+                    <a href="#contact" class="btn btn-primary mt-3">Book Pamela</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="service-simple text-center p-4 h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-users fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Corporate Training</h4>
+                    <p class="mb-4">Develop your team with proven frameworks that boost performance and engagement.</p>
+                    <div class="service-topics">
+                        <span class="topic-tag">Leadership Training</span>
+                        <span class="topic-tag">Customer Service Excellence</span>
+                        <span class="topic-tag">Team Collaboration</span>
+                        <span class="topic-tag">EQ Training</span>
+                        <span class="topic-tag">Workplace Etiquette</span>
+                    </div>
+                    <a href="#contact" class="btn btn-primary mt-3">Train My Team</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="service-simple text-center p-4 h-100">
+                    <div class="service-icon mb-4">
+                        <i class="fas fa-chart-line fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Sales & Marketing Support</h4>
+                    <p class="mb-4">Specialized support for hospitality businesses seeking to elevate sales and marketing performance.</p>
+                    <div class="service-topics">
+                        <span class="topic-tag">Sales Strategy</span>
+                        <span class="topic-tag">Increasing Market Share</span>
+                        <span class="topic-tag">Hospitality Excellence</span>
+                        <span class="topic-tag">Increasing Revenue Growth</span>
+                        <span class="topic-tag">Increasing Occupancy</span>
+                    </div>
+                    <a href="#contact" class="btn btn-primary mt-3">Get Expert Advice</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proven Results Counter Section -->
+        <div class="row mt-5 pt-5">
+            <div class="col-12 text-center">
+                <h3 class="mb-4">Proven Results</h3>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="impact-stat">
+                            <h2 class="text-primary mb-1">25%</h2>
+                            <p class="mb-0">Productivity Increase</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="impact-stat">
+                            <h2 class="text-primary mb-1">17%</h2>
+                            <p class="mb-0">Satisfaction Boost</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="impact-stat">
+                            <h2 class="text-primary mb-1">40%</h2>
+                            <p class="mb-0">Team Collaboration</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="impact-stat">
+                            <h2 class="text-primary mb-1">100+</h2>
+                            <p class="mb-0">Organizations Transformed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Services End -->
+
+<style>
+.service-simple {
+    border: 2px solid #f8f9fa;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.service-simple:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(5, 62, 145, 0.1);
+}
+
+.service-icon {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topic-tag {
+    display: inline-block;
+    background: #f8f9fa;
+    color: var(--primary);
+    padding: 4px 12px;
+    margin: 4px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.impact-stat {
+    padding: 20px;
+}
+
+.impact-stat h2 {
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .service-simple {
+        margin-bottom: 20px;
+    }
+    
+    .impact-stat {
+        margin-bottom: 30px;
+    }
+}
+</style>
+    
+<!-- Gallery Start -->
+<div class="container-xxl py-5 category" id="events">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Gallery</h6>
+            <h1 class="mb-5">Past Speaking Engagements</h1>
+        </div>
+        
+        <!-- Show message -->
+        <div class="text-center py-5">
+            <i class="fas fa-images fa-4x text-muted mb-3"></i>
+            <h4 class="text-muted">No Gallery Images Yet</h4>
+            <p class="text-muted">To Be Uploaded By Admin</p>
+        </div>
+        
+    </div>
+</div>
+<!-- Gallery End -->
+
+<!-- Testimonial Slider Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="testimonials">
+    <div class="container">
+        <div class="text-center">
+            <h6 class="section-title bg-white text-center text-primary px-3">What Audiences Say</h6>
+            <h1 class="mb-5">Client Testimonials</h1>
+        </div>
+        
+        <div class="testimonial-slider">
+            <div class="testimonial-track">
+                <!-- Default testimonials -->
+                <div class="testimonial-item text-center">
+                    <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EEO%3C/text%3E%3C/svg%3E" alt="Event Organizer">
+                    <h5 class="mb-0">Event Organizer</h5>
+                    <p>IMEX America</p>
+                    <div class="testimonial-text bg-light text-center p-4">
+                        <p class="mb-0">"Pamela doesn't just speak, she transforms. Her sessions ignite courage, clarity, and connection."</p>
+                    </div>
+                </div>
+                <div class="testimonial-item text-center">
+                    <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EVPS%3C/text%3E%3C/svg%3E" alt="Vice President">
+                    <h5 class="mb-0">Vice President of Sales</h5>
+                    <p>Luxury Hotel Group</p>
+                    <div class="testimonial-text bg-light text-center p-4">
+                        <p class="mb-0">"Her energy is unmatched, our team left inspired and aligned."</p>
+                    </div>
+                </div>
+                <div class="testimonial-item text-center">
+                    <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EDD%3C/text%3E%3C/svg%3E" alt="Development Director">
+                    <h5 class="mb-0">Development Director</h5>
+                    <p>Russian Hospitality Awards</p>
+                    <div class="testimonial-text bg-light text-center p-4">
+                        <p class="mb-0">"Pamela was exceptionally well-spoken, engaging, and demonstrated a deep understanding of the hospitality industry."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Testimonial Slider End -->
+
+<!-- Newsletter Section Start -->
+<div class="container-xxl py-5" id="newsletter">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Stay Informed</h6>
+            <h1 class="mb-5">Monthly Newsletter</h1>
+            <p class="lead mb-5">Get exclusive insights and industry updates delivered to your inbox</p>
+        </div>
+        
+        <div class="row g-5 align-items-center">
+            <!-- Monthly Image on Left -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="position-relative h-100 rounded overflow-hidden">
+                    <img class="img-fluid w-100 h-100" src="/static/images/DEC.JPG" alt="Fusion Force Monthly Insights" style="object-fit: cover; min-height: 400px;">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(5, 62, 145, 0.4);">
+                        <div class="text-center text-white p-4">
+                            <h3 class="mb-3">Monthly Insights</h3>
+                            <p class="mb-0">Stay Ahead with Industry Trends</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Download Newsletter Button -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary btn-lg px-4 py-3" id="downloadNewsletterBtn">
+                        <i class="fas fa-download me-2"></i>Download Newsletter Image
+                    </button>
+                    <div id="downloadStatus" class="mt-2"></div>
+                </div>
+            </div>
+
+            <!-- Newsletter Content on Right -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="bg-light rounded p-5 h-100">
+                    <h3 class="mb-4">Join Our Community</h3>
+                    <p class="mb-4">Get exclusive leadership insights, industry trends, and event updates delivered directly to your inbox each month.</p>
+                    
+                    <!-- Newsletter Benefits -->
+                    <div class="row mb-4">
+                        <div class="col-sm-6">
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Leadership Strategies</p>
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Industry Updates</p>
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Case Studies</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Event Announcements</p>
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Exclusive Content</p>
+                            <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>Success Stories</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter Form -->
+                    <form id="newsletterSubscriptionForm" class="newsletter-form">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="newsletterName" name="name" placeholder="Your Name">
+                                    <label for="newsletterName">Your Name</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="newsletterEmail" name="email" placeholder="Your Email" required>
+                                    <label for="newsletterEmail">Your Email *</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="newsletterAgree" name="agree" required>
+                                    <label class="form-check-label" for="newsletterAgree">
+                                        I agree to receive monthly newsletters and updates from Fusion Force LLC
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit" id="newsletterSubmit">
+                                    <i class="fas fa-envelope-open-text me-2"></i>Subscribe Now
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Additional CTAs -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-center">
+                                <a href="#contact" class="btn btn-outline-primary px-4 me-md-2">
+                                    <i class="fas fa-calendar-check me-2"></i>Book Pamela
+                                </a>
+                                <a href="#services" class="btn btn-outline-primary px-4">
+                                    <i class="fas fa-info-circle me-2"></i>Learn More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Newsletter End -->
+
+<!-- Newsletter Success Modal -->
+<div class="modal fade" id="newsletterSuccessModal" tabindex="-1" aria-labelledby="newsletterSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-body p-0">
+                <div class="bg-primary text-white text-center py-4" style="background: linear-gradient(135deg, #053e91, #1e4db1);">
+                    <div class="success-icon mb-3">
+                        <div class="icon-circle bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-check text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="mb-0">Welcome to Fusion Force!</h3>
+                </div>
+                
+                <div class="p-4">
+                    <p class="text-center text-muted mb-4">
+                        Thank you for subscribing to our newsletter! You'll receive our next monthly update with exclusive insights and industry trends.
+                    </p>
+                    
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            <i class="fas fa-thumbs-up me-2"></i>Looking Forward to It!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Form Start -->
+<div class="container-xxl py-5" id="contact">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Book Pamela</h6>
+            <h1 class="mb-5">Schedule Your Speaking Engagement</h1>
+        </div>
+        
+        <div class="row g-5">
+            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="bg-primary text-white rounded p-5 h-100 d-flex flex-column">
+                    <h4 class="text-white mb-4">Connect With Us</h4>
+                    
+                    <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Quick Booking</h6>
+                            <p class="mb-0">Select your preferred engagement type</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-video fa-2x"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Virtual or In-Person</h6>
+                            <p class="mb-0">Flexible delivery options</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-phone fa-lg me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Direct Line</h6>
+                                <span class="text-white">+1 (443) 545-4565</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-envelope fa-lg me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Email</h6>
+                                <span class="text-white">info@fusionforce.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="bg-light rounded p-5 h-100">
+                    <form id="bookingForm" class="needs-validation" novalidate>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Your Full Name" required>
+                                    <label for="fullName">Your Full Name *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Work Email" required>
+                                    <label for="emailAddress">Work Email *</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="organization" name="organization" placeholder="Organization Name" required>
+                                    <label for="organization">Organization Name *</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <select class="form-select" id="eventType" name="event_type" required>
+                                        <option value="" selected disabled>Select event type</option>
+                                        <option value="keynote">Keynote Speech</option>
+                                        <option value="workshop">Workshop</option>
+                                        <option value="training">Corporate Training</option>
+                                        <option value="consultation">Consultation</option>
+                                    </select>
+                                    <label for="eventType">Event Type *</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Tell us about your event..." 
+                                              id="eventDetails" name="event_details" style="height: 120px" required></textarea>
+                                    <label for="eventDetails">Event Details *</label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <button class="btn btn-primary btn-lg w-100 py-3" type="submit" id="bookingSubmit">
+                                    <i class="fas fa-rocket me-2"></i>Book Pamela
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Form End -->
+
+<!-- Contact Success Modal -->
+<div class="modal fade" id="contactSuccessModal" tabindex="-1" aria-labelledby="contactSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-body p-0">
+                <div class="bg-primary text-white text-center py-4" style="background: linear-gradient(135deg, #053e91, #1e4db1);">
+                    <div class="success-icon mb-3">
+                        <div class="icon-circle bg-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-calendar-check text-primary fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="mb-0">Booking Request Received!</h3>
+                </div>
+                
+                <div class="p-4">
+                    <p class="text-center text-muted mb-4">
+                        Thank you for your booking request! Pamela will review your details and get back to you within 24 hours.
+                    </p>
+                    
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            <i class="fas fa-thumbs-up me-2"></i>Perfect, Thank You!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row g-5 justify-content-center">
+            <!-- Quick Links - Centered Column -->
+            <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                <div class="text-center text-md-start">
+                    <h4 class="text-white mb-4">Quick Links</h4>
+                    <div class="d-flex flex-column align-items-center align-items-md-start">
+                        <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#about">
+                            <i class="fas fa-user me-2"></i>About Pamela
+                        </a>
+                        <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#services">
+                            <i class="fas fa-microphone me-2"></i>Speaking Topics
+                        </a>
+                        <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#testimonials">
+                            <i class="fas fa-star me-2"></i>Testimonials
+                        </a>
+                        <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#events">
+                            <i class="fas fa-images me-2"></i>Past Events
+                        </a>
+                        <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#contact">
+                            <i class="fas fa-envelope me-2"></i>Contact Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Info - Centered Column -->
+            <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                <div class="text-center text-md-start">
+                    <h4 class="text-white mb-4">Contact Info</h4>
+                    <div class="contact-info">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+                            <i class="fa fa-map-marker-alt me-3 text-primary fa-lg"></i>
+                            <div class="text-start">
+                                <p class="mb-0">Serving clients globally</p>
+                                <small class="text-muted">International Speaker</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+                            <i class="fa fa-phone-alt me-3 text-primary fa-lg"></i>
+                            <div class="text-start">
+                                <p class="mb-0">+1 (443) 545-4565</p>
+                                <small class="text-muted">Available 9AM-6PM EST</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-4">
+                            <i class="fa fa-envelope me-3 text-primary fa-lg"></i>
+                            <div class="text-start">
+                                <p class="mb-0">info@fusionforce.com</p>
+                                <small class="text-muted">Response within 24h</small>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links d-flex justify-content-center justify-content-md-start">
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="#" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="#" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="https://www.instagram.com/pamelamrobinson/" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.linkedin.com/in/pamelamrobinsonslu/" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter - Centered Column -->
+            <div class="col-lg-4 col-md-4">
+                <div class="text-center text-md-start">
+                    <h4 class="text-white mb-4">Stay Connected</h4>
+                    <p class="mb-4">Subscribe for exclusive speaking tips, industry insights, and updates on Pamela's upcoming engagements.</p>
+                    
+                    <!-- Newsletter Signup Form -->
+                    <form id="footerNewsletterForm" class="newsletter-form">
+                        <div class="input-group mb-3">
+                            <input type="email" name="email" class="form-control border-primary" 
+                                   placeholder="Enter your email" required 
+                                   style="border-radius: 8px 0 0 8px; height: 50px;">
+                            <button type="submit" class="btn btn-primary px-4" 
+                                    style="border-radius: 0 8px 8px 0; height: 50px;">
+                                <i class="fas fa-paper-plane me-2"></i>Sign Up
+                            </button>
+                        </div>
+                        <small class="text-muted">
+                            <i class="fas fa-lock me-1"></i>We respect your privacy. Unsubscribe at any time.
+                        </small>
+                    </form>
+                    
+                    <!-- Newsletter Benefits -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center justify-content-md-start">
+                                <div class="me-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-bell me-1"></i>Monthly updates
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="text-muted">
+                                        <i class="fas fa-star me-1"></i>Exclusive content
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Copyright Section -->
+        <div class="container mt-5 pt-4 border-top border-secondary">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="copyright">
+                        <p class="mb-2">&copy; <span id="current-year"></span> 
+                            <a class="border-bottom text-white text-decoration-none" href="#home">Fusion Force LLC</a>. All Rights Reserved.</p>
+                        <p class="mb-0 text-muted">
+                            <i class="fas fa-heart text-danger"></i> Empowering Leaders Worldwide 
+                            <i class="fas fa-heart text-danger ms-2"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- Combined JavaScript for all forms and functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modals
+    const newsletterModal = new bootstrap.Modal(document.getElementById('newsletterSuccessModal'));
+    const contactModal = new bootstrap.Modal(document.getElementById('contactSuccessModal'));
+    
+    // Update copyright year
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // ============ CONTACT FORM HANDLER ============
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                full_name: document.getElementById('fullName').value,
+                email: document.getElementById('emailAddress').value,
+                organization: document.getElementById('organization').value,
+                event_type: document.getElementById('eventType').value,
+                event_details: document.getElementById('eventDetails').value,
+            };
+            
+            // Basic validation
+            if (!formData.full_name || !formData.email || !formData.organization || !formData.event_type || !formData.event_details) {
+                alert('Please fill all required fields.');
+                return;
+            }
+            
+            // Get submit button and show loading
+            const submitBtn = document.getElementById('bookingSubmit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Show success modal directly since we removed backend functionality
+                contactModal.show();
+                // Reset form
+                bookingForm.reset();
+                
+                // Simulate API response
+                console.log('Form data:', formData);
+                alert('Form submitted! In a live site, this would send an email.');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
+    // ============ NEWSLETTER FORM HANDLER ============
+    const newsletterForm = document.getElementById('newsletterSubscriptionForm');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('newsletterName').value,
+                email: document.getElementById('newsletterEmail').value,
+                agree: document.getElementById('newsletterAgree').checked,
+            };
+            
+            // Basic validation
+            if (!formData.email) {
+                alert('Please enter your email address.');
+                return;
+            }
+            
+            if (!formData.agree) {
+                alert('Please agree to receive newsletters.');
+                return;
+            }
+            
+            // Get submit button and show loading
+            const submitBtn = document.getElementById('newsletterSubmit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Show success modal directly
+                newsletterModal.show();
+                // Reset form
+                newsletterForm.reset();
+                
+                // Simulate subscription
+                console.log('Newsletter subscription:', formData);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
+    // ============ FOOTER NEWSLETTER FORM HANDLER ============
+    const footerNewsletterForm = document.getElementById('footerNewsletterForm');
+    if (footerNewsletterForm) {
+        footerNewsletterForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = footerNewsletterForm.querySelector('input[name="email"]');
+            const formData = {
+                email: emailInput.value,
+                agree: true,
+            };
+            
+            // Basic validation
+            if (!formData.email) {
+                alert('Please enter your email address.');
+                return;
+            }
+            
+            // Get submit button and show loading
+            const submitBtn = footerNewsletterForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Show success modal directly
+                newsletterModal.show();
+                // Reset form
+                footerNewsletterForm.reset();
+                
+                // Simulate subscription
+                console.log('Footer newsletter subscription:', formData);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            } finally {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+    
+    // ============ NEWSLETTER IMAGE DOWNLOAD ============
+    const downloadBtn = document.getElementById('downloadNewsletterBtn');
+    const downloadStatus = document.getElementById('downloadStatus');
+    
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function() {
+            // Get the image source
+            const newsletterImage = document.querySelector('#newsletter img');
+            const imageSrc = newsletterImage ? newsletterImage.src : '';
+            
+            if (!imageSrc) {
+                downloadStatus.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>No image found</span>';
+                return;
+            }
+            
+            // Show loading state
+            downloadBtn.classList.add('loading');
+            downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Downloading...';
+            downloadStatus.innerHTML = 'Preparing your download...';
+            
+            // Create a filename with current date
+            const currentDate = new Date().toISOString().slice(0, 10);
+            const fileName = `Fusion-Force-Newsletter-${currentDate}.jpg`;
+            
+            // Fetch the image and create download
+            fetch(imageSrc)
+                .then(response => response.blob())
+                .then(blob => {
+                    // Create download link
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    
+                    // Trigger download
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show success message
+                    downloadBtn.classList.remove('loading');
+                    downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download Newsletter Image';
+                    downloadStatus.innerHTML = '<span class="text-success"><i class="fas fa-check-circle me-2"></i>Image downloaded successfully!</span>';
+                    
+                    // Clear status after 5 seconds
+                    setTimeout(() => {
+                        downloadStatus.innerHTML = '';
+                    }, 5000);
+                })
+                .catch(error => {
+                    console.error('Download error:', error);
+                    downloadBtn.classList.remove('loading');
+                    downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download Newsletter Image';
+                    downloadStatus.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Download failed. Please try again.</span>';
+                    
+                    setTimeout(() => {
+                        downloadStatus.innerHTML = '';
+                    }, 5000);
+                });
+        });
+    }
+    
+    // ============ FORM VALIDATION STYLING ============
+    // Add Bootstrap validation styling
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+    
+    // ============ FOOTER LINK SMOOTH SCROLLING ============
+    document.querySelectorAll('.footer a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // ============ ANIMATE FORM ELEMENTS ON SCROLL ============
+    function animateFormElements() {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            const formTop = form.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (formTop < windowHeight - 100) {
+                form.classList.add('animate__animated', 'animate__fadeInUp');
+            }
+        });
+    }
+    
+    // Initial animation check
+    animateFormElements();
+    
+    // Check on scroll
+    window.addEventListener('scroll', animateFormElements);
+});
+
+// Form submission success modal functions
+window.showNewsletterSuccessModal = function() {
+    const modal = new bootstrap.Modal(document.getElementById('newsletterSuccessModal'));
+    modal.show();
+};
+
+window.showBookingSuccessModal = function() {
+    const modal = new bootstrap.Modal(document.getElementById('contactSuccessModal'));
+    modal.show();
+};
+</script>
+
+<!-- Additional CSS Styles -->
+<style>
+/* Newsletter Styles */
+#newsletter .bg-light {
+    border-left: 4px solid #053e91;
+}
+
+.newsletter-form .form-control {
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.newsletter-form .form-control:focus {
+    border-color: #053e91;
+    box-shadow: 0 0 0 0.2rem rgba(5, 62, 145, 0.25);
+}
+
+#downloadNewsletterBtn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.download-success {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.download-error {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.success-icon .icon-circle {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Contact Form Styles */
+.contact-option {
+    transition: all 0.3s ease;
+}
+
+.contact-option:hover {
+    background: rgba(255,255,255,0.2) !important;
+    transform: translateX(5px);
+}
+
+/* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.footer .btn-link {
+    color: #e9ecef;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .footer .btn-link {
+        text-align: left;
+    }
+}
+
+.footer .btn-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(10px);
+}
+
+.footer .contact-info p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.footer .social-links .btn-social {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.footer .social-links .btn-social:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+.footer .copyright {
+    font-size: 0.9rem;
+}
+
+.footer .copyright a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+}
+
+.footer .copyright a:hover {
+    color: #4dabf7;
+    border-bottom-color: #4dabf7;
+}
+
+/* Form Button Styles */
+.btn-primary {
+    background: linear-gradient(135deg, #053e91, #1e4db1);
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 62, 145, 0.4);
+    background: linear-gradient(135deg, #042c6b, #053e91);
+}
+
+.btn-outline-primary {
+    border: 2px solid #053e91;
+    color: #053e91;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+    background: #053e91;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 62, 145, 0.3);
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+}
+
+.modal-content .bg-primary {
+    background: linear-gradient(135deg, #053e91, #1e4db1) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer .col-md-4 {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 0 20px;
+    }
+    
+    .footer .social-links {
+        justify-content: center;
+    }
+    
+    .footer .btn-link {
+        justify-content: center;
+        padding: 8px;
+    }
+    
+    .contact-info .d-flex {
+        justify-content: center !important;
+    }
+    
+    .contact-info .text-start {
+        text-align: center !important;
+    }
+}
+
+/* Loading spinner */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form validation */
+.was-validated .form-control:valid {
+    border-color: #28a745;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.was-validated .form-control:invalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+</style>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/lib/wow/wow.min.js"></script>
+    <script src="/static/lib/easing/easing.min.js"></script>
+    <script src="/static/lib/waypoints/waypoints.min.js"></script>
+    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/static/js/main.js"></script>
+    
+    <script>
+    // Testimonial infinite slider
+    document.addEventListener('DOMContentLoaded', function() {
+        // Duplicate testimonials for infinite effect
+        const testimonialTrack = document.querySelector('.testimonial-track');
+        if (testimonialTrack) {
+            const testimonials = testimonialTrack.innerHTML;
+            testimonialTrack.innerHTML = testimonials + testimonials;
+        }
+        
+        // Form handling
+        const bookingForm = document.getElementById('bookingForm');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Booking form submitted! In production, this will send to your email.');
+                bookingForm.reset();
+            });
+        }
+    });
+    </script>
+</body>
+</html>
