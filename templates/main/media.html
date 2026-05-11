@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Media & Press | Pamela Robinson - Fusion Force</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #053e91;
+        }
+        
+        .text-primary {
+            color: var(--primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #042c6b;
+            border-color: #042c6b;
+        }
+        
+        .bg-primary {
+            background-color: var(--primary) !important;
+        }
+        
+        .section-title::after {
+            background: var(--primary);
+        }
+        
+        .media-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #053e91;
+        }
+        
+        .media-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(5,62,145,0.15) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <img src="{% static 'images/plogo.png' %}" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;">
+            <div class="d-flex flex-column">
+                <h2 class="m-0 text-primary">FUSION FORCE</h2>
+                <small class="text" style="font-size: 0.75rem; letter-spacing: 1px;color: #000">Pamela Robinson | The Confidence Architect</small>
+            </div>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="/" class="nav-item nav-link">Home</a>
+                <a href="/#about" class="nav-item nav-link">About</a>
+                <a href="/#services" class="nav-item nav-link">Services</a>
+                <a href="/#testimonials" class="nav-item nav-link">Testimonials</a>
+                <a href="/#news" class="nav-item nav-link">Newsletter</a>
+                <a href="/media/" class="nav-item nav-link active">Media</a>
+                <a href="/#contact" class="nav-item nav-link">Contact</a>
+            </div>
+            <a href="/#contact" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Book<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Media Page Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Media & Press</h6>
+                <h1 class="mb-4">Media Features & Appearances</h1>
+                <p class="lead mb-5">Pamela is an internationally recognized voice whose expertise has been featured across television, radio, and podcast platforms in the United States, South Africa, and St. Lucia. Her insights on confidence, leadership, hospitality, and the global travel landscape have positioned her as a trusted commentator and sought-after media contributor.</p>
+            </div>
+
+            <!-- Television Section -->
+            <div class="row mb-5 wow fadeInUp" data-wow-delay="0.2s">
+                <div class="col-12">
+                    <div class="bg-light rounded p-4 mb-4">
+                        <h2 class="text-primary mb-4"><i class="fas fa-tv me-3"></i>Television</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">WFMZ News (USA)</h5>
+                                    <p class="mb-0">Featured for expert commentary on the rising cost of airline tickets and its impact on travelers and organizations.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">DBS St. Lucia</h5>
+                                    <p class="mb-0">Television appearance highlighting Pamela's work as The Confidence Architect and her influence across the Caribbean and beyond.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Radio Section -->
+            <div class="row mb-5 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-12">
+                    <div class="bg-light rounded p-4 mb-4">
+                        <h2 class="text-primary mb-4"><i class="fas fa-microphone-alt me-3"></i>Radio</h2>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">Radio 702 (South Africa)</h5>
+                                    <p class="mb-0">Interviewed on confidence, leadership, and navigating professional spaces with authority.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">Alex FM (South Africa)</h5>
+                                    <p class="mb-0">Featured guest discussing empowerment, personal development, and industry trends.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">Soufrière FM (St. Lucia)</h5>
+                                    <p class="mb-0">Shared insights on leadership, confidence, and community impact.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Podcast Section -->
+            <div class="row mb-5 wow fadeInUp" data-wow-delay="0.4s">
+                <div class="col-12">
+                    <div class="bg-light rounded p-4 mb-4">
+                        <h2 class="text-primary mb-4"><i class="fas fa-podcast me-3"></i>Podcasts</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="media-card p-3 bg-white rounded shadow-sm h-100">
+                                    <h5 class="text-primary mb-2">Africa Events Connect Podcast</h5>
+                                    <p class="mb-0">Guest expert on global events, hospitality, and the power of confidence in professional environments.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Media Outlets Trust Pamela -->
+            <div class="row mb-5 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="col-12">
+                    <div class="bg-primary text-white rounded p-5 text-center">
+                        <i class="fas fa-star fa-3x mb-3"></i>
+                        <h2 class="text-white mb-4">Why Media Outlets Trust Pamela</h2>
+                        <p class="lead mb-0">Pamela brings a unique blend of global experience, hospitality expertise, and transformational leadership insight. Her ability to communicate with clarity, confidence, and cultural awareness makes her a powerful voice in conversations that matter.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media Booking CTA -->
+            <div class="row wow fadeInUp" data-wow-delay="0.6s">
+                <div class="col-12 text-center">
+                    <div class="bg-light rounded p-5">
+                        <h3 class="mb-4">Book Pamela for Media Interviews</h3>
+                        <p class="mb-4">For media inquiries, interview requests, or expert commentary, please contact our media team.</p>
+                        <a href="/#contact" class="btn btn-primary btn-lg px-5 py-3">
+                            <i class="fas fa-envelope me-2"></i>Contact Media Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Media Page End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5 justify-content-center">
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <div class="text-center text-md-start">
+                        <h4 class="text-white mb-4">Quick Links</h4>
+                        <div class="d-flex flex-column align-items-center align-items-md-start">
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/#about">
+                                <i class="fas fa-user me-2"></i>About Pamela
+                            </a>
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/#services">
+                                <i class="fas fa-microphone me-2"></i>Speaking Topics
+                            </a>
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/#testimonials">
+                                <i class="fas fa-star me-2"></i>Testimonials
+                            </a>
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/#events">
+                                <i class="fas fa-images me-2"></i>Past Events
+                            </a>
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/media/">
+                                <i class="fas fa-newspaper me-2"></i>Media & Press
+                            </a>
+                            <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="/#contact">
+                                <i class="fas fa-envelope me-2"></i>Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 mb-4 mb-md-0">
+                    <div class="text-center text-md-start">
+                        <h4 class="text-white mb-4">Contact Info</h4>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+                                <i class="fa fa-map-marker-alt me-3 text-primary fa-lg"></i>
+                                <div class="text-start">
+                                    <p class="mb-0">Serving clients globally</p>
+                                    <small class="text-muted">International Speaker</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-4">
+                                <i class="fa fa-envelope me-3 text-primary fa-lg"></i>
+                                <div class="text-start">
+                                    <p class="mb-0">info@pamela-fusionforce.com</p>
+                                    <small class="text-muted">Response within 24h</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-4">
+                    <div class="text-center text-md-start">
+                        <h4 class="text-white mb-4">Stay Connected</h4>
+                        <p class="mb-4">Subscribe for exclusive speaking tips and industry insights!</p>
+                        <div class="social-links">
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="#">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="#">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle me-2" href="https://www.instagram.com/pamelamrobinson/">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-social rounded-circle" href="https://www.linkedin.com/in/pamelamrobinsonslu/">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container mt-5 pt-4 border-top border-secondary">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="copyright">
+                            <p class="mb-2">&copy; <span id="current-year"></span> 
+                                <a class="border-bottom text-white text-decoration-none" href="/">Fusion Force LLC</a>. All Rights Reserved.</p>
+                            <p class="mb-1 small text-white-50">Pamela Robinson | The Confidence Architect</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        new WOW().init();
+    </script>
+</body>
+</html>

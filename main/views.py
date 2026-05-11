@@ -353,3 +353,9 @@ def download_ebook(request, ebook_id):
             'status': 'error',
             'message': 'An error occurred'
         }, status=500)
+    
+
+
+def media_page(request):
+    """Media and Press page view"""
+    return render(request, 'main/media.html')     
