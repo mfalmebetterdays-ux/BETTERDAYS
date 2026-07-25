@@ -39,7 +39,6 @@ class HeroImage(models.Model):
 
 
 # ============ ABOUT SECTION ============
-# ============ ABOUT SECTION ============
 class AboutSection(models.Model):
     title = models.CharField(max_length=200, default='Pamela Robinson')
     
@@ -58,7 +57,6 @@ class AboutSection(models.Model):
     )
     
     image = models.ImageField(upload_to='about/', blank=True, null=True)
-    # ADD SECOND IMAGE FIELD
     image_2 = models.ImageField(
         upload_to='about/', 
         blank=True, 
@@ -80,10 +78,8 @@ class AboutSection(models.Model):
             return [point.strip() for point in self.bullet_points.split('\n') if point.strip()]
         return []
     
-    # ADD THIS PROPERTY TO COUNT SECTIONS
     @property
     def has_long_content(self):
-        """Check if content has 3 or more sections (for showing second image)"""
         if not self.content:
             return False
         
@@ -92,10 +88,8 @@ class AboutSection(models.Model):
         
         for line in lines:
             line = line.strip()
-            # Count bold titles (**text**)
             if line.startswith('**') and line.endswith('**'):
                 section_count += 1
-            # Count bullet point sections
             elif line.startswith('•') and section_count == 0:
                 section_count = 1
         
@@ -103,7 +97,6 @@ class AboutSection(models.Model):
     
     @property
     def formatted_content(self):
-        """Convert the content with **bold** titles and • bullets to HTML"""
         if not self.content:
             return ""
         
@@ -150,6 +143,7 @@ class AboutSection(models.Model):
     def __str__(self):
         return self.title
 
+
 # ============ SERVICES SECTION ============
 class Service(models.Model):
     SERVICE_TYPES = [
@@ -188,6 +182,7 @@ class Service(models.Model):
     def __str__(self):
         return self.title
 
+
 # ============ IMPACT RESULTS ============
 class ImpactResult(models.Model):
     title = models.CharField(max_length=200)
@@ -201,6 +196,7 @@ class ImpactResult(models.Model):
 
     def __str__(self):
         return f"{self.value} - {self.title}"
+
 
 # ============ GALLERY SECTION ============
 class GalleryImage(models.Model):
@@ -225,6 +221,7 @@ class GalleryImage(models.Model):
     def __str__(self):
         return f"{self.title} ({self.get_position_display()})"
 
+
 # ============ TESTIMONIALS SECTION ============
 class Testimonial(models.Model):
     client_name = models.CharField(max_length=200)
@@ -242,6 +239,7 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f"{self.client_name} - {self.company}"
+
 
 # ============ NEWSLETTER SECTION ============
 class NewsletterContent(models.Model):
@@ -269,6 +267,59 @@ class NewsletterContent(models.Model):
 
     def __str__(self):
         return f"Newsletter Content - {self.updated_at.strftime('%Y-%m-%d')}"
+
+
+# ============ BLOG SECTION ============
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    content = models.TextField()
+    excerpt = models.TextField(blank=True, help_text="Short preview text. If empty, first 150 characters of content will be used.")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return self.title
+
+    def get_excerpt(self):
+        if self.excerpt:
+            return self.excerpt
+        return self.content[:150] + '...' if len(self.content) > 150 else self.content
+
+
+# ============ EXPRESSIONS GALLERY ============
+class ExpressionsImage(models.Model):
+    title = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to='expressions/images/')
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return self.title or f"Image {self.id}"
+
+
+class ExpressionsVideo(models.Model):
+    title = models.CharField(max_length=200, blank=True)
+    video_file = models.FileField(upload_to='expressions/videos/')
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return self.title or f"Video {self.id}"
+
 
 # ============ FORM SUBMISSIONS ============
 class ContactSubmission(models.Model):
@@ -323,7 +374,7 @@ class NewsletterSubscription(models.Model):
         verbose_name = "Newsletter Subscription"
         verbose_name_plural = "Newsletter Subscriptions"
 
-# ============ NEW FORM SUBMISSION FOR FORMSPREE ============
+
 class FormSubmission(models.Model):
     SOURCE_CHOICES = [
         ('booking', 'Booking Form'),
@@ -332,7 +383,7 @@ class FormSubmission(models.Model):
     ]
     
     source = models.CharField(max_length=20, choices=SOURCE_CHOICES)
-    form_data = models.JSONField()  # Store all form data from FormSubmit
+    form_data = models.JSONField()
     submitted_at = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField(default=False)
     
@@ -341,7 +392,7 @@ class FormSubmission(models.Model):
     
     def __str__(self):
         return f"{self.source} - {self.submitted_at.strftime('%Y-%m-%d %H:%M')}"
-    
+
 
 # ============ FREE EBOOK ============
 class FreeEbook(models.Model):
@@ -369,6 +420,7 @@ class FreeEbook(models.Model):
         verbose_name = "Free eBook"
         verbose_name_plural = "Free eBooks"    
 
+
 # ============ SYSTEM LOGS ============
 class SystemLog(models.Model):
     LOG_LEVELS = [
@@ -390,6 +442,3 @@ class SystemLog(models.Model):
 
     def __str__(self):
         return f"{self.get_log_level_display()} - {self.source} - {self.created_at}"
-    
-
-

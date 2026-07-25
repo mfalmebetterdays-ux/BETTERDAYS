@@ -20,14 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="//code.tidio.co/08lwdd7m9kxlidhacxeg5ms17br54om2.js" async></script>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6RL6YJKHCL"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-6RL6YJKHCL');
-</script>
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -629,6 +622,183 @@
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-top: 1px solid rgba(5,62,145,0.1);
             border-bottom: 1px solid rgba(5,62,145,0.1);
+        }
+
+        /* ===== BLOG SECTION STYLES ===== */
+        .blog-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(5,62,145,0.15);
+        }
+        .blog-card .card-img-top {
+            height: 220px;
+            object-fit: cover;
+        }
+        .blog-card .card-body {
+            padding: 25px;
+        }
+        .blog-card .card-title {
+            font-weight: 700;
+            color: #053e91;
+            font-size: 1.25rem;
+        }
+        .blog-card .card-text {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .read-more-btn {
+            color: #053e91;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .read-more-btn:hover {
+            color: #042c6b;
+            gap: 12px;
+        }
+        .read-more-btn i {
+            transition: transform 0.3s ease;
+        }
+        .read-more-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* ===== EXPRESSIONS GALLERY - SLIDER ===== */
+        .expressions-slider-wrapper {
+            overflow: hidden;
+            position: relative;
+            padding: 15px 0;
+        }
+        .expressions-track {
+            display: flex;
+            gap: 20px;
+            width: max-content;
+            will-change: transform;
+        }
+        .expressions-slide-item {
+            flex: 0 0 280px;
+            height: 220px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            background: #1a1a2e;
+        }
+        .expressions-slide-item img,
+        .expressions-slide-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .expressions-slide-item:hover img,
+        .expressions-slide-item:hover video {
+            transform: scale(1.05);
+        }
+        .expressions-slide-item .zoom-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5,62,145,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            font-size: 2.5rem;
+            backdrop-filter: blur(2px);
+        }
+        .expressions-slide-item:hover .zoom-overlay {
+            opacity: 1;
+        }
+        .expressions-slide-item .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            color: white;
+            font-size: 3.5rem;
+            text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+        .expressions-slide-item:hover .play-overlay {
+            opacity: 1;
+            background: rgba(0,0,0,0.2);
+        }
+        .expressions-slide-item.playing .play-overlay {
+            display: none;
+        }
+        .expressions-slide-item.playing video {
+            transform: scale(1);
+        }
+        .expressions-slide-item video {
+            transform: scale(1.3);
+            transition: transform 0.4s ease;
+        }
+        .expressions-slide-item.playing video {
+            transform: scale(1);
+        }
+        /* pause slider when video playing */
+        .slider-paused .expressions-track {
+            animation-play-state: paused !important;
+        }
+
+        /* modal for full image */
+        .modal-zoom .modal-content {
+            background: transparent;
+            border: none;
+        }
+        .modal-zoom .modal-body {
+            padding: 0;
+        }
+        .modal-zoom .modal-body img {
+            width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .modal-zoom .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+
+        /* Blog modal */
+        .blog-modal-content .modal-body {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .blog-modal-content .modal-body img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .blog-modal-content .modal-body h2 {
+            color: #053e91;
         }
     </style>
 </head>
@@ -2021,6 +2191,66 @@
     </div>
     <!-- Testimonial Slider End -->
 
+    <!-- ===== BLOG SECTION - DYNAMIC FROM ADMIN ===== -->
+    {% if blog_posts %}
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="blog">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="section-title bg-white text-center text-primary px-3">Insights</h6>
+                <h1 class="mb-5">From Pamela's Desk</h1>
+            </div>
+            <div class="row g-4">
+                {% for post in blog_posts %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-card card">
+                        {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/400x220/053e91/ffffff?text=Fusion+Force" class="card-img-top" alt="Blog post">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.excerpt|default:post.content|truncatewords:20|safe }}</p>
+                            <div class="mt-auto">
+                                <button class="read-more-btn" data-bs-toggle="modal" data-bs-target="#blogModal{{ post.id }}">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog Modal -->
+                <div class="modal fade blog-modal-content" id="blogModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header border-0 pb-0">
+                                <h5 class="modal-title text-primary">{{ post.title }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                                {% endif %}
+                                <div class="mt-3">
+                                    {{ post.content|safe }}
+                                </div>
+                                <div class="text-muted small mt-3">
+                                    <i class="far fa-calendar-alt me-1"></i> {{ post.created_at|date:"F j, Y" }}
+                                </div>
+                            </div>
+                            <div class="modal-footer border-0 pt-0">
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- ===== END BLOG SECTION ===== -->
+
     <!-- Newsletter Section Start - UPDATED WITH EBOOK FEATURE -->
     <div class="container-xxl py-5" id="newsletter">
         <div class="container">
@@ -2383,6 +2613,98 @@
     </div>
 </div>
 <!-- Contact Form End -->
+
+    <!-- ===== EXPRESSIONS FIRESIDE CHAT SERIES - GALLERY ===== -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="expressions">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="section-title bg-white text-center text-primary px-3">Expressions</h6>
+                <h1 class="mb-3">Fireside Chat Series</h1>
+                <p class="lead mb-5">Moments of connection, conversation, and inspiration.</p>
+            </div>
+            
+            <!-- Images Row - sliding left to right slowly -->
+            <div class="expressions-slider-wrapper" id="imageSliderWrapper">
+                <div class="expressions-track" id="imageTrack">
+                    <!-- We'll duplicate items for seamless loop -->
+                    {% for item in expressions_images %}
+                    <div class="expressions-slide-item" data-type="image">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}">
+                        <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    {% endfor %}
+                    <!-- Duplicate for seamless loop -->
+                    {% for item in expressions_images %}
+                    <div class="expressions-slide-item" data-type="image">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}">
+                        <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Videos Row - sliding opposite direction (right to left) slowly -->
+            <div class="expressions-slider-wrapper mt-4" id="videoSliderWrapper">
+                <div class="expressions-track" id="videoTrack">
+                    {% for item in expressions_videos %}
+                    <div class="expressions-slide-item" data-type="video">
+                        <video muted playsinline preload="metadata" data-src="{{ item.video_file.url }}">
+                            <source src="{{ item.video_file.url }}" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    {% endfor %}
+                    <!-- Duplicate for seamless loop -->
+                    {% for item in expressions_videos %}
+                    <div class="expressions-slide-item" data-type="video">
+                        <video muted playsinline preload="metadata" data-src="{{ item.video_file.url }}">
+                            <source src="{{ item.video_file.url }}" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modals -->
+    {% for item in expressions_images %}
+    <div class="modal fade modal-zoom" id="imageModal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 10px;"></button>
+                    <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" class="img-fluid rounded" style="max-height: 90vh;">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -3073,6 +3395,99 @@
                 startDownload();
             });
         }
+
+        // ===== EXPRESSIONS GALLERY SLIDER LOGIC =====
+        function setupSlider(trackId, direction = 1, speed = 0.3) {
+            const track = document.getElementById(trackId);
+            if (!track) return;
+            const wrapper = track.closest('.expressions-slider-wrapper');
+            let animationId = null;
+            let isPaused = false;
+            let position = 0;
+            const itemWidth = 300; // 280 + 20 gap
+
+            function getTotalWidth() {
+                return track.children.length * itemWidth;
+            }
+
+            function animate() {
+                if (!isPaused) {
+                    position += direction * speed;
+                    if (position >= getTotalWidth() / 2) position = 0;
+                    if (position < 0) position = getTotalWidth() / 2 - itemWidth;
+                    track.style.transform = `translateX(-${position}px)`;
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+
+            // Pause on hover over any slide in this wrapper
+            wrapper.addEventListener('mouseenter', () => {
+                isPaused = true;
+                wrapper.classList.add('slider-paused');
+            });
+            wrapper.addEventListener('mouseleave', () => {
+                isPaused = false;
+                wrapper.classList.remove('slider-paused');
+            });
+
+            // Video play controls
+            const slides = track.querySelectorAll('.expressions-slide-item[data-type="video"]');
+            slides.forEach(slide => {
+                const video = slide.querySelector('video');
+                const playOverlay = slide.querySelector('.play-overlay');
+                if (!video || !playOverlay) return;
+
+                // Load video on hover to save bandwidth
+                slide.addEventListener('mouseenter', () => {
+                    if (video.dataset.src && !video.src) {
+                        video.src = video.dataset.src;
+                        video.load();
+                    }
+                });
+
+                playOverlay.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (video.paused) {
+                        video.play();
+                        slide.classList.add('playing');
+                        // pause slider globally
+                        document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.add('slider-paused'));
+                        isPaused = true;
+                    } else {
+                        video.pause();
+                        slide.classList.remove('playing');
+                        document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.remove('slider-paused'));
+                        isPaused = false;
+                    }
+                });
+
+                video.addEventListener('ended', () => {
+                    slide.classList.remove('playing');
+                    document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.remove('slider-paused'));
+                    isPaused = false;
+                });
+
+                // Stop video when slide leaves viewport (optional)
+            });
+
+            // Duplicate items for seamless loop if not enough
+            const children = track.children;
+            if (children.length < 6) {
+                const cloneCount = Math.ceil(6 / children.length);
+                for (let i = 0; i < cloneCount; i++) {
+                    for (let j = 0; j < children.length; j++) {
+                        const clone = children[j].cloneNode(true);
+                        track.appendChild(clone);
+                    }
+                }
+            }
+
+            animate();
+        }
+
+        // Initialize both sliders with opposite directions
+        setupSlider('imageTrack', 1, 0.4); // left to right
+        setupSlider('videoTrack', -1, 0.4); // right to left
     });
     </script>
 </body>

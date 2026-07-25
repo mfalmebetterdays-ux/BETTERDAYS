@@ -14,7 +14,8 @@ from .models import (
     SiteSettings, HeroImage, AboutSection, Service,
     ImpactResult, GalleryImage, Testimonial,
     NewsletterContent, ContactSubmission, NewsletterSubscription,
-    FormSubmission, SystemLog, FreeEbook
+    FormSubmission, SystemLog, FreeEbook,
+    BlogPost, ExpressionsImage, ExpressionsVideo
 )
 
 # ============ ADMIN SITE CONFIG ============
@@ -54,22 +55,6 @@ def export_as_json(modeladmin, request, queryset):
     return response
 export_as_json.short_description = "📤 Export selected as JSON"
 
-# ============ CUSTOM ADMIN FILTERS ============
-class ActiveFilter(admin.SimpleListFilter):
-    title = 'Active Status'
-    parameter_name = 'is_active'
-    
-    def lookups(self, request, model_admin):
-        return (
-            ('active', 'Active'),
-            ('inactive', 'Inactive'),
-        )
-    
-    def queryset(self, request, queryset):
-        if self.value() == 'active':
-            return queryset.filter(is_active=True)
-        if self.value() == 'inactive':
-            return queryset.filter(is_active=False)
 
 # ============ SITE SETTINGS ADMIN ============
 @admin.register(SiteSettings)
@@ -118,11 +103,12 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return SiteSettings.objects.count() == 0
 
+
 # ============ HERO IMAGE ADMIN ============
 @admin.register(HeroImage)
 class HeroImageAdmin(admin.ModelAdmin):
     list_display = ['image_preview', 'title', 'position_display', 'order', 'is_active_badge', 'created_at_display']
-    list_filter = ['position', ActiveFilter, 'created_at']
+    list_filter = ['position', 'created_at']
     list_editable = ['order']
     list_display_links = ['title']
     search_fields = ['title']
@@ -185,6 +171,7 @@ class HeroImageAdmin(admin.ModelAdmin):
             'classes': ('collapse', 'wide')
         }),
     )
+
 
 # ============ ABOUT SECTION ADMIN ============
 @admin.register(AboutSection)
@@ -293,11 +280,12 @@ class AboutSectionAdmin(admin.ModelAdmin):
         }),
     )
 
+
 # ============ SERVICE ADMIN ============
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['icon_preview', 'title', 'service_type_display', 'button_text', 'order', 'is_active_badge', 'created_at_display']
-    list_filter = ['service_type', ActiveFilter, 'created_at']
+    list_filter = ['service_type', 'created_at']
     list_editable = ['order', 'button_text']
     list_display_links = ['title']
     search_fields = ['title', 'description', 'topics']
@@ -373,12 +361,13 @@ class ServiceAdmin(admin.ModelAdmin):
         }),
     )
 
+
 # ============ IMPACT RESULT ADMIN ============
 @admin.register(ImpactResult)
 class ImpactResultAdmin(admin.ModelAdmin):
     list_display = ['value', 'title', 'order', 'is_active_badge', 'created_at_display']
     list_display_links = ['title']
-    list_filter = [ActiveFilter, 'created_at']
+    list_filter = ['created_at']
     list_editable = ['value', 'order']
     search_fields = ['title', 'value']
     actions = [make_active, make_inactive, duplicate_items]
@@ -413,11 +402,12 @@ class ImpactResultAdmin(admin.ModelAdmin):
         }),
     )
 
+
 # ============ GALLERY IMAGE ADMIN ============
 @admin.register(GalleryImage)
 class GalleryImageAdmin(admin.ModelAdmin):
     list_display = ['image_preview', 'title', 'position_display', 'order', 'is_active_badge', 'created_at_display']
-    list_filter = ['position', ActiveFilter, 'created_at']
+    list_filter = ['position', 'created_at']
     list_editable = ['order']
     list_display_links = ['title']
     search_fields = ['title', 'description']
@@ -485,6 +475,7 @@ class GalleryImageAdmin(admin.ModelAdmin):
             'classes': ('collapse', 'wide')
         }),
     )
+
 
 # ============ TESTIMONIAL ADMIN ============
 @admin.register(Testimonial)
@@ -555,6 +546,7 @@ class TestimonialAdmin(admin.ModelAdmin):
             'classes': ('collapse', 'wide')
         }),
     )
+
 
 # ============ NEWSLETTER CONTENT ADMIN ============
 @admin.register(NewsletterContent)
@@ -663,6 +655,190 @@ class NewsletterContentAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return NewsletterContent.objects.count() == 0
 
+
+# ============ BLOG POST ADMIN ============
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'image_preview', 'is_active_badge', 'created_at_display', 'order']
+    list_filter = ['is_active', 'created_at']
+    list_editable = ['order']
+    list_display_links = ['title']
+    search_fields = ['title', 'content']
+    readonly_fields = ['created_at', 'updated_at', 'image_preview_large']
+    actions = [make_active, make_inactive, duplicate_items]
+    list_per_page = 20
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width: 50px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;" />', 
+                obj.image.url
+            )
+        return format_html('<div style="width: 50px; height: 40px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px;">No Image</div>')
+    image_preview.short_description = 'Preview'
+    
+    def image_preview_large(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-width: 300px; max-height: 200px; object-fit: contain; border-radius: 8px; border: 2px solid #ddd;" />', 
+                obj.image.url
+            )
+        return "No image uploaded"
+    image_preview_large.short_description = 'Large Preview'
+    
+    def is_active_badge(self, obj):
+        if obj.is_active:
+            return format_html(
+                '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Active</span>'
+            )
+        return format_html(
+            '<span style="background: #6c757d; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Inactive</span>'
+        )
+    is_active_badge.short_description = 'Status'
+    
+    def created_at_display(self, obj):
+        return obj.created_at.strftime('%Y-%m-%d')
+    created_at_display.short_description = 'Created'
+    
+    fieldsets = (
+        ('Blog Post', {
+            'fields': ('title', 'image', 'image_preview_large', 'content', 'excerpt'),
+            'classes': ('wide',)
+        }),
+        ('Display Settings', {
+            'fields': ('order', 'is_active'),
+            'classes': ('wide',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse', 'wide')
+        }),
+    )
+
+
+# ============ EXPRESSIONS GALLERY ADMIN ============
+@admin.register(ExpressionsImage)
+class ExpressionsImageAdmin(admin.ModelAdmin):
+    list_display = ['image_preview', 'title', 'order', 'is_active_badge', 'created_at_display']
+    list_filter = ['is_active']
+    list_editable = ['order']
+    list_display_links = ['title']
+    search_fields = ['title']
+    readonly_fields = ['created_at', 'image_preview_large']
+    actions = [make_active, make_inactive]
+    list_per_page = 20
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="width: 60px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;" />', 
+                obj.image.url
+            )
+        return "No image"
+    image_preview.short_description = 'Preview'
+    
+    def image_preview_large(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-width: 400px; max-height: 300px; object-fit: contain; border-radius: 8px; border: 2px solid #ddd;" />', 
+                obj.image.url
+            )
+        return "No image uploaded"
+    image_preview_large.short_description = 'Large Preview'
+    
+    def is_active_badge(self, obj):
+        if obj.is_active:
+            return format_html(
+                '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Active</span>'
+            )
+        return format_html(
+            '<span style="background: #6c757d; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Inactive</span>'
+        )
+    is_active_badge.short_description = 'Status'
+    
+    def created_at_display(self, obj):
+        return obj.created_at.strftime('%Y-%m-%d')
+    created_at_display.short_description = 'Created'
+    
+    fieldsets = (
+        ('Image', {
+            'fields': ('title', 'image', 'image_preview_large'),
+            'classes': ('wide',)
+        }),
+        ('Display Settings', {
+            'fields': ('order', 'is_active'),
+            'classes': ('wide',)
+        }),
+        ('Timestamp', {
+            'fields': ('created_at',),
+            'classes': ('collapse', 'wide')
+        }),
+    )
+
+
+@admin.register(ExpressionsVideo)
+class ExpressionsVideoAdmin(admin.ModelAdmin):
+    list_display = ['video_preview', 'title', 'order', 'is_active_badge', 'created_at_display']
+    list_filter = ['is_active']
+    list_editable = ['order']
+    list_display_links = ['title']
+    search_fields = ['title']
+    readonly_fields = ['created_at', 'video_preview_large']
+    actions = [make_active, make_inactive]
+    list_per_page = 20
+    
+    def video_preview(self, obj):
+        if obj.video_file:
+            return format_html(
+                '<video style="width: 60px; height: 45px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;" muted>'
+                '<source src="{}" type="video/mp4">'
+                '</video>',
+                obj.video_file.url
+            )
+        return "No video"
+    video_preview.short_description = 'Preview'
+    
+    def video_preview_large(self, obj):
+        if obj.video_file:
+            return format_html(
+                '<video style="max-width: 400px; max-height: 300px; border-radius: 8px; border: 2px solid #ddd;" controls muted>'
+                '<source src="{}" type="video/mp4">'
+                '</video>',
+                obj.video_file.url
+            )
+        return "No video uploaded"
+    video_preview_large.short_description = 'Large Preview'
+    
+    def is_active_badge(self, obj):
+        if obj.is_active:
+            return format_html(
+                '<span style="background: #28a745; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Active</span>'
+            )
+        return format_html(
+            '<span style="background: #6c757d; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Inactive</span>'
+        )
+    is_active_badge.short_description = 'Status'
+    
+    def created_at_display(self, obj):
+        return obj.created_at.strftime('%Y-%m-%d')
+    created_at_display.short_description = 'Created'
+    
+    fieldsets = (
+        ('Video', {
+            'fields': ('title', 'video_file', 'video_preview_large'),
+            'classes': ('wide',)
+        }),
+        ('Display Settings', {
+            'fields': ('order', 'is_active'),
+            'classes': ('wide',)
+        }),
+        ('Timestamp', {
+            'fields': ('created_at',),
+            'classes': ('collapse', 'wide')
+        }),
+    )
+
+
 # ============ FREE EBOOK ADMIN ============
 @admin.register(FreeEbook)
 class FreeEbookAdmin(admin.ModelAdmin):
@@ -693,16 +869,13 @@ class FreeEbookAdmin(admin.ModelAdmin):
     cover_preview_large.short_description = 'Cover Preview'
     
     def file_size_display(self, obj):
-        """Safe file size display that handles missing files"""
         try:
             if obj.ebook_file and obj.ebook_file.name:
-                # Check if file exists before trying to get size
                 try:
                     file_size = obj.ebook_file.size
                 except (FileNotFoundError, OSError):
                     return "⚠️ File missing"
                 
-                # Format the size
                 if file_size < 1024:
                     return f"{file_size} B"
                 elif file_size < 1024 * 1024:
@@ -720,7 +893,6 @@ class FreeEbookAdmin(admin.ModelAdmin):
         if obj.ebook_file:
             file_size = obj.ebook_file.size if obj.ebook_file else 0
             
-            # Calculate size in appropriate units
             if file_size < 1024:
                 size_display = f"{file_size} B"
             elif file_size < 1024 * 1024:
@@ -842,7 +1014,6 @@ class FreeEbookAdmin(admin.ModelAdmin):
             status = 'Active' if ebook.is_active else 'Inactive'
             file_size = ebook.ebook_file.size if ebook.ebook_file else 0
             
-            # Format file size
             if file_size < 1024:
                 size_display = f"{file_size} B"
             elif file_size < 1024 * 1024:
@@ -918,7 +1089,8 @@ class FreeEbookAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.order_by('-is_active', '-download_count', '-updated_at')
-    
+
+
 # ============ CONTACT SUBMISSION ADMIN ============
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
@@ -978,6 +1150,7 @@ class ContactSubmissionAdmin(admin.ModelAdmin):
             obj.contacted_at = timezone.now()
         super().save_model(request, obj, form, change)
 
+
 # ============ NEWSLETTER SUBSCRIPTION ADMIN ============
 @admin.register(NewsletterSubscription)
 class NewsletterSubscriptionAdmin(admin.ModelAdmin):
@@ -1036,6 +1209,7 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
             'classes': ('wide',)
         }),
     )
+
 
 # ============ SYSTEM LOG ADMIN ============
 @admin.register(SystemLog)
@@ -1109,6 +1283,7 @@ class SystemLogAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
+
 # ============ FORM SUBMISSION ADMIN ============
 @admin.register(FormSubmission)
 class FormSubmissionAdmin(admin.ModelAdmin):
@@ -1122,7 +1297,6 @@ class FormSubmissionAdmin(admin.ModelAdmin):
     list_per_page = 30
     
     def submitted_data_preview(self, obj):
-        """Display form data preview"""
         try:
             data = json.loads(obj.form_data)
             preview = json.dumps(data, ensure_ascii=False)[:80]
@@ -1134,7 +1308,6 @@ class FormSubmissionAdmin(admin.ModelAdmin):
     submitted_data_preview.short_description = 'Form Data'
     
     def form_data_display(self, obj):
-        """Display formatted form data"""
         try:
             data = json.loads(obj.form_data)
             formatted_json = json.dumps(data, indent=2, ensure_ascii=False)
@@ -1161,14 +1334,13 @@ class FormSubmissionAdmin(admin.ModelAdmin):
     )
     
     def has_add_permission(self, request):
-        """Disable add permission"""
         return False
     
     def has_change_permission(self, request, obj=None):
-        """Disable change permission"""
         return False
 
-# Add custom admin action for eBook analytics
+
+# Track ebook performance
 def track_ebook_performance(modeladmin, request, queryset):
     for ebook in queryset:
         days_since_creation = (timezone.now() - ebook.created_at).days or 1
@@ -1180,4 +1352,3 @@ def track_ebook_performance(modeladmin, request, queryset):
         )
 track_ebook_performance.short_description = "📈 Show eBook performance analytics"
 FreeEbookAdmin.actions.append(track_ebook_performance)
-

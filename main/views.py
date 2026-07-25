@@ -11,7 +11,8 @@ from .models import (
     SiteSettings, HeroImage, AboutSection, Service,
     ImpactResult, GalleryImage, Testimonial,
     NewsletterContent, ContactSubmission, NewsletterSubscription,
-    FormSubmission, SystemLog, FreeEbook
+    FormSubmission, SystemLog, FreeEbook,
+    BlogPost, ExpressionsImage, ExpressionsVideo
 )
 
 logger = logging.getLogger(__name__)
@@ -32,14 +33,10 @@ def log_system_action(message, level='info', source='views', request=None):
 def home(request):
     """Main home view - with aggressive cache prevention"""
     try:
-        # Debug - print to console on EVERY request
         print("\n" + "="*80)
         print(f"[DEBUG] Home view called at: {timezone.now()}")
         print(f"[DEBUG] Request method: {request.method}")
-        print(f"[DEBUG] User agent: {request.META.get('HTTP_USER_AGENT', 'Unknown')}")
-        print(f"[DEBUG] IP address: {request.META.get('REMOTE_ADDR', 'Unknown')}")
         
-        # Get all data with better error handling
         site_settings = SiteSettings.objects.first()
         if not site_settings:
             print("[WARNING] No SiteSettings found, creating default...")
@@ -56,48 +53,26 @@ def home(request):
         gallery_images = GalleryImage.objects.filter(is_active=True).order_by('order')[:6]
         testimonials = Testimonial.objects.filter(is_active=True).order_by('order')
         newsletter = NewsletterContent.objects.filter(is_active=True).first()
-        
-        # ADD FREE EBOOK - Get the first active eBook
         free_ebook = FreeEbook.objects.filter(is_active=True).first()
         
-        # ADD DEBUG PRINT - Enhanced debugging
+        # NEW: Get blog posts and expressions gallery items
+        blog_posts = BlogPost.objects.filter(is_active=True).order_by('order', '-created_at')[:6]
+        expressions_images = ExpressionsImage.objects.filter(is_active=True).order_by('order')
+        expressions_videos = ExpressionsVideo.objects.filter(is_active=True).order_by('order')
+        
         print(f"\n🔥 DEBUG DATA:")
         print(f"Site Settings: {site_settings}")
         print(f"Hero Images: {hero_images.count()}")
-        if hero_images.count() > 0:
-            for img in hero_images:
-                print(f"  - {img.title}: {img.image.name if img.image else 'No image'}")
-        
         print(f"About Section: {about_section}")
-        if about_section:
-            print(f"  - Has image: {bool(about_section.image)}")
-            print(f"  - Has image_2: {bool(about_section.image_2)}")
-            print(f"  - Has long content: {about_section.has_long_content}")
-        
         print(f"Services: {services.count()}")
-        if services.count() > 0:
-            for service in services:
-                print(f"  - {service.title}: {service.service_type}")
-        
         print(f"Gallery Images: {gallery_images.count()}")
         print(f"Testimonials: {testimonials.count()}")
         print(f"Newsletter: {newsletter}")
         print(f"Free eBook: {free_ebook}")
-        if free_ebook:
-            print(f"  - Title: {free_ebook.title}")
-            print(f"  - Has file: {bool(free_ebook.ebook_file)}")
-            print(f"  - Downloads: {free_ebook.download_count}")
+        print(f"Blog Posts: {blog_posts.count()}")
+        print(f"Expressions Images: {expressions_images.count()}")
+        print(f"Expressions Videos: {expressions_videos.count()}")
         
-        # Check if there are newsletter subscriptions (for debugging)
-        total_subscriptions = NewsletterSubscription.objects.count()
-        active_subscriptions = NewsletterSubscription.objects.filter(is_active=True).count()
-        print(f"Newsletter Subscriptions: {total_subscriptions} total, {active_subscriptions} active")
-        
-        # Check contact submissions count
-        contact_submissions = ContactSubmission.objects.count()
-        print(f"Contact Submissions: {contact_submissions}")
-        
-        # Prepare context with all data
         context = {
             'site_settings': site_settings,
             'hero_images': hero_images,
@@ -108,9 +83,11 @@ def home(request):
             'testimonials': testimonials,
             'newsletter': newsletter,
             'free_ebook': free_ebook,
+            'blog_posts': blog_posts,
+            'expressions_images': expressions_images,
+            'expressions_videos': expressions_videos,
         }
         
-        # Log the page view
         log_system_action(
             f"Home page viewed from IP: {request.META.get('REMOTE_ADDR', 'Unknown')}",
             level='info',
@@ -118,15 +95,12 @@ def home(request):
             request=request
         )
         
-        # Check if this is a subscription confirmation
         if 'subscribed' in request.GET:
             context['subscribed'] = True
             print("[INFO] Subscription confirmation detected in URL")
         
-        # Render response
         response = render(request, 'main/index.html', context)
         
-        # ADD CACHE CONTROL HEADERS
         response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
         response['Pragma'] = 'no-cache'
         response['Expires'] = '0'
@@ -144,7 +118,6 @@ def home(request):
         import traceback
         traceback.print_exc()
         
-        # Log the error
         log_system_action(
             f"Home view error: {str(e)}",
             level='error',
@@ -152,7 +125,6 @@ def home(request):
             request=request
         )
         
-        # Create minimal context for error page
         context = {
             'site_settings': SiteSettings.objects.first() or SiteSettings(),
             'error': True,
@@ -161,6 +133,7 @@ def home(request):
         
         return render(request, 'main/index.html', context)
 
+
 @csrf_exempt
 @require_POST
 def contact_submit(request):
@@ -168,7 +141,6 @@ def contact_submit(request):
     try:
         data = json.loads(request.body)
         
-        # Validate required fields
         required_fields = ['full_name', 'email', 'organization', 'event_type', 'event_details']
         for field in required_fields:
             if not data.get(field):
@@ -177,7 +149,6 @@ def contact_submit(request):
                     'message': f'{field.replace("_", " ").title()} is required.'
                 }, status=400)
         
-        # Create contact submission in Django database
         submission = ContactSubmission.objects.create(
             full_name=data['full_name'],
             email=data['email'],
@@ -186,7 +157,6 @@ def contact_submit(request):
             event_details=data['event_details']
         )
         
-        # Log the submission
         log_system_action(
             f"New contact submission from {submission.full_name} ({submission.organization})",
             level='success',
@@ -217,6 +187,7 @@ def contact_submit(request):
             'message': 'An error occurred. Please try again later.'
         }, status=500)
 
+
 @csrf_exempt
 @require_POST
 def newsletter_submit(request):
@@ -235,7 +206,6 @@ def newsletter_submit(request):
                 'message': 'Email is required.'
             }, status=400)
         
-        # Check if email already exists
         if NewsletterSubscription.objects.filter(email=email).exists():
             subscription = NewsletterSubscription.objects.get(email=email)
             return JsonResponse({
@@ -243,7 +213,6 @@ def newsletter_submit(request):
                 'message': f'You are already subscribed to our newsletter! (Subscribed on {subscription.created_at.strftime("%Y-%m-%d")})'
             })
         
-        # Create subscription in Django database
         subscription = NewsletterSubscription.objects.create(
             email=email,
             name=name if name else email.split('@')[0],
@@ -252,7 +221,6 @@ def newsletter_submit(request):
             is_active=True
         )
         
-        # Log the subscription
         log_system_action(
             f"New newsletter subscription: {email}",
             level='success',
@@ -288,15 +256,13 @@ def newsletter_submit(request):
             'message': 'An error occurred. Please try again later.'
         }, status=500)
 
+
 @csrf_exempt
 @require_POST
 def form_submit_webhook(request):
     """Webhook to receive form submissions from FormSubmit (optional backup)"""
     try:
         data = json.loads(request.body)
-        
-        # This is a backup in case JavaScript fails
-        # You can process FormSubmit data here if needed
         
         log_system_action(
             f"FormSubmit webhook received: {data.get('_subject', 'Unknown')}",
@@ -316,6 +282,7 @@ def form_submit_webhook(request):
         )
         return JsonResponse({'status': 'error'}, status=500)
 
+
 @require_POST
 def download_ebook(request, ebook_id):
     """Handle ebook download and increment count"""
@@ -323,7 +290,6 @@ def download_ebook(request, ebook_id):
         ebook = FreeEbook.objects.get(id=ebook_id, is_active=True)
         ebook.increment_download_count()
         
-        # Log the download
         log_system_action(
             f"Ebook download: {ebook.title} by {request.META.get('REMOTE_ADDR', 'Unknown')}",
             level='info',
@@ -353,9 +319,8 @@ def download_ebook(request, ebook_id):
             'status': 'error',
             'message': 'An error occurred'
         }, status=500)
-    
 
 
 def media_page(request):
     """Media and Press page view"""
-    return render(request, 'main/media.html')     
+    return render(request, 'main/media.html')
