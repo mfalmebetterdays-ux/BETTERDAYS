@@ -1,10 +1,10 @@
-from django.utils.html import format_html
 from django.db import models
-
+from django.utils.html import format_html
+from cloudinary.models import CloudinaryField
 
 # ============ SITE SETTINGS ============
 class SiteSettings(models.Model):
-    logo = models.ImageField(upload_to='site/', blank=True, null=True)
+    logo = CloudinaryField('logo', folder='site/', blank=True, null=True)
     site_name = models.CharField(max_length=100, default='Fusion Force LLC')
     contact_email = models.EmailField(default='info@fusionforce.com')
     contact_phone = models.CharField(max_length=20, default='+1 (443) 545-4565')
@@ -25,7 +25,7 @@ class HeroImage(models.Model):
     ]
     
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='hero/')
+    image = CloudinaryField('image', folder='hero/')
     position = models.CharField(max_length=10, choices=POSITION_CHOICES, default='desktop')
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
@@ -36,7 +36,6 @@ class HeroImage(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.get_position_display()})"
-
 
 # ============ ABOUT SECTION ============
 class AboutSection(models.Model):
@@ -56,9 +55,10 @@ class AboutSection(models.Model):
         • Bullet point 2"""
     )
     
-    image = models.ImageField(upload_to='about/', blank=True, null=True)
-    image_2 = models.ImageField(
-        upload_to='about/', 
+    image = CloudinaryField('image', folder='about/', blank=True, null=True)
+    image_2 = CloudinaryField(
+        'image_2', 
+        folder='about/', 
         blank=True, 
         null=True,
         help_text="Second image that appears when content is long (3+ sections)"
@@ -143,7 +143,6 @@ class AboutSection(models.Model):
     def __str__(self):
         return self.title
 
-
 # ============ SERVICES SECTION ============
 class Service(models.Model):
     SERVICE_TYPES = [
@@ -182,7 +181,6 @@ class Service(models.Model):
     def __str__(self):
         return self.title
 
-
 # ============ IMPACT RESULTS ============
 class ImpactResult(models.Model):
     title = models.CharField(max_length=200)
@@ -197,7 +195,6 @@ class ImpactResult(models.Model):
     def __str__(self):
         return f"{self.value} - {self.title}"
 
-
 # ============ GALLERY SECTION ============
 class GalleryImage(models.Model):
     GALLERY_POSITION_CHOICES = [
@@ -207,7 +204,7 @@ class GalleryImage(models.Model):
     ]
     
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='gallery/')
+    image = CloudinaryField('image', folder='gallery/')
     description = models.TextField(blank=True)
     position = models.CharField(max_length=10, choices=GALLERY_POSITION_CHOICES, default='small')
     is_active = models.BooleanField(default=True)
@@ -221,14 +218,13 @@ class GalleryImage(models.Model):
     def __str__(self):
         return f"{self.title} ({self.get_position_display()})"
 
-
 # ============ TESTIMONIALS SECTION ============
 class Testimonial(models.Model):
     client_name = models.CharField(max_length=200)
     position = models.CharField(max_length=200)
     company = models.CharField(max_length=200)
     content = models.TextField()
-    avatar = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    avatar = CloudinaryField('avatar', folder='testimonials/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -240,17 +236,16 @@ class Testimonial(models.Model):
     def __str__(self):
         return f"{self.client_name} - {self.company}"
 
-
 # ============ NEWSLETTER SECTION ============
 class NewsletterContent(models.Model):
     title = models.CharField(max_length=200, default="Monthly Newsletter")
     subtitle = models.CharField(max_length=300, default="Get exclusive insights and industry updates delivered to your inbox")
-    image = models.ImageField(upload_to='newsletter/', blank=True, null=True)
+    image = CloudinaryField('image', folder='newsletter/', blank=True, null=True)
     benefits = models.TextField(
         default="Leadership Strategies\nIndustry Updates\nCase Studies\nEvent Announcements\nExclusive Content\nSuccess Stories",
         help_text="Add each benefit on a new line. They will be displayed in two columns."
     )
-    pdf_file = models.FileField(upload_to='newsletter_pdfs/', blank=True, null=True)
+    pdf_file = CloudinaryField('pdf', folder='newsletter_pdfs/', blank=True, null=True, resource_type='raw')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -268,11 +263,10 @@ class NewsletterContent(models.Model):
     def __str__(self):
         return f"Newsletter Content - {self.updated_at.strftime('%Y-%m-%d')}"
 
-
 # ============ BLOG SECTION ============
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    image = CloudinaryField('image', folder='blog/', blank=True, null=True)
     content = models.TextField()
     excerpt = models.TextField(blank=True, help_text="Short preview text. If empty, first 150 characters of content will be used.")
     is_active = models.BooleanField(default=True)
@@ -291,11 +285,10 @@ class BlogPost(models.Model):
             return self.excerpt
         return self.content[:150] + '...' if len(self.content) > 150 else self.content
 
-
 # ============ EXPRESSIONS GALLERY ============
 class ExpressionsImage(models.Model):
     title = models.CharField(max_length=200, blank=True)
-    image = models.ImageField(upload_to='expressions/images/')
+    image = CloudinaryField('image', folder='expressions/images/')
     order = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -306,10 +299,9 @@ class ExpressionsImage(models.Model):
     def __str__(self):
         return self.title or f"Image {self.id}"
 
-
 class ExpressionsVideo(models.Model):
     title = models.CharField(max_length=200, blank=True)
-    video_file = models.FileField(upload_to='expressions/videos/')
+    video_file = CloudinaryField('video', folder='expressions/videos/', resource_type='video')
     order = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -319,7 +311,6 @@ class ExpressionsVideo(models.Model):
 
     def __str__(self):
         return self.title or f"Video {self.id}"
-
 
 # ============ FORM SUBMISSIONS ============
 class ContactSubmission(models.Model):
@@ -353,7 +344,6 @@ class ContactSubmission(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.organization} ({self.event_type})"
 
-
 class NewsletterSubscription(models.Model):
     SOURCE_CHOICES = [
         ('newsletter_section', 'Newsletter Section'),
@@ -374,7 +364,6 @@ class NewsletterSubscription(models.Model):
         verbose_name = "Newsletter Subscription"
         verbose_name_plural = "Newsletter Subscriptions"
 
-
 class FormSubmission(models.Model):
     SOURCE_CHOICES = [
         ('booking', 'Booking Form'),
@@ -393,7 +382,6 @@ class FormSubmission(models.Model):
     def __str__(self):
         return f"{self.source} - {self.submitted_at.strftime('%Y-%m-%d %H:%M')}"
 
-
 # ============ FREE EBOOK ============
 class FreeEbook(models.Model):
     title = models.CharField(max_length=200, default="Free Leadership Guide")
@@ -402,8 +390,8 @@ class FreeEbook(models.Model):
         default="Get our exclusive free eBook with leadership insights, strategies, and actionable tips from Pamela Robinson.",
         help_text="Description shown to users before download"
     )
-    ebook_file = models.FileField(upload_to='ebooks/', blank=True, null=True)
-    cover_image = models.ImageField(upload_to='ebook_covers/', blank=True, null=True)
+    ebook_file = CloudinaryField('ebook', folder='ebooks/', blank=True, null=True, resource_type='raw')
+    cover_image = CloudinaryField('image', folder='ebook_covers/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     download_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -411,15 +399,14 @@ class FreeEbook(models.Model):
     
     def increment_download_count(self):
         self.download_count += 1
-        self.save()
+        self.save(update_fields=['download_count'])
     
     def __str__(self):
         return f"{self.title} ({self.download_count} downloads)"
     
     class Meta:
         verbose_name = "Free eBook"
-        verbose_name_plural = "Free eBooks"    
-
+        verbose_name_plural = "Free eBooks"
 
 # ============ SYSTEM LOGS ============
 class SystemLog(models.Model):

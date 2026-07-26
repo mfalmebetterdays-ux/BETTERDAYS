@@ -1,9 +1,8 @@
-# main/urls.py
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
-# Import views directly - ADD media_page to the import list
 from main.views import home, contact_submit, newsletter_submit, form_submit_webhook, download_ebook, media_page
 
 urlpatterns = [
@@ -15,6 +14,6 @@ urlpatterns = [
     path('media/', media_page, name='media_page'),
 ]
 
-# Only add media serving if MEDIA_ROOT is set and not empty
-if settings.MEDIA_ROOT:
+# Optional: Serve media locally in development (will be overridden by Cloudinary)
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
