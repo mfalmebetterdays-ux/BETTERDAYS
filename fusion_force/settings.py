@@ -1,4 +1,4 @@
-# settings.py - Complete with Cloudinary Integration
+# settings.py - Complete with Cloudinary Integration & Increased Upload Limits
 import os
 from pathlib import Path
 import dj_database_url
@@ -145,7 +145,7 @@ cloudinary.config(
     secure=True
 )
 
-# Cloudinary upload settings
+# ========== UPDATED CLOUDINARY SETTINGS WITH INCREASED LIMITS ==========
 CLOUDINARY = {
     'PROCESS_URLS': True,
     'EXIF': True,
@@ -153,11 +153,29 @@ CLOUDINARY = {
     'DEFAULT_TRANSFORMATIONS': {
         'quality': 'auto:best',
         'fetch_format': 'auto',
+    },
+    # ========== FIX: INCREASE MAX UPLOAD SIZE ==========
+    'MAX_UPLOAD_SIZE': 20971520,  # 20 MB (increased from 10MB)
+    'CHUNK_SIZE': 6000000,  # 6MB chunks for large files
+    'USE_CHUNKED_ENCODING': True,
+    # Auto-resize large images before upload
+    'TRANSFORMATION': {
+        'width': 1920,
+        'height': 1080,
+        'crop': 'limit',
+        'quality': 'auto:best',
     }
 }
 
 print(f"✅ Cloudinary Cloud Name: {CLOUDINARY_STORAGE['CLOUD_NAME']}")
 print(f"✅ Cloudinary Configured: {bool(CLOUDINARY_STORAGE['API_KEY'] and CLOUDINARY_STORAGE['API_SECRET'])}")
+print(f"✅ Cloudinary Max Upload Size: {CLOUDINARY.get('MAX_UPLOAD_SIZE', 10485760) / 1024 / 1024} MB")
+
+# ========== FILE UPLOAD SETTINGS ==========
+# Increase Django's file upload limits
+DATA_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 25 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 26214400  # 25 MB
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000
 
 # Fallback media settings (in case Cloudinary fails)
 MEDIA_URL = '/media/'
@@ -165,6 +183,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 print(f"✅ MEDIA_URL: {MEDIA_URL}")
 print(f"✅ MEDIA_ROOT: {MEDIA_ROOT}")
+print(f"✅ FILE_UPLOAD_MAX_MEMORY_SIZE: {FILE_UPLOAD_MAX_MEMORY_SIZE / 1024 / 1024} MB")
 
 # ========== SECURITY ==========
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

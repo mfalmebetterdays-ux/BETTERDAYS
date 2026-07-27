@@ -6,8 +6,13 @@ from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.safestring import mark_safe
+from django import forms
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
 import json
 import csv
+import os
 from datetime import timedelta
 
 from .models import (
@@ -55,10 +60,117 @@ def export_as_json(modeladmin, request, queryset):
     return response
 export_as_json.short_description = "📤 Export selected as JSON"
 
+# ================================================================
+# CLOUDINARY ADMIN MIXIN WITH AUTO-COMPRESSION
+# ================================================================
+
+class CloudinaryAdminMixin:
+    """Mixin to handle Cloudinary uploads with auto-compression"""
+    
+    def compress_image(self, image_field, max_size=1920, quality=85):
+        """
+        Compress image before uploading to Cloudinary
+        """
+        if not image_field:
+            return image_field
+        
+        try:
+            # Open the image
+            img = Image.open(image_field)
+            
+            # Convert to RGB if needed (for PNG with transparency)
+            if img.mode in ('RGBA', 'LA', 'P'):
+                # Create a white background
+                background = Image.new('RGB', img.size, (255, 255, 255))
+                if img.mode == 'P':
+                    img = img.convert('RGBA')
+                if img.mode == 'RGBA':
+                    background.paste(img, mask=img.split()[3])
+                else:
+                    background.paste(img)
+                img = background
+            
+            # Resize if too large
+            if img.width > max_size or img.height > max_size:
+                img.thumbnail((max_size, max_size), Image.LANCZOS)
+            
+            # Save compressed
+            output = BytesIO()
+            img.save(output, format='JPEG', quality=quality, optimize=True)
+            output.seek(0)
+            
+            # Get original filename
+            original_name = image_field.name
+            name, ext = os.path.splitext(original_name)
+            new_name = f"{name}_compressed.jpg"
+            
+            # Create new file
+            compressed_file = ContentFile(output.read(), name=new_name)
+            
+            # Log compression
+            original_size = image_field.size / 1024
+            compressed_size = len(compressed_file) / 1024
+            reduction = ((original_size - compressed_size) / original_size) * 100 if original_size > 0 else 0
+            
+            print(f"✅ Compressed: {original_name} -> {new_name}")
+            print(f"   Original: {original_size:.1f} KB → Compressed: {compressed_size:.1f} KB (Reduced {reduction:.1f}%)")
+            
+            return compressed_file
+            
+        except Exception as e:
+            print(f"❌ Compression failed for {image_field.name}: {e}")
+            return image_field
+    
+    def save_model(self, request, obj, form, change):
+        """Handle file uploads with auto-compression"""
+        # Get all Cloudinary fields
+        cloudinary_fields = self.get_cloudinary_fields()
+        
+        for field_name in cloudinary_fields:
+            file_obj = form.cleaned_data.get(field_name)
+            if file_obj and hasattr(file_obj, 'file'):
+                try:
+                    # Check if it's an image file
+                    is_image = False
+                    if hasattr(file_obj, 'content_type'):
+                        is_image = file_obj.content_type and file_obj.content_type.startswith('image/')
+                    elif hasattr(file_obj, 'name'):
+                        is_image = file_obj.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'))
+                    
+                    if is_image:
+                        # Compress image
+                        compressed = self.compress_image(file_obj)
+                        if compressed:
+                            setattr(obj, field_name, compressed)
+                            messages.success(request, f"✅ {field_name} compressed successfully!")
+                    else:
+                        # For non-image files, check size and warn
+                        if hasattr(file_obj, 'size') and file_obj.size > 10 * 1024 * 1024:  # > 10MB
+                            messages.warning(
+                                request, 
+                                f"⚠️ {field_name} is {file_obj.size / 1024 / 1024:.1f} MB. "
+                                f"Consider compressing large files for better performance."
+                            )
+                            
+                except Exception as e:
+                    self.message_user(
+                        request, 
+                        f"❌ Error processing {field_name}: {str(e)}", 
+                        level='ERROR'
+                    )
+        
+        super().save_model(request, obj, form, change)
+    
+    def get_cloudinary_fields(self):
+        """Override this to return list of Cloudinary fields"""
+        return ['image', 'logo', 'avatar', 'pdf_file', 'video_file', 'ebook_file', 'cover_image', 'image_2']
 
 # ============ SITE SETTINGS ADMIN ============
 @admin.register(SiteSettings)
-class SiteSettingsAdmin(admin.ModelAdmin):
+class SiteSettingsAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['logo']
+    
     list_display = ['site_name', 'logo_preview', 'contact_email', 'contact_phone', 'updated_at_display']
     list_display_links = ['site_name']
     readonly_fields = ['created_at', 'updated_at', 'logo_preview_large']
@@ -103,10 +215,12 @@ class SiteSettingsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return SiteSettings.objects.count() == 0
 
-
 # ============ HERO IMAGE ADMIN ============
 @admin.register(HeroImage)
-class HeroImageAdmin(admin.ModelAdmin):
+class HeroImageAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image']
+    
     list_display = ['image_preview', 'title', 'position_display', 'order', 'is_active_badge', 'created_at_display']
     list_filter = ['position', 'created_at']
     list_editable = ['order']
@@ -172,10 +286,12 @@ class HeroImageAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ ABOUT SECTION ADMIN ============
 @admin.register(AboutSection)
-class AboutSectionAdmin(admin.ModelAdmin):
+class AboutSectionAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image', 'image_2']
+    
     list_display = ['title', 'image_preview', 'is_active_badge', 'created_at_display', 'updated_at_display']
     list_display_links = ['title']
     search_fields = ['title', 'content']
@@ -280,7 +396,6 @@ class AboutSectionAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ SERVICE ADMIN ============
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -361,7 +476,6 @@ class ServiceAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ IMPACT RESULT ADMIN ============
 @admin.register(ImpactResult)
 class ImpactResultAdmin(admin.ModelAdmin):
@@ -402,10 +516,12 @@ class ImpactResultAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ GALLERY IMAGE ADMIN ============
 @admin.register(GalleryImage)
-class GalleryImageAdmin(admin.ModelAdmin):
+class GalleryImageAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image']
+    
     list_display = ['image_preview', 'title', 'position_display', 'order', 'is_active_badge', 'created_at_display']
     list_filter = ['position', 'created_at']
     list_editable = ['order']
@@ -476,10 +592,12 @@ class GalleryImageAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ TESTIMONIAL ADMIN ============
 @admin.register(Testimonial)
-class TestimonialAdmin(admin.ModelAdmin):
+class TestimonialAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['avatar']
+    
     list_display = ['avatar_preview', 'client_name', 'company', 'position', 'order', 'is_active_badge', 'created_at_display']
     list_filter = ['is_active', 'company', 'created_at']
     list_editable = ['order']
@@ -547,10 +665,12 @@ class TestimonialAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ NEWSLETTER CONTENT ADMIN ============
 @admin.register(NewsletterContent)
-class NewsletterContentAdmin(admin.ModelAdmin):
+class NewsletterContentAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image', 'pdf_file']
+    
     list_display = ['title', 'image_preview', 'pdf_preview', 'is_active_badge', 'created_at_display', 'updated_at_display']
     list_display_links = ['title']
     search_fields = ['title', 'subtitle']
@@ -655,10 +775,12 @@ class NewsletterContentAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return NewsletterContent.objects.count() == 0
 
-
 # ============ BLOG POST ADMIN ============
 @admin.register(BlogPost)
-class BlogPostAdmin(admin.ModelAdmin):
+class BlogPostAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image']
+    
     list_display = ['title', 'image_preview', 'is_active_badge', 'created_at_display', 'order']
     list_filter = ['is_active', 'created_at']
     list_editable = ['order']
@@ -715,11 +837,13 @@ class BlogPostAdmin(admin.ModelAdmin):
         }),
     )
 
-
-# ============ EXPRESSIONS GALLERY ADMIN ============
+# ============ EXPRESSIONS IMAGE ADMIN ============
 @admin.register(ExpressionsImage)
-class ExpressionsImageAdmin(admin.ModelAdmin):
-    list_display = ['image_preview', 'title', 'order', 'is_active_badge', 'created_at_display']
+class ExpressionsImageAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['image']
+    
+    list_display = ['image_preview', 'title', 'order', 'is_active_badge', 'file_size_display', 'created_at_display']
     list_filter = ['is_active']
     list_editable = ['order']
     list_display_links = ['title']
@@ -745,6 +869,26 @@ class ExpressionsImageAdmin(admin.ModelAdmin):
             )
         return "No image uploaded"
     image_preview_large.short_description = 'Large Preview'
+    
+    def file_size_display(self, obj):
+        if obj.image:
+            try:
+                # Get file size from Cloudinary
+                import requests
+                response = requests.head(obj.image.url, timeout=5)
+                size = response.headers.get('content-length')
+                if size:
+                    size = int(size)
+                    if size > 1024 * 1024:
+                        return f"{size / 1024 / 1024:.1f} MB"
+                    elif size > 1024:
+                        return f"{size / 1024:.1f} KB"
+                    else:
+                        return f"{size} B"
+            except:
+                pass
+        return "N/A"
+    file_size_display.short_description = 'File Size'
     
     def is_active_badge(self, obj):
         if obj.is_active:
@@ -775,9 +919,12 @@ class ExpressionsImageAdmin(admin.ModelAdmin):
         }),
     )
 
-
+# ============ EXPRESSIONS VIDEO ADMIN ============
 @admin.register(ExpressionsVideo)
-class ExpressionsVideoAdmin(admin.ModelAdmin):
+class ExpressionsVideoAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['video_file']
+    
     list_display = ['video_preview', 'title', 'order', 'is_active_badge', 'created_at_display']
     list_filter = ['is_active']
     list_editable = ['order']
@@ -838,10 +985,12 @@ class ExpressionsVideoAdmin(admin.ModelAdmin):
         }),
     )
 
-
 # ============ FREE EBOOK ADMIN ============
 @admin.register(FreeEbook)
-class FreeEbookAdmin(admin.ModelAdmin):
+class FreeEbookAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
+    def get_cloudinary_fields(self):
+        return ['ebook_file', 'cover_image']
+    
     list_display = ['title', 'cover_preview', 'is_active', 'download_count', 'is_active_badge', 'created_at_display', 'updated_at_display', 'file_size_display']
     list_display_links = ['title']
     search_fields = ['title', 'subtitle', 'description']
@@ -1090,7 +1239,6 @@ class FreeEbookAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.order_by('-is_active', '-download_count', '-updated_at')
 
-
 # ============ CONTACT SUBMISSION ADMIN ============
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
@@ -1150,7 +1298,6 @@ class ContactSubmissionAdmin(admin.ModelAdmin):
             obj.contacted_at = timezone.now()
         super().save_model(request, obj, form, change)
 
-
 # ============ NEWSLETTER SUBSCRIPTION ADMIN ============
 @admin.register(NewsletterSubscription)
 class NewsletterSubscriptionAdmin(admin.ModelAdmin):
@@ -1209,7 +1356,6 @@ class NewsletterSubscriptionAdmin(admin.ModelAdmin):
             'classes': ('wide',)
         }),
     )
-
 
 # ============ SYSTEM LOG ADMIN ============
 @admin.register(SystemLog)
@@ -1283,7 +1429,6 @@ class SystemLogAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-
 # ============ FORM SUBMISSION ADMIN ============
 @admin.register(FormSubmission)
 class FormSubmissionAdmin(admin.ModelAdmin):
@@ -1339,8 +1484,7 @@ class FormSubmissionAdmin(admin.ModelAdmin):
     def has_change_permission(self, request, obj=None):
         return False
 
-
-# Track ebook performance
+# ============ TRACK EBOOK PERFORMANCE ============
 def track_ebook_performance(modeladmin, request, queryset):
     for ebook in queryset:
         days_since_creation = (timezone.now() - ebook.created_at).days or 1
