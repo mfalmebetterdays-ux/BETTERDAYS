@@ -10,9 +10,11 @@ from django import forms
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
 import json
 import csv
 import os
+import sys
 from datetime import timedelta
 
 from .models import (
@@ -61,7 +63,7 @@ def export_as_json(modeladmin, request, queryset):
 export_as_json.short_description = "📤 Export selected as JSON"
 
 # ================================================================
-# CLOUDINARY ADMIN MIXIN WITH AUTO-COMPRESSION
+# CLOUDINARY ADMIN MIXIN WITH AUTO-COMPRESSION - FIXED
 # ================================================================
 
 class CloudinaryAdminMixin:
@@ -69,14 +71,18 @@ class CloudinaryAdminMixin:
     
     def compress_image(self, image_field, max_size=1920, quality=85):
         """
-        Compress image before uploading to Cloudinary
+        Compress image before uploading to Cloudinary.
+        Returns an InMemoryUploadedFile that can be saved to CloudinaryField.
         """
         if not image_field:
             return image_field
         
         try:
             # Open the image
-            img = Image.open(image_field)
+            if hasattr(image_field, 'file'):
+                img = Image.open(image_field.file)
+            else:
+                img = Image.open(image_field)
             
             # Convert to RGB if needed (for PNG with transparency)
             if img.mode in ('RGBA', 'LA', 'P'):
@@ -94,7 +100,7 @@ class CloudinaryAdminMixin:
             if img.width > max_size or img.height > max_size:
                 img.thumbnail((max_size, max_size), Image.LANCZOS)
             
-            # Save compressed
+            # Save compressed to BytesIO
             output = BytesIO()
             img.save(output, format='JPEG', quality=quality, optimize=True)
             output.seek(0)
@@ -104,12 +110,19 @@ class CloudinaryAdminMixin:
             name, ext = os.path.splitext(original_name)
             new_name = f"{name}_compressed.jpg"
             
-            # Create new file
-            compressed_file = ContentFile(output.read(), name=new_name)
+            # Create an InMemoryUploadedFile
+            compressed_file = InMemoryUploadedFile(
+                output,
+                'image',
+                new_name,
+                'image/jpeg',
+                len(output.getvalue()),
+                None
+            )
             
-            # Log compression
-            original_size = image_field.size / 1024
-            compressed_size = len(compressed_file) / 1024
+            # Calculate compression stats
+            original_size = image_field.size / 1024 if hasattr(image_field, 'size') and image_field.size else 0
+            compressed_size = len(output.getvalue()) / 1024
             reduction = ((original_size - compressed_size) / original_size) * 100 if original_size > 0 else 0
             
             print(f"✅ Compressed: {original_name} -> {new_name}")
@@ -118,7 +131,7 @@ class CloudinaryAdminMixin:
             return compressed_file
             
         except Exception as e:
-            print(f"❌ Compression failed for {image_field.name}: {e}")
+            print(f"❌ Compression failed for {image_field.name if hasattr(image_field, 'name') else 'unknown'}: {e}")
             return image_field
     
     def save_model(self, request, obj, form, change):
@@ -132,15 +145,17 @@ class CloudinaryAdminMixin:
                 try:
                     # Check if it's an image file
                     is_image = False
-                    if hasattr(file_obj, 'content_type'):
-                        is_image = file_obj.content_type and file_obj.content_type.startswith('image/')
+                    content_type = getattr(file_obj, 'content_type', '')
+                    if content_type:
+                        is_image = content_type.startswith('image/')
                     elif hasattr(file_obj, 'name'):
                         is_image = file_obj.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'))
                     
                     if is_image:
-                        # Compress image
+                        # Compress image - this returns an InMemoryUploadedFile
                         compressed = self.compress_image(file_obj)
                         if compressed:
+                            # Set the field directly - CloudinaryField will handle it
                             setattr(obj, field_name, compressed)
                             messages.success(request, f"✅ {field_name} compressed successfully!")
                     else:
@@ -873,7 +888,6 @@ class ExpressionsImageAdmin(CloudinaryAdminMixin, admin.ModelAdmin):
     def file_size_display(self, obj):
         if obj.image:
             try:
-                # Get file size from Cloudinary
                 import requests
                 response = requests.head(obj.image.url, timeout=5)
                 size = response.headers.get('content-length')
