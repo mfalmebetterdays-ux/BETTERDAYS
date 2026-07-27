@@ -11,6 +11,7 @@ from django.db import IntegrityError
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.contrib import messages
+from django.core.cache import cache
 
 # Cloudinary imports
 import cloudinary
@@ -162,85 +163,92 @@ def get_cloudinary_transformations(file_url, transformations):
         return url
 
 # ================================================================
-# MAIN HOME VIEW
+# MAIN HOME VIEW WITH CACHING
 # ================================================================
 
 def home(request):
-    """Main home view with Cloudinary integration"""
+    """Main home view with Cloudinary integration and caching"""
     try:
         print("\n" + "="*80)
         print(f"[DEBUG] Home view called at: {timezone.now()}")
-        print(f"[DEBUG] Request method: {request.method}")
         
-        # Get or create site settings
-        site_settings = SiteSettings.objects.first()
-        if not site_settings:
-            print("[WARNING] No SiteSettings found, creating default...")
-            site_settings = SiteSettings.objects.create(
-                site_name='Fusion Force LLC',
-                contact_email='info@fusionforce.com',
-                contact_phone='+1 (443) 545-4565'
-            )
+        # Try to get from cache first (5 minute cache)
+        cache_key = 'home_page_data'
+        cached_data = cache.get(cache_key)
         
-        # Get all dynamic content
-        hero_images = HeroImage.objects.filter(is_active=True).order_by('order')
-        about_section = AboutSection.objects.filter(is_active=True).first()
-        services = Service.objects.filter(is_active=True).order_by('order')
-        results = ImpactResult.objects.filter(is_active=True).order_by('order')
-        gallery_images = GalleryImage.objects.filter(is_active=True).order_by('order')[:6]
-        testimonials = Testimonial.objects.filter(is_active=True).order_by('order')
-        newsletter = NewsletterContent.objects.filter(is_active=True).first()
-        free_ebook = FreeEbook.objects.filter(is_active=True).first()
-        blog_posts = BlogPost.objects.filter(is_active=True).order_by('order', '-created_at')[:6]
-        expressions_images = ExpressionsImage.objects.filter(is_active=True).order_by('order')
-        expressions_videos = ExpressionsVideo.objects.filter(is_active=True).order_by('order')
-        
-        # Debug output
-        print(f"\n🔥 DEBUG DATA:")
-        print(f"Site Settings: {site_settings}")
-        print(f"Hero Images: {hero_images.count()}")
-        print(f"About Section: {about_section}")
-        print(f"Services: {services.count()}")
-        print(f"Gallery Images: {gallery_images.count()}")
-        print(f"Testimonials: {testimonials.count()}")
-        print(f"Newsletter: {newsletter}")
-        print(f"Free eBook: {free_ebook}")
-        print(f"Blog Posts: {blog_posts.count()}")
-        print(f"Expressions Images: {expressions_images.count()}")
-        print(f"Expressions Videos: {expressions_videos.count()}")
-        
-        # Prepare context
-        context = {
-            'site_settings': site_settings,
-            'hero_images': hero_images,
-            'about_section': about_section,
-            'services': services,
-            'results': results,
-            'gallery_images': gallery_images,
-            'testimonials': testimonials,
-            'newsletter': newsletter,
-            'free_ebook': free_ebook,
-            'blog_posts': blog_posts,
-            'expressions_images': expressions_images,
-            'expressions_videos': expressions_videos,
-            'cloudinary_cloud_name': settings.CLOUDINARY_STORAGE.get('CLOUD_NAME'),
-            'is_debug': settings.DEBUG,
-        }
+        if cached_data and not request.GET.get('refresh'):
+            print("[CACHE] Using cached home page data")
+            context = cached_data
+        else:
+            print("[CACHE] Building fresh home page data")
+            
+            # Get or create site settings
+            site_settings = SiteSettings.objects.first()
+            if not site_settings:
+                print("[WARNING] No SiteSettings found, creating default...")
+                site_settings = SiteSettings.objects.create(
+                    site_name='Fusion Force LLC',
+                    contact_email='info@fusionforce.com',
+                    contact_phone='+1 (443) 545-4565'
+                )
+            
+            # Get all dynamic content - OPTIMIZED
+            hero_images = HeroImage.objects.filter(is_active=True).order_by('order')[:1]  # Only first hero
+            about_section = AboutSection.objects.filter(is_active=True).first()
+            services = Service.objects.filter(is_active=True).order_by('order')
+            results = ImpactResult.objects.filter(is_active=True).order_by('order')
+            
+            # GALLERY: Only get first 6 images
+            all_gallery_images = GalleryImage.objects.filter(is_active=True).order_by('order')
+            gallery_images = all_gallery_images[:6]
+            total_gallery_count = all_gallery_images.count()
+            has_more_gallery = total_gallery_count > 6
+            
+            testimonials = Testimonial.objects.filter(is_active=True).order_by('order')[:12]
+            newsletter = NewsletterContent.objects.filter(is_active=True).first()
+            free_ebook = FreeEbook.objects.filter(is_active=True).first()
+            blog_posts = BlogPost.objects.filter(is_active=True).order_by('order', '-created_at')[:3]
+            expressions_images = ExpressionsImage.objects.filter(is_active=True).order_by('order')[:10]
+            expressions_videos = ExpressionsVideo.objects.filter(is_active=True).order_by('order')[:6]
+            
+            # Prepare context
+            context = {
+                'site_settings': site_settings,
+                'hero_images': hero_images,
+                'about_section': about_section,
+                'services': services,
+                'results': results,
+                'gallery_images': gallery_images,
+                'total_gallery_count': total_gallery_count,
+                'has_more_gallery': has_more_gallery,
+                'testimonials': testimonials,
+                'newsletter': newsletter,
+                'free_ebook': free_ebook,
+                'blog_posts': blog_posts,
+                'expressions_images': expressions_images,
+                'expressions_videos': expressions_videos,
+                'cloudinary_cloud_name': settings.CLOUDINARY_STORAGE.get('CLOUD_NAME'),
+                'is_debug': settings.DEBUG,
+            }
+            
+            # Cache for 5 minutes
+            cache.set(cache_key, context, 300)
         
         # Check for subscription confirmation
         if 'subscribed' in request.GET:
             context['subscribed'] = True
-            print("[INFO] Subscription confirmation detected in URL")
         
-        # Log the page view
-        log_system_action(
-            f"Home page viewed from IP: {request.META.get('REMOTE_ADDR', 'Unknown')}",
-            level='info',
-            source='home_view',
-            request=request
-        )
+        # Log page view (random sampling to reduce DB load)
+        import random
+        if random.randint(1, 100) == 1:
+            log_system_action(
+                f"Home page viewed from IP: {request.META.get('REMOTE_ADDR', 'Unknown')}",
+                level='info',
+                source='home_view',
+                request=request
+            )
         
-        # Render response with cache prevention headers
+        # Render response
         response = render(request, 'main/index.html', context)
         response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
         response['Pragma'] = 'no-cache'
@@ -248,9 +256,6 @@ def home(request):
         response['X-Frame-Options'] = 'DENY'
         response['X-Content-Type-Options'] = 'nosniff'
         response['X-XSS-Protection'] = '1; mode=block'
-        
-        print(f"[SUCCESS] Home view rendered successfully at {timezone.now()}")
-        print("="*80 + "\n")
         
         return response
         
@@ -266,7 +271,6 @@ def home(request):
             request=request
         )
         
-        # Return error page with basic context
         context = {
             'site_settings': SiteSettings.objects.first() or SiteSettings(),
             'error': True,
@@ -275,6 +279,47 @@ def home(request):
         }
         
         return render(request, 'main/index.html', context)
+
+# ================================================================
+# GALLERY API - FOR LAZY LOADING
+# ================================================================
+
+@require_GET
+def get_gallery_images(request):
+    """
+    API endpoint for lazy loading gallery images
+    Returns 3 images at a time
+    """
+    try:
+        page = int(request.GET.get('page', 1))
+        per_page = 3  # Load 3 at a time
+        
+        images = GalleryImage.objects.filter(is_active=True).order_by('order')
+        paginator = Paginator(images, per_page)
+        page_obj = paginator.get_page(page)
+        
+        data = {
+            'images': [
+                {
+                    'id': img.id,
+                    'title': img.title,
+                    'url': img.image.url,
+                    'description': img.description,
+                    'position': img.position,
+                }
+                for img in page_obj
+            ],
+            'has_next': page_obj.has_next(),
+            'next_page': page + 1 if page_obj.has_next() else None,
+            'total': paginator.count,
+            'loaded': page * per_page,
+        }
+        
+        return JsonResponse(data)
+        
+    except Exception as e:
+        logger.error(f"Gallery API error: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
 
 # ================================================================
 # MEDIA PAGE VIEW
@@ -459,7 +504,7 @@ def newsletter_submit(request):
             is_active=True
         )
         
-        # Handle any file uploads (e.g., profile picture)
+        # Handle any file uploads
         if request.FILES:
             for file_key, file_obj in request.FILES.items():
                 try:
@@ -808,33 +853,6 @@ def health_check(request):
             'error': str(e),
             'timestamp': datetime.now().isoformat()
         }, status=500)
-
-# ================================================================
-# UPDATED URLS - Add to urls.py
-# ================================================================
-
-"""
-Add these to your urls.py:
-
-from main.views import (
-    home, media_page, contact_submit, newsletter_submit,
-    form_submit_webhook, download_ebook, cloudinary_upload_endpoint,
-    cloudinary_delete_endpoint, get_optimized_image, health_check
-)
-
-urlpatterns = [
-    path('', home, name='home'),
-    path('media/', media_page, name='media_page'),
-    path('api/contact-submit/', contact_submit, name='contact_submit'),
-    path('api/newsletter-submit/', newsletter_submit, name='newsletter_submit'),
-    path('api/formsubmit-webhook/', form_submit_webhook, name='formsubmit_webhook'),
-    path('api/download-ebook/<int:ebook_id>/', download_ebook, name='download_ebook'),
-    path('api/cloudinary-upload/', cloudinary_upload_endpoint, name='cloudinary_upload'),
-    path('api/cloudinary-delete/', cloudinary_delete_endpoint, name='cloudinary_delete'),
-    path('api/get-optimized-image/', get_optimized_image, name='get_optimized_image'),
-    path('health/', health_check, name='health_check'),
-]
-"""
 
 # ================================================================
 # TEMPLATE CONTEXT PROCESSOR

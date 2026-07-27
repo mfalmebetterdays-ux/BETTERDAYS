@@ -12,15 +12,13 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">    
     
-    <!-- Replace local paths with CDN -->
+    <!-- CDN Resources -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/lib/owl.carousel.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="//code.tidio.co/08lwdd7m9kxlidhacxeg5ms17br54om2.js" async></script>
-    <!-- Google tag (gtag.js) -->
-
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +38,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #053e91;
@@ -132,7 +131,6 @@
         }
         
         /* ===== MOBILE FIXES FOR HERO SECTION ===== */
-        /* Default styles for desktop */
         .hero-desktop {
             display: block;
         }
@@ -141,9 +139,7 @@
             display: none;
         }
         
-        /* Mobile styles */
         @media (max-width: 768px) {
-            /* Hide desktop version, show mobile version */
             .hero-desktop {
                 display: none;
             }
@@ -153,14 +149,12 @@
                 position: relative;
             }
             
-            /* Mobile hero container */
             .hero-mobile-container {
                 position: relative;
                 width: 100%;
                 overflow: hidden;
             }
             
-            /* Mobile image styling - PUSHED UP HIGHER */
             .hero-mobile-image {
                 width: 100%;
                 height: 65vh;
@@ -170,7 +164,6 @@
                 margin-top: -10px;
             }
             
-            /* Content container that overlaps image slightly */
             .hero-mobile-content {
                 position: relative;
                 margin-top: -80px;
@@ -182,7 +175,6 @@
                 z-index: 2;
             }
             
-            /* Mobile text styling */
             .hero-mobile-title {
                 color: var(--primary);
                 font-size: 1.8rem;
@@ -200,7 +192,6 @@
                 padding: 0 10px;
             }
             
-            /* Mobile buttons */
             .hero-mobile-buttons {
                 display: flex;
                 flex-direction: column;
@@ -261,16 +252,6 @@
             }
         }
         
-        @media (min-width: 769px) and (max-width: 992px) {
-            .display-3.text-white {
-                font-size: 2.2rem !important;
-            }
-            
-            .img-fluid {
-                height: 650px !important;
-            }
-        }
-        
         /* Service styles */
         .service-simple {
             border: 2px solid #f8f9fa;
@@ -321,7 +302,7 @@
             }
         }
         
-        /* Gallery styles */
+        /* ===== OPTIMIZED GALLERY STYLES ===== */
         .gallery-container {
             padding: 20px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -329,35 +310,66 @@
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.05);
         }
         
+        .gallery-item-wrapper {
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item-wrapper.hidden {
+            display: none !important;
+        }
+        
         .gallery-item {
             position: relative;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
             border: 3px solid white;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
         
         .gallery-item-large {
             position: relative;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
             border: 3px solid white;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
         
         .gallery-item-tall {
             position: relative;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
             border: 3px solid white;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Image loading optimizations */
+        .gallery-item img,
+        .gallery-item-large img,
+        .gallery-item-tall img {
+            background: #f0f0f0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item img.lazy,
+        .gallery-item-large img.lazy,
+        .gallery-item-tall img.lazy {
+            opacity: 0;
+        }
+        
+        .gallery-item img:not(.lazy),
+        .gallery-item-large img:not(.lazy),
+        .gallery-item-tall img:not(.lazy) {
+            opacity: 1;
         }
         
         .gallery-item:hover,
         .gallery-item-large:hover,
         .gallery-item-tall:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(5, 62, 145, 0.2);
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 15px 40px rgba(5, 62, 145, 0.2);
         }
         
         .gallery-overlay {
@@ -391,18 +403,6 @@
             opacity: 0.9;
             margin-bottom: 0;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
-        .gallery-item img,
-        .gallery-item-large img,
-        .gallery-item-tall img {
-            transition: transform 0.5s ease;
-        }
-        
-        .gallery-item:hover img,
-        .gallery-item-large:hover img,
-        .gallery-item-tall:hover img {
-            transform: scale(1.1);
         }
         
         .gallery-item-large {
@@ -446,6 +446,13 @@
                 margin-bottom: 15px;
             }
             
+            .gallery-item:hover,
+            .gallery-item-large:hover,
+            .gallery-item-tall:hover {
+                transform: none !important;
+                box-shadow: 0 5px 15px rgba(5, 62, 145, 0.1) !important;
+            }
+            
             .gallery-content h4 {
                 font-size: 1.1rem;
             }
@@ -455,83 +462,7 @@
             }
         }
         
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .wow.fadeInUp {
-            animation-name: fadeInUp;
-        }
-        
-        /* New styles for eBook and improved forms */
-        .ebook-gift-box {
-            border: 2px dashed #28a745;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e9 100%);
-            padding: 25px;
-            margin: 25px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ebook-gift-box:before {
-            content: "🎁";
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-        }
-        
-        .download-ebook-btn {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .download-ebook-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
-            color: white;
-        }
-        
-        .download-ebook-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-        
-        /* Improved form feedback */
-        .form-success-message {
-            display: none;
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            border: 2px solid #28a745;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .form-error-message {
-            display: none;
-            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-            border: 2px solid #dc3545;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        /* Loading animations */
+        /* Loading spinner */
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -562,69 +493,7 @@
             to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Footer eBook Preview */
-        .ebook-preview {
-            border-left: 4px solid #28a745 !important;
-            transition: all 0.3s ease;
-        }
-
-        .ebook-preview:hover {
-            background: rgba(40, 167, 69, 0.1) !important;
-            transform: translateX(5px);
-        }
-
-        #footerEbookDownload .download-ebook-btn {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        #footerEbookDownload .download-ebook-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
-            color: white;
-        }
-
-        #footerNewsletterForm .input-group {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        #footerNewsletterForm .form-control:focus {
-            border-color: #28a745;
-            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
-        }
-
-        /* ===== NEW MEDIA BADGE STYLES ===== */
-        .media-badge {
-            background: white;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #053e91;
-            border: 1px solid #dee2e6;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: inline-block;
-        }
-
-        .media-badge:hover {
-            border-color: #053e91;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(5,62,145,0.1);
-        }
-
-        .as-seen-on-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-top: 1px solid rgba(5,62,145,0.1);
-            border-bottom: 1px solid rgba(5,62,145,0.1);
-        }
-
-        /* ===== BLOG SECTION STYLES ===== */
+        /* Blog styles */
         .blog-card {
             border: none;
             border-radius: 15px;
@@ -673,8 +542,8 @@
         .read-more-btn:hover i {
             transform: translateX(5px);
         }
-
-        /* ===== EXPRESSIONS GALLERY - SLIDER ===== */
+        
+        /* Expressions slider */
         .expressions-slider-wrapper {
             overflow: hidden;
             position: relative;
@@ -761,12 +630,11 @@
         .expressions-slide-item.playing video {
             transform: scale(1);
         }
-        /* pause slider when video playing */
         .slider-paused .expressions-track {
             animation-play-state: paused !important;
         }
-
-        /* modal for full image */
+        
+        /* Modal */
         .modal-zoom .modal-content {
             background: transparent;
             border: none;
@@ -784,8 +652,7 @@
             filter: invert(1);
             opacity: 0.8;
         }
-
-        /* Blog modal */
+        
         .blog-modal-content .modal-body {
             max-height: 70vh;
             overflow-y: auto;
@@ -800,6 +667,127 @@
         .blog-modal-content .modal-body h2 {
             color: #053e91;
         }
+        
+        /* Ebook styles */
+        .ebook-gift-box {
+            border: 2px dashed #28a745;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e9 100%);
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ebook-gift-box:before {
+            content: "🎁";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+        
+        .download-ebook-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .download-ebook-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+            color: white;
+        }
+        
+        .download-ebook-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .form-success-message {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .form-error-message {
+            display: none;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 2px solid #dc3545;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        /* Media badge styles */
+        .media-badge {
+            background: white;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #053e91;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-block;
+        }
+        
+        .media-badge:hover {
+            border-color: #053e91;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(5,62,145,0.1);
+        }
+        
+        .as-seen-on-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-top: 1px solid rgba(5,62,145,0.1);
+            border-bottom: 1px solid rgba(5,62,145,0.1);
+        }
+        
+        .ebook-preview {
+            border-left: 4px solid #28a745 !important;
+            transition: all 0.3s ease;
+        }
+        
+        .ebook-preview:hover {
+            background: rgba(40, 167, 69, 0.1) !important;
+            transform: translateX(5px);
+        }
+        
+        #footerEbookDownload .download-ebook-btn {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #footerEbookDownload .download-ebook-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+            color: white;
+        }
+        
+        #footerNewsletterForm .input-group {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #footerNewsletterForm .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+        }
     </style>
 </head>
 
@@ -811,9 +799,9 @@
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="#home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             {% if site_settings and site_settings.logo %}
-                <img src="{{ site_settings.logo.url }}" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;">
+                <img src="{{ site_settings.logo.url }}" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;" loading="lazy">
             {% else %}
-                <img src="{% static 'images/plogo.png' %}" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;">
+                <img src="{% static 'images/plogo.png' %}" alt="Fusion Force Logo" class="me-2" style="height: 80px; width: auto;" loading="lazy">
             {% endif %}
             <div class="d-flex flex-column">
                 <h2 class="m-0 text-primary">FUSION FORCE</h2>
@@ -842,9 +830,9 @@
         <div class="container-fluid p-0 mb-5">
             <div class="position-relative">
                 {% if hero_images and hero_images.0.image %}
-                    <img class="img-fluid" src="{{ hero_images.0.image.url }}" alt="Pamela speaking to an audience" style="height:; width: 100%; object-fit: cover;">
+                    <img class="img-fluid" src="{{ hero_images.0.image.url }}" alt="Pamela speaking to an audience" style="width: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 {% else %}
-                    <img class="img-fluid" src="{% static 'images/Home.jpeg' %}" alt="Pamela speaking to an audience" style="height:; width: 100%; object-fit: cover;">
+                    <img class="img-fluid" src="{% static 'images/Home.jpeg' %}" alt="Pamela speaking to an audience" style="width: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 {% endif %}
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .5);">
                     <div class="container">
@@ -871,9 +859,9 @@
     <div class="hero-mobile" id="home-mobile">
         <div class="hero-mobile-container">
             {% if hero_images and hero_images.0.image %}
-                <img class="hero-mobile-image" src="{{ hero_images.0.image.url }}" alt="Pamela speaking to an audience">
+                <img class="hero-mobile-image" src="{{ hero_images.0.image.url }}" alt="Pamela speaking to an audience" loading="lazy" decoding="async">
             {% else %}
-                <img class="hero-mobile-image" src="{% static 'images/Home.jpeg' %}" alt="Pamela speaking to an audience">
+                <img class="hero-mobile-image" src="{% static 'images/Home.jpeg' %}" alt="Pamela speaking to an audience" loading="lazy" decoding="async">
             {% endif %}
             
             <div class="hero-mobile-content">
@@ -891,495 +879,344 @@
         </div>
     </div>
     <!-- Hero Section End - Mobile Version -->
-<!-- ===== AS SEEN ON MEDIA SECTION - COMPLETE ===== -->
-<section id="pamela-media-recognition-section" class="pamela-media-recognition-wrapper py-5 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <div class="pamela-media-recognition-container">
-            <!-- Section Header -->
-            <div class="pamela-media-header-wrapper text-center mb-4">
-                <div class="pamela-media-badge-container">
-                    <span class="pamela-media-badge-chip">
-                        <i class="fas fa-award me-2"></i>MEDIA FEATURES
-                    </span>
+
+    <!-- ===== AS SEEN ON MEDIA SECTION ===== -->
+    <section id="pamela-media-recognition-section" class="pamela-media-recognition-wrapper py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="pamela-media-recognition-container">
+                <div class="pamela-media-header-wrapper text-center mb-4">
+                    <div class="pamela-media-badge-container">
+                        <span class="pamela-media-badge-chip">
+                            <i class="fas fa-award me-2"></i>MEDIA FEATURES
+                        </span>
+                    </div>
+                    <h3 class="pamela-media-title mt-3 mb-2">Trusted By Leading Media Outlets Worldwide</h3>
+                    <p class="pamela-media-subtitle">Recognized across television, radio, and digital platforms globally</p>
                 </div>
-                <h3 class="pamela-media-title mt-3 mb-2">Trusted By Leading Media Outlets Worldwide</h3>
-                <p class="pamela-media-subtitle">Recognized across television, radio, and digital platforms globally</p>
-            </div>
-            
-            <!-- Media Grid -->
-            <div class="pamela-media-grid-container">
-                <!-- USA Media -->
-                <div class="pamela-media-card-group" data-region="north-america">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-tv pamela-media-icon"></i>
+                
+                <div class="pamela-media-grid-container">
+                    <div class="pamela-media-card-group" data-region="north-america">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-tv pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">WFMZ News</h5>
+                                <span class="pamela-media-country"><i class="fas fa-flag-usa pamela-location-icon-usa"></i>USA</span>
+                            </div>
                         </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">WFMZ News</h5>
-                            <span class="pamela-media-country"><i class="fas fa-flag-usa pamela-location-icon-usa"></i>USA</span>
+                    </div>
+                    
+                    <div class="pamela-media-card-group" data-region="africa">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-broadcast-tower pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">Radio 702</h5>
+                                <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>South Africa</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pamela-media-card-group" data-region="africa">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-microphone-alt pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">Alex FM</h5>
+                                <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>South Africa</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pamela-media-card-group" data-region="digital">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-podcast pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">Africa Events Connect</h5>
+                                <span class="pamela-media-country"><i class="fas fa-headphones pamela-location-icon-podcast"></i>Podcast</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pamela-media-card-group" data-region="caribbean">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-satellite-dish pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">DBS St. Lucia</h5>
+                                <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-stlucia"></i>St. Lucia</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pamela-media-card-group" data-region="caribbean">
+                        <div class="pamela-media-item-wrapper">
+                            <div class="pamela-media-icon-box">
+                                <i class="fas fa-waveform pamela-media-icon"></i>
+                            </div>
+                            <div class="pamela-media-content">
+                                <h5 class="pamela-media-outlet-name">Soufrière FM</h5>
+                                <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>St. Lucia</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- South Africa Media -->
-                <div class="pamela-media-card-group" data-region="africa">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-broadcast-tower pamela-media-icon"></i>
+                <div class="pamela-media-stats-wrapper mt-5 pt-3">
+                    <div class="row text-center g-4">
+                        <div class="col-md-3 col-6">
+                            <div class="pamela-stat-item">
+                                <div class="pamela-stat-number">6+</div>
+                                <p class="pamela-stat-label">Media Features</p>
+                            </div>
                         </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">Radio 702</h5>
-                            <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>South Africa</span>
+                        <div class="col-md-3 col-6">
+                            <div class="pamela-stat-item">
+                                <div class="pamela-stat-number">3</div>
+                                <p class="pamela-stat-label">Countries</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="pamela-media-card-group" data-region="africa">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-microphone-alt pamela-media-icon"></i>
+                        <div class="col-md-3 col-6">
+                            <div class="pamela-stat-item">
+                                <div class="pamela-stat-number">4</div>
+                                <p class="pamela-stat-label">Media Types</p>
+                            </div>
                         </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">Alex FM</h5>
-                            <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>South Africa</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Podcast -->
-                <div class="pamela-media-card-group" data-region="digital">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-podcast pamela-media-icon"></i>
-                        </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">Africa Events Connect</h5>
-                            <span class="pamela-media-country"><i class="fas fa-headphones pamela-location-icon-podcast"></i>Podcast</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Caribbean Media -->
-                <div class="pamela-media-card-group" data-region="caribbean">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-satellite-dish pamela-media-icon"></i>
-                        </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">DBS St. Lucia</h5>
-                            <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-stlucia"></i>St. Lucia</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="pamela-media-card-group" data-region="caribbean">
-                    <div class="pamela-media-item-wrapper">
-                        <div class="pamela-media-icon-box">
-                            <i class="fas fa-waveform pamela-media-icon"></i>
-                        </div>
-                        <div class="pamela-media-content">
-                            <h5 class="pamela-media-outlet-name">Soufrière FM</h5>
-                            <span class="pamela-media-country"><i class="fas fa-map-marker-alt pamela-location-icon-southafrica"></i>St. Lucia</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Stats Counter -->
-            <div class="pamela-media-stats-wrapper mt-5 pt-3">
-                <div class="row text-center g-4">
-                    <div class="col-md-3 col-6">
-                        <div class="pamela-stat-item">
-                            <div class="pamela-stat-number">6+</div>
-                            <p class="pamela-stat-label">Media Features</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="pamela-stat-item">
-                            <div class="pamela-stat-number">3</div>
-                            <p class="pamela-stat-label">Countries</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="pamela-stat-item">
-                            <div class="pamela-stat-number">4</div>
-                            <p class="pamela-stat-label">Media Types</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="pamela-stat-item">
-                            <div class="pamela-stat-number">1M+</div>
-                            <p class="pamela-stat-label">Audience Reach</p>
+                        <div class="col-md-3 col-6">
+                            <div class="pamela-stat-item">
+                                <div class="pamela-stat-number">1M+</div>
+                                <p class="pamela-stat-label">Audience Reach</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<style>
-/* ===== PAMELA MEDIA RECOGNITION SECTION - COMPLETE STYLES ===== */
-#pamela-media-recognition-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
-    border-top: 1px solid rgba(5,62,145,0.08);
-    border-bottom: 1px solid rgba(5,62,145,0.08);
-    position: relative;
-    overflow: hidden;
-}
-
-#pamela-media-recognition-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(5,62,145,0.03), 
-        transparent);
-    animation: pamelaShimmerEffect 8s infinite;
-}
-
-@keyframes pamelaShimmerEffect {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(0%); }
-    100% { transform: translateX(100%); }
-}
-
-#pamela-media-recognition-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #053e91, #1e4db1, #053e91);
-}
-
-.pamela-media-recognition-wrapper {
-    position: relative;
-    z-index: 2;
-}
-
-.pamela-media-badge-container {
-    text-align: center;
-}
-
-.pamela-media-badge-chip {
-    display: inline-block;
-    background: rgba(5,62,145,0.12);
-    color: #053e91;
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(5,62,145,0.2);
-}
-
-.pamela-media-title {
-    color: #053e91;
-    font-weight: 700;
-    font-size: 1.8rem;
-    letter-spacing: -0.5px;
-}
-
-.pamela-media-subtitle {
-    color: #6c757d;
-    font-size: 1rem;
-    font-weight: 400;
-}
-
-.pamela-media-grid-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 2.5rem 0 1rem;
-}
-
-.pamela-media-card-group {
-    background: white;
-    border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(5,62,145,0.1);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    cursor: default;
-}
-
-.pamela-media-card-group:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(5,62,145,0.15);
-    border-color: rgba(5,62,145,0.3);
-    background: linear-gradient(135deg, #ffffff, #fafbff);
-}
-
-.pamela-media-item-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.9rem 1.8rem;
-}
-
-.pamela-media-icon-box {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #053e91, #1e4db1);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 12px rgba(5,62,145,0.25);
-    transition: all 0.3s ease;
-}
-
-.pamela-media-card-group:hover .pamela-media-icon-box {
-    transform: scale(1.05) rotate(5deg);
-    box-shadow: 0 8px 20px rgba(5,62,145,0.35);
-}
-
-.pamela-media-icon {
-    font-size: 1.3rem;
-    color: white;
-}
-
-.pamela-media-content {
-    text-align: left;
-}
-
-.pamela-media-outlet-name {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #2c3e50;
-    line-height: 1.3;
-}
-
-.pamela-media-country {
-    font-size: 0.7rem;
-    color: #6c757d;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.pamela-media-country i {
-    font-size: 0.7rem;
-    margin-right: 0.25rem;
-}
-
-/* ===== LOCATION ICONS WITH DIFFERENT COLORS ===== */
-.pamela-location-icon-usa {
-    color: #ff5722 !important;
-    font-size: 0.75rem !important;
-}
-
-.pamela-location-icon-southafrica {
-    color: #ff9800 !important;
-    font-size: 0.75rem !important;
-}
-
-.pamela-location-icon-stlucia {
-    color: #00bcd4 !important;
-    font-size: 0.75rem !important;
-}
-
-.pamela-location-icon-podcast {
-    color: #9c27b0 !important;
-    font-size: 0.75rem !important;
-}
-
-/* Alternative: If you want all location icons to have the same highlight color */
-/*
-.pamela-media-country i {
-    color: #ff6b35 !important;
-    font-size: 0.75rem !important;
-}
-*/
-
-/* Stats Section */
-.pamela-media-stats-wrapper {
-    border-top: 1px solid rgba(5,62,145,0.1);
-    position: relative;
-}
-
-.pamela-stat-item {
-    padding: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.pamela-stat-item:hover {
-    transform: translateY(-3px);
-}
-
-.pamela-stat-number {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #053e91;
-    line-height: 1;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #053e91, #1e4db1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.pamela-stat-label {
-    font-size: 0.8rem;
-    color: #6c757d;
-    font-weight: 500;
-    margin: 0;
-    letter-spacing: 0.5px;
-}
-
-/* Card animations */
-@keyframes pamelaCardFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.pamela-media-card-group {
-    animation: pamelaCardFadeIn 0.6s ease-out forwards;
-    opacity: 0;
-}
-
-.pamela-media-card-group:nth-child(1) { animation-delay: 0.1s; }
-.pamela-media-card-group:nth-child(2) { animation-delay: 0.2s; }
-.pamela-media-card-group:nth-child(3) { animation-delay: 0.3s; }
-.pamela-media-card-group:nth-child(4) { animation-delay: 0.4s; }
-.pamela-media-card-group:nth-child(5) { animation-delay: 0.5s; }
-.pamela-media-card-group:nth-child(6) { animation-delay: 0.6s; }
-
-/* Responsive Design */
-@media (min-width: 1200px) {
-    .pamela-media-grid-container {
-        gap: 2rem;
-    }
-    
-    .pamela-media-item-wrapper {
-        padding: 1rem 2rem;
-    }
-}
-
-@media (max-width: 992px) {
-    .pamela-media-title {
-        font-size: 1.5rem;
-    }
-    
-    .pamela-media-icon-box {
-        width: 45px;
-        height: 45px;
-    }
-    
-    .pamela-media-icon {
-        font-size: 1.1rem;
-    }
-    
-    .pamela-media-outlet-name {
-        font-size: 0.9rem;
-    }
-    
-    .pamela-stat-number {
-        font-size: 1.8rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .pamela-media-grid-container {
-        gap: 1rem;
-    }
-    
-    .pamela-media-item-wrapper {
-        padding: 0.7rem 1.2rem;
-    }
-    
-    .pamela-media-icon-box {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .pamela-media-outlet-name {
-        font-size: 0.85rem;
-    }
-    
-    .pamela-media-country {
-        font-size: 0.65rem;
-    }
-    
-    .pamela-media-title {
-        font-size: 1.3rem;
-    }
-    
-    .pamela-media-subtitle {
-        font-size: 0.85rem;
-    }
-    
-    .pamela-stat-number {
-        font-size: 1.5rem;
-    }
-    
-    .pamela-stat-label {
-        font-size: 0.7rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .pamela-media-card-group {
-        width: calc(50% - 0.5rem);
-    }
-    
-    .pamela-media-item-wrapper {
-        flex-direction: column;
-        text-align: center;
-        padding: 1rem;
-    }
-    
-    .pamela-media-content {
-        text-align: center;
-    }
-    
-    .pamela-media-icon-box {
-        width: 45px;
-        height: 45px;
-    }
-    
-    .pamela-media-outlet-name {
-        font-size: 0.8rem;
-    }
-    
-    .pamela-stat-item {
-        padding: 0.25rem;
-    }
-    
-    .pamela-stat-number {
-        font-size: 1.3rem;
-    }
-}
-</style>
+    <style>
+        #pamela-media-recognition-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+            border-top: 1px solid rgba(5,62,145,0.08);
+            border-bottom: 1px solid rgba(5,62,145,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #pamela-media-recognition-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(5,62,145,0.03), transparent);
+            animation: pamelaShimmerEffect 8s infinite;
+        }
+        
+        @keyframes pamelaShimmerEffect {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        #pamela-media-recognition-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #053e91, #1e4db1, #053e91);
+        }
+        
+        .pamela-media-recognition-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .pamela-media-badge-chip {
+            display: inline-block;
+            background: rgba(5,62,145,0.12);
+            color: #053e91;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(5,62,145,0.2);
+        }
+        
+        .pamela-media-title {
+            color: #053e91;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .pamela-media-subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+        
+        .pamela-media-grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2.5rem 0 1rem;
+        }
+        
+        .pamela-media-card-group {
+            background: white;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(5,62,145,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            cursor: default;
+        }
+        
+        .pamela-media-card-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(5,62,145,0.15);
+            border-color: rgba(5,62,145,0.3);
+        }
+        
+        .pamela-media-item-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.8rem;
+        }
+        
+        .pamela-media-icon-box {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #053e91, #1e4db1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 12px rgba(5,62,145,0.25);
+            transition: all 0.3s ease;
+        }
+        
+        .pamela-media-card-group:hover .pamela-media-icon-box {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(5,62,145,0.35);
+        }
+        
+        .pamela-media-icon {
+            font-size: 1.3rem;
+            color: white;
+        }
+        
+        .pamela-media-outlet-name {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+        
+        .pamela-media-country {
+            font-size: 0.7rem;
+            color: #6c757d;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .pamela-location-icon-usa { color: #ff5722 !important; }
+        .pamela-location-icon-southafrica { color: #ff9800 !important; }
+        .pamela-location-icon-stlucia { color: #00bcd4 !important; }
+        .pamela-location-icon-podcast { color: #9c27b0 !important; }
+        
+        .pamela-media-stats-wrapper {
+            border-top: 1px solid rgba(5,62,145,0.1);
+        }
+        
+        .pamela-stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #053e91;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #053e91, #1e4db1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pamela-stat-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        @keyframes pamelaCardFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pamela-media-card-group {
+            animation: pamelaCardFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .pamela-media-card-group:nth-child(1) { animation-delay: 0.1s; }
+        .pamela-media-card-group:nth-child(2) { animation-delay: 0.2s; }
+        .pamela-media-card-group:nth-child(3) { animation-delay: 0.3s; }
+        .pamela-media-card-group:nth-child(4) { animation-delay: 0.4s; }
+        .pamela-media-card-group:nth-child(5) { animation-delay: 0.5s; }
+        .pamela-media-card-group:nth-child(6) { animation-delay: 0.6s; }
+        
+        @media (max-width: 992px) {
+            .pamela-media-title { font-size: 1.5rem; }
+            .pamela-media-icon-box { width: 45px; height: 45px; }
+            .pamela-stat-number { font-size: 1.8rem; }
+        }
+        
+        @media (max-width: 768px) {
+            .pamela-media-grid-container { gap: 1rem; }
+            .pamela-media-item-wrapper { padding: 0.7rem 1.2rem; }
+            .pamela-media-icon-box { width: 40px; height: 40px; }
+            .pamela-media-outlet-name { font-size: 0.85rem; }
+            .pamela-media-title { font-size: 1.3rem; }
+            .pamela-stat-number { font-size: 1.5rem; }
+        }
+        
+        @media (max-width: 576px) {
+            .pamela-media-card-group { width: calc(50% - 0.5rem); }
+            .pamela-media-item-wrapper { flex-direction: column; text-align: center; padding: 1rem; }
+            .pamela-media-content { text-align: center; }
+            .pamela-media-outlet-name { font-size: 0.8rem; }
+        }
+    </style>
     
     <!-- About Start -->
     <div class="container-xxl py-5" id="about">
         <div class="container">
             <div class="row g-5">
-                <!-- LEFT COLUMN: Images -->
                 <div class="col-lg-6">
                     <div class="wow fadeInUp" data-wow-delay="0.1s">
                         <div class="position-relative" style="border-radius: 15px; overflow: hidden; max-height: 450px; margin-bottom: 20px;">
                             {% if about_section and about_section.image %}
-                                <img class="img-fluid w-100" src="{{ about_section.image.url }}" alt="Pamela Robinson - Founder of Fusion Force" style="object-fit: cover; width: 100%; height: 450px;">
+                                <img class="img-fluid w-100" src="{{ about_section.image.url }}" alt="Pamela Robinson" style="object-fit: cover; width: 100%; height: 450px;" loading="lazy" decoding="async">
                             {% else %}
-                                <img class="img-fluid w-100" src="{% static 'images/Speech.png' %}" alt="Pamela Robinson - Founder of Fusion Force" style="object-fit: cover; width: 100%; height: 450px;">
+                                <img class="img-fluid w-100" src="{% static 'images/Speech.png' %}" alt="Pamela Robinson" style="object-fit: cover; width: 100%; height: 450px;" loading="lazy" decoding="async">
                             {% endif %}
                         </div>
                     </div>
@@ -1387,13 +1224,12 @@
                     {% if about_section and about_section.has_long_content and about_section.image_2 %}
                     <div class="wow fadeInUp" data-wow-delay="0.2s" id="second-image-container">
                         <div class="position-relative" style="border-radius: 15px; overflow: hidden; max-height: 350px;">
-                            <img class="img-fluid w-100" src="{{ about_section.image_2.url }}" alt="Pamela Robinson - Additional Image" style="object-fit: cover; width: 100%; height: 350px;">
+                            <img class="img-fluid w-100" src="{{ about_section.image_2.url }}" alt="Pamela Robinson" style="object-fit: cover; width: 100%; height: 350px;" loading="lazy" decoding="async">
                         </div>
                     </div>
                     {% endif %}
                 </div>
                 
-                <!-- RIGHT COLUMN: Content -->
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s" style="margin-top: 20px;">
                     <h6 class="section-title bg-white text-start text-primary pe-3">About Pamela</h6>
                     <h1 class="mb-4">Pamela Robinson</h1>
@@ -1449,98 +1285,32 @@
             font-size: 1.2rem !important;
             line-height: 1.3 !important;
         }
-        
-        .about-content h4:first-child {
-            margin-top: 0 !important;
-        }
-        
+        .about-content h4:first-child { margin-top: 0 !important; }
         .about-content p {
             margin-bottom: 1rem !important;
             line-height: 1.6 !important;
             color: #333 !important;
             font-size: 1rem !important;
         }
-        
-        .about-content p:last-child {
-            margin-bottom: 0 !important;
-        }
-        
         .about-content .fa-circle {
             color: #053e91 !important;
             vertical-align: middle !important;
             margin-right: 8px !important;
             font-size: 6px !important;
         }
-        
-        #second-image-container {
-            animation: fadeIn 0.8s ease-out;
-        }
-        
+        #second-image-container { animation: fadeIn 0.8s ease-out; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
         @media (max-width: 768px) {
-            .about-content h4 {
-                font-size: 1.1rem !important;
-                margin-top: 1.2rem !important;
-            }
-            
-            .about-content p {
-                font-size: 0.95rem !important;
-            }
-            
-            .col-lg-6.wow.fadeInUp[style*="margin-top:20px"] {
-                margin-top: 30px !important;
-            }
-            
-            .col-lg-6:first-child {
-                margin-bottom: 30px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .about-content h4 {
-                font-size: 1rem !important;
-            }
-            
-            .about-content p {
-                font-size: 0.9rem !important;
-            }
-            
-            .position-relative[style*="max-height: 450px"] {
-                max-height: 350px !important;
-            }
-            
-            .position-relative[style*="max-height: 350px"] {
-                max-height: 300px !important;
-            }
-        }
-        
-        @media print {
-            .about-content h4 {
-                color: #000 !important;
-                font-weight: bold !important;
-            }
-            
-            .about-content .fa-circle {
-                color: #000 !important;
-            }
-            
-            #second-image-container {
-                display: none !important;
-            }
+            .about-content h4 { font-size: 1.1rem !important; }
+            .about-content p { font-size: 0.95rem !important; }
+            .col-lg-6.wow.fadeInUp[style*="margin-top:20px"] { margin-top: 30px !important; }
         }
     </style>
 
-    <!-- Gallery Start -->
+    <!-- ===== OPTIMIZED GALLERY SECTION ===== -->
     <div class="container-xxl py-5 category" id="events">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -1551,61 +1321,81 @@
             
             <div class="gallery-container wow fadeInUp" data-wow-delay="0.2s">
                 {% if gallery_images %}
-                    <div class="row g-4">
-                        {% for image in gallery_images|slice:":6" %}
-                        {% if forloop.counter0 == 0 %}
-                        <div class="col-lg-8">
-                            <div class="position-relative gallery-item-large mb-4" style="border-radius: 20px; overflow: hidden;">
-                                <img src="{{ image.image.url }}" alt="{{ image.title }}" 
-                                     class="img-fluid w-100" style="height: 300px; object-fit: cover;">
-                                <div class="gallery-overlay">
-                                    <div class="gallery-content">
-                                        <h4 class="text-white mb-2">{{ image.title }}</h4>
-                                        {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row g-4">
-                        {% elif forloop.counter0 > 0 and forloop.counter0 < 4 %}
-                                <div class="col-md-4">
-                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden;">
-                                        <img src="{{ image.image.url }}" alt="{{ image.title }}"
-                                             class="img-fluid w-100" style="height: 200px; object-fit: cover;">
-                                        <div class="gallery-overlay">
-                                            <div class="gallery-content">
-                                                <h5 class="text-white mb-1">{{ image.title }}</h5>
-                                                {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
-                                            </div>
+                    <div class="row g-4" id="galleryGrid">
+                        {% for image in gallery_images %}
+                        <div class="gallery-item-wrapper" data-index="{{ forloop.counter0 }}">
+                            {% if forloop.counter0 == 0 %}
+                            <div class="col-lg-8">
+                                <div class="position-relative gallery-item-large" style="border-radius: 20px; overflow: hidden; height: 300px;">
+                                    <img src="{{ image.image.url }}" alt="{{ image.title }}" 
+                                         class="img-fluid w-100 lazy" 
+                                         loading="lazy"
+                                         decoding="async"
+                                         style="height: 300px; object-fit: cover; width: 100%;">
+                                    <div class="gallery-overlay">
+                                        <div class="gallery-content">
+                                            <h4 class="text-white mb-2">{{ image.title }}</h4>
+                                            {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
                                         </div>
                                     </div>
                                 </div>
-                        {% if forloop.counter0 == 3 %}
                             </div>
-                        </div>
-                        {% endif %}
-                        {% elif forloop.counter0 == 4 %}
-                        <div class="col-lg-4">
-                            <div class="position-relative gallery-item-tall h-100" style="border-radius: 20px; overflow: hidden;">
-                                <img src="{{ image.image.url }}"
-                                     alt="{{ image.title }}" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                                <div class="gallery-overlay">
-                                    <div class="gallery-content">
-                                        <h4 class="text-white mb-2">{{ image.title }}</h4>
-                                        {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
+                            {% elif forloop.counter0 > 0 and forloop.counter0 < 4 %}
+                            <div class="col-md-4">
+                                <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden; height: 200px;">
+                                    <img src="{{ image.image.url }}" alt="{{ image.title }}"
+                                         class="img-fluid w-100 lazy" 
+                                         loading="lazy"
+                                         decoding="async"
+                                         style="height: 200px; object-fit: cover; width: 100%;">
+                                    <div class="gallery-overlay">
+                                        <div class="gallery-content">
+                                            <h5 class="text-white mb-1">{{ image.title }}</h5>
+                                            {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            {% elif forloop.counter0 == 4 %}
+                            <div class="col-lg-4">
+                                <div class="position-relative gallery-item-tall" style="border-radius: 20px; overflow: hidden; height: 530px;">
+                                    <img src="{{ image.image.url }}" alt="{{ image.title }}" 
+                                         class="img-fluid w-100 h-100 lazy" 
+                                         loading="lazy"
+                                         decoding="async"
+                                         style="object-fit: cover;">
+                                    <div class="gallery-overlay">
+                                        <div class="gallery-content">
+                                            <h4 class="text-white mb-2">{{ image.title }}</h4>
+                                            {% if image.description %}<p class="text-white mb-0">{{ image.description }}</p>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                         {% endfor %}
                     </div>
+                    
+                    <!-- Load More Button -->
+                    {% if has_more_gallery %}
+                    <div class="text-center mt-4">
+                        <button id="loadMoreGallery" class="btn btn-primary btn-lg" data-page="1">
+                            <i class="fas fa-images me-2"></i>Load More Images
+                            <span class="badge bg-light text-dark ms-2">{{ total_gallery_count|add:"-6" }} remaining</span>
+                        </button>
+                    </div>
+                    {% endif %}
                 {% else %}
+                    <!-- Fallback static gallery -->
                     <div class="row g-4">
                         <div class="col-lg-8">
-                            <div class="position-relative gallery-item-large mb-4" style="border-radius: 20px; overflow: hidden;">
-                                <img src="{% static 'images/llc.png' %}" alt="Pamela delivering keynote speech" 
-                                     class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+                            <div class="position-relative gallery-item-large mb-4" style="border-radius: 20px; overflow: hidden; height: 300px;">
+                                <img src="{% static 'images/llc.png' %}" alt="Keynote Excellence" 
+                                     class="img-fluid w-100 lazy" 
+                                     loading="lazy"
+                                     decoding="async"
+                                     style="height: 300px; object-fit: cover;">
                                 <div class="gallery-overlay">
                                     <div class="gallery-content">
                                         <h4 class="text-white mb-2">Keynote Excellence</h4>
@@ -1616,9 +1406,12 @@
                             
                             <div class="row g-4">
                                 <div class="col-md-4">
-                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden;">
-                                        <img src="{% static 'images/Speech.jpeg' %}" alt="Corporate training session" 
-                                             class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden; height: 200px;">
+                                        <img src="{% static 'images/Speech.jpeg' %}" alt="Corporate Training" 
+                                             class="img-fluid w-100 lazy" 
+                                             loading="lazy"
+                                             decoding="async"
+                                             style="height: 200px; object-fit: cover;">
                                         <div class="gallery-overlay">
                                             <div class="gallery-content">
                                                 <h5 class="text-white mb-1">Corporate Training</h5>
@@ -1628,9 +1421,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden;">
-                                        <img src="https://miro.medium.com/v2/resize:fit:1400/1*N-l4py6K0XERydjcuNdQUQ.jpeg" alt="Audience engagement" 
-                                             class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden; height: 200px;">
+                                        <img src="https://miro.medium.com/v2/resize:fit:1400/1*N-l4py6K0XERydjcuNdQUQ.jpeg" alt="Audience Engagement" 
+                                             class="img-fluid w-100 lazy" 
+                                             loading="lazy"
+                                             decoding="async"
+                                             style="height: 200px; object-fit: cover;">
                                         <div class="gallery-overlay">
                                             <div class="gallery-content">
                                                 <h5 class="text-white mb-1">Customer Service Training</h5>
@@ -1640,9 +1436,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden;">
+                                    <div class="position-relative gallery-item" style="border-radius: 15px; overflow: hidden; height: 200px;">
                                         <img src="https://yaledailynews.com/wp-content/uploads/2019/02/Conference_StaffDavidZheng.jpg" 
-                                             alt="Panel discussion" class="img-fluid w-100" style="height: 200px; object-fit: cover;">
+                                             alt="Panel Discussion" class="img-fluid w-100 lazy" 
+                                             loading="lazy"
+                                             decoding="async"
+                                             style="height: 200px; object-fit: cover;">
                                         <div class="gallery-overlay">
                                             <div class="gallery-content">
                                                 <h5 class="text-white mb-1">Panel Discussion</h5>
@@ -1655,9 +1454,12 @@
                         </div>
                         
                         <div class="col-lg-4">
-                            <div class="position-relative gallery-item-tall h-100" style="border-radius: 20px; overflow: hidden;">
+                            <div class="position-relative gallery-item-tall" style="border-radius: 20px; overflow: hidden; height: 530px;">
                                 <img src="{% static 'images/pam2.jpg' %}" 
-                                     alt="Pamela on main stage" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                     alt="Main Stage" class="img-fluid w-100 h-100 lazy" 
+                                     loading="lazy"
+                                     decoding="async"
+                                     style="object-fit: cover;">
                                 <div class="gallery-overlay">
                                     <div class="gallery-content">
                                         <h4 class="text-white mb-2">Main Stage Presence</h4>
@@ -1686,417 +1488,218 @@
     </div>
     <!-- Gallery End -->
 
-    <!-- ============================================================ -->
-<!-- AWARD-WINNING BOOK SECTION - CLEAN & COMPACT                 -->
-<!-- ============================================================ -->
-
-<style>
-    /* ===== BOOK SECTION STYLES ===== */
-    #award-winning-book {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
-        padding: 60px 0;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    #award-winning-book::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(5, 62, 145, 0.05) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
-    }
-    
-    .book-cover-wrapper {
-        position: relative;
-        transition: all 0.4s ease;
-    }
-    
-    .book-cover-wrapper:hover .book-cover {
-        transform: scale(1.02) rotate(-2deg);
-        box-shadow: 0 30px 80px rgba(5, 62, 145, 0.4) !important;
-    }
-    
-    .book-cover {
-        transition: all 0.4s ease;
-        border-radius: 15px;
-        box-shadow: 0 20px 60px rgba(5, 62, 145, 0.3);
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-    }
-    
-    /* Award Badge */
-    .award-badge {
-        position: absolute;
-        bottom: -15px;
-        right: 0;
-        background: linear-gradient(135deg, #ffd700, #f0c000);
-        border-radius: 12px;
-        padding: 10px 20px;
-        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
-        animation: pulse-gold 2s infinite;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    @keyframes pulse-gold {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
-    
-    .award-badge .badge-icon {
-        font-size: 1.5rem;
-        color: #1a1a1a;
-    }
-    
-    .award-badge .badge-text {
-        font-weight: 700;
-        font-size: 0.8rem;
-        color: #1a1a1a;
-        letter-spacing: 0.5px;
-    }
-    
-    .award-badge .badge-sub {
-        font-size: 0.65rem;
-        color: #1a1a1a;
-        opacity: 0.8;
-        display: block;
-    }
-    
-    /* Book Details */
-    .book-details-content {
-        position: relative;
-        z-index: 2;
-    }
-    
-    .book-main-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #053e91;
-        line-height: 1.2;
-        margin-bottom: 0.25rem;
-    }
-    
-    .book-subtitle {
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: #555 !important;
-        margin-bottom: 0.5rem;
-    }
-    
-    .book-author {
-        font-size: 1rem;
-        color: #333;
-    }
-    
-    .book-author strong {
-        color: #053e91;
-    }
-    
-    .book-description {
-        font-size: 0.95rem;
-        line-height: 1.7;
-        color: #555;
-        max-width: 90%;
-    }
-    
-    .book-description .highlight-text {
-        color: #053e91;
-        font-weight: 600;
-    }
-    
-    /* Rating */
-    .book-stats .stat-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .book-stats .stars {
-        color: #ffc107;
-        font-size: 0.9rem;
-    }
-    
-    .book-stats .stat-number {
-        font-weight: 700;
-        color: #053e91;
-    }
-    
-    .book-stats .stat-label {
-        color: #6c757d;
-        font-size: 0.85rem;
-    }
-    
-    /* Buy Button */
-    .buy-now-btn {
-        background: linear-gradient(135deg, #053e91, #1e4db1);
-        border: none;
-        color: white;
-        padding: 12px 35px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 25px rgba(5, 62, 145, 0.3);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-    
-    .buy-now-btn:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 12px 35px rgba(5, 62, 145, 0.4) !important;
-        color: white;
-        text-decoration: none;
-    }
-    
-    /* Trust Badges - Compact */
-    .trust-badge {
-        background: white;
-        border: 1px solid #dee2e6;
-        border-radius: 50px;
-        padding: 5px 14px;
-        font-size: 0.75rem;
-        color: #555;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.3s ease;
-    }
-    
-    .trust-badge:hover {
-        border-color: #053e91;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(5, 62, 145, 0.1);
-    }
-    
-    .trust-badge i {
-        color: #053e91;
-        font-size: 0.7rem;
-    }
-    
-    .trust-badge .star-icon {
-        color: #ffc107;
-    }
-    
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 992px) {
-        .book-main-title {
-            font-size: 2rem;
-        }
-        
-        .book-cover {
-            max-width: 100%;
-        }
-        
-        .award-badge {
-            bottom: -10px;
-            right: 10px;
-            padding: 8px 15px;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        #award-winning-book {
-            padding: 40px 0;
-        }
-        
-        .book-main-title {
-            font-size: 1.8rem;
-        }
-        
-        .book-subtitle {
-            font-size: 1rem;
-        }
-        
-        .book-description {
-            font-size: 0.9rem;
-            max-width: 100%;
-        }
-        
-        .buy-now-btn {
-            padding: 10px 25px;
-            font-size: 0.95rem;
-            width: 100%;
-            justify-content: center;
-        }
-        
-        .book-stats {
-            flex-wrap: wrap;
-            gap: 0.5rem !important;
-        }
-        
-        .trust-badges {
-            flex-wrap: wrap;
-        }
-        
-        .trust-badge {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-        }
-        
-        .book-cover-wrapper {
-            margin-bottom: 20px;
-        }
-        
-        .book-cover {
-            max-width: 280px;
-            display: block;
-            margin: 0 auto;
-        }
-        
-        .award-badge {
-            right: 50%;
-            transform: translateX(50%);
-            bottom: -10px;
-        }
-        
-        @keyframes pulse-gold {
-            0% { transform: translateX(50%) scale(1); }
-            50% { transform: translateX(50%) scale(1.05); }
-            100% { transform: translateX(50%) scale(1); }
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .book-main-title {
-            font-size: 1.5rem;
-        }
-        
-        .book-description {
-            font-size: 0.85rem;
-        }
-        
-        .book-stats .stars {
-            font-size: 0.8rem;
-        }
-        
-        .book-stats .stat-label {
-            font-size: 0.75rem;
-        }
-    }
-</style>
-
-<!-- ============================================================ -->
-<!-- HTML SECTION                                                  -->
-<!-- ============================================================ -->
-
-<section id="award-winning-book" class="wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container">
-        <!-- Section Header -->
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Award-Winning Author</h6>
-            <h1 class="mb-4" style="font-size: 2.2rem;">Pamela's Bestselling Book</h1>
-        </div>
-        
-        <!-- Main Content Row -->
-        <div class="row g-4 align-items-center">
+    <!-- ===== AWARD-WINNING BOOK SECTION ===== -->
+    <section id="award-winning-book" class="wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Award-Winning Author</h6>
+                <h1 class="mb-4" style="font-size: 2.2rem;">Pamela's Bestselling Book</h1>
+            </div>
             
-            <!-- ===== LEFT COLUMN: BOOK COVER ===== -->
-            <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
-                <div class="book-cover-wrapper text-center text-lg-start">
-                    <!-- Replace the src with your actual book cover image path -->
-                    <img src="{% static 'images/pamela.png' %}" 
-                         alt="Lead With A Heart - Pamela M. Robinson" 
-                         class="book-cover">
-                    
-                    <!-- Award Badge -->
-                    <div class="award-badge">
-                        <i class="fas fa-trophy badge-icon"></i>
-                        <div>
-                            <span class="badge-text">AWARD-WINNING</span>
-                            <span class="badge-sub">Bestseller</span>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="book-cover-wrapper text-center text-lg-start">
+                        <img src="{% static 'images/pamela.png' %}" 
+                             alt="Lead With A Heart - Pamela M. Robinson" 
+                             class="book-cover" loading="lazy">
+                        
+                        <div class="award-badge">
+                            <i class="fas fa-trophy badge-icon"></i>
+                            <div>
+                                <span class="badge-text">AWARD-WINNING</span>
+                                <span class="badge-sub">Bestseller</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- ===== RIGHT COLUMN: BOOK DETAILS ===== -->
-            <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="book-details-content">
-                    
-                    <!-- Book Title & Author -->
-                    <div class="book-title-wrapper mb-3">
-                        <h2 class="book-main-title">Lead With A Heart</h2>
-                        <div class="book-subtitle">Inspiring Extra-Ordinary Leadership</div>
-                        <div class="book-author">
-                            <i class="fas fa-pen-fancy text-primary me-2"></i>
-                            By <strong>Pamela M. Robinson</strong>
+                
+                <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="book-details-content">
+                        <div class="book-title-wrapper mb-3">
+                            <h2 class="book-main-title">Lead With A Heart</h2>
+                            <div class="book-subtitle">Inspiring Extra-Ordinary Leadership</div>
+                            <div class="book-author">
+                                <i class="fas fa-pen-fancy text-primary me-2"></i>
+                                By <strong>Pamela M. Robinson</strong>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Book Description - Short & Sweet -->
-                    <div class="book-description mb-3">
-                        <p>
-                            <span class="highlight-text">Award-Winning Leadership Guide</span> — 
-                            A transformative framework for heart-centered leadership with 
-                            actionable strategies to inspire extraordinary results.
-                        </p>
-                    </div>
-                    
-                    <!-- Rating & Stats -->
-                    <div class="book-stats d-flex flex-wrap gap-3 mb-3">
-                        <div class="stat-item">
-                            <span class="stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                        
+                        <div class="book-description mb-3">
+                            <p>
+                                <span class="highlight-text">Award-Winning Leadership Guide</span> — 
+                                A transformative framework for heart-centered leadership with 
+                                actionable strategies to inspire extraordinary results.
+                            </p>
+                        </div>
+                        
+                        <div class="book-stats d-flex flex-wrap gap-3 mb-3">
+                            <div class="stat-item">
+                                <span class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </span>
+                                <span class="stat-number">5.0</span>
+                                <span class="stat-label">Rated #1 Leadership</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-book-reader text-primary"></i>
+                                <span class="stat-number">10,000+</span>
+                                <span class="stat-label">copies sold</span>
+                            </div>
+                        </div>
+                        
+                        <div class="book-actions mb-3">
+                            <a href="https://buy.stripe.com/4gM14pbda6ES1Nw8qlgUM00" 
+                               target="_blank" 
+                               class="buy-now-btn">
+                                <i class="fas fa-shopping-cart"></i> Buy Now
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="trust-badges d-flex flex-wrap gap-2">
+                            <span class="trust-badge">
+                                <i class="fas fa-award"></i> International Bestseller
                             </span>
-                            <span class="stat-number">5.0</span>
-                            <span class="stat-label">Rated #1 Leadership</span>
+                            <span class="trust-badge">
+                                <i class="fas fa-star star-icon"></i> Top Rated
+                            </span>
+                            <span class="trust-badge">
+                                <i class="fas fa-globe"></i> Global Audience
+                            </span>
                         </div>
-                        <div class="stat-item">
-                            <i class="fas fa-book-reader text-primary"></i>
-                            <span class="stat-number">10,000+</span>
-                            <span class="stat-label">copies sold</span>
-                        </div>
                     </div>
-                    
-                    <!-- Single Buy Button -->
-                    <div class="book-actions mb-3">
-                        <a href="https://buy.stripe.com/4gM14pbda6ES1Nw8qlgUM00" 
-                           target="_blank" 
-                           class="buy-now-btn">
-                            <i class="fas fa-shopping-cart"></i> Buy Now
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                    
-                    <!-- Trust Badges - Compact -->
-                    <div class="trust-badges d-flex flex-wrap gap-2">
-                        <span class="trust-badge">
-                            <i class="fas fa-award"></i> International Bestseller
-                        </span>
-                        <span class="trust-badge">
-                            <i class="fas fa-star star-icon"></i> Top Rated
-                        </span>
-                        <span class="trust-badge">
-                            <i class="fas fa-globe"></i> Global Audience
-                        </span>
-                    </div>
-                    
                 </div>
             </div>
-            
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ============================================================ -->
-<!-- END OF BOOK SECTION                                           -->
-<!-- ============================================================ -->
+    <style>
+        #award-winning-book {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        #award-winning-book::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(5,62,145,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .book-cover-wrapper {
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        .book-cover-wrapper:hover .book-cover {
+            transform: scale(1.02) rotate(-2deg);
+            box-shadow: 0 30px 80px rgba(5,62,145,0.4) !important;
+        }
+        .book-cover {
+            transition: all 0.4s ease;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(5,62,145,0.3);
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+        }
+        .award-badge {
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+            background: linear-gradient(135deg, #ffd700, #f0c000);
+            border-radius: 12px;
+            padding: 10px 20px;
+            box-shadow: 0 10px 30px rgba(255,215,0,0.4);
+            animation: pulse-gold 2s infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        @keyframes pulse-gold {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .award-badge .badge-icon { font-size: 1.5rem; color: #1a1a1a; }
+        .award-badge .badge-text { font-weight: 700; font-size: 0.8rem; color: #1a1a1a; letter-spacing: 0.5px; }
+        .award-badge .badge-sub { font-size: 0.65rem; color: #1a1a1a; opacity: 0.8; display: block; }
+        .book-main-title { font-size: 2.5rem; font-weight: 700; color: #053e91; line-height: 1.2; margin-bottom: 0.25rem; }
+        .book-subtitle { font-size: 1.1rem; font-weight: 500; color: #555 !important; margin-bottom: 0.5rem; }
+        .book-author { font-size: 1rem; color: #333; }
+        .book-author strong { color: #053e91; }
+        .book-description { font-size: 0.95rem; line-height: 1.7; color: #555; max-width: 90%; }
+        .book-description .highlight-text { color: #053e91; font-weight: 600; }
+        .book-stats .stat-item { display: flex; align-items: center; gap: 0.5rem; }
+        .book-stats .stars { color: #ffc107; font-size: 0.9rem; }
+        .book-stats .stat-number { font-weight: 700; color: #053e91; }
+        .book-stats .stat-label { color: #6c757d; font-size: 0.85rem; }
+        .buy-now-btn {
+            background: linear-gradient(135deg, #053e91, #1e4db1);
+            border: none;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(5,62,145,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .buy-now-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(5,62,145,0.4) !important;
+            color: white;
+            text-decoration: none;
+        }
+        .trust-badge {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 50px;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            color: #555;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        .trust-badge:hover { border-color: #053e91; transform: translateY(-2px); }
+        .trust-badge i { color: #053e91; font-size: 0.7rem; }
+        .trust-badge .star-icon { color: #ffc107; }
+        
+        @media (max-width: 992px) {
+            .book-main-title { font-size: 2rem; }
+            .award-badge { bottom: -10px; right: 10px; padding: 8px 15px; }
+        }
+        @media (max-width: 768px) {
+            #award-winning-book { padding: 40px 0; }
+            .book-main-title { font-size: 1.8rem; }
+            .book-subtitle { font-size: 1rem; }
+            .book-description { font-size: 0.9rem; max-width: 100%; }
+            .buy-now-btn { padding: 10px 25px; font-size: 0.95rem; width: 100%; justify-content: center; }
+            .book-cover { max-width: 280px; display: block; margin: 0 auto; }
+            .award-badge { right: 50%; transform: translateX(50%); bottom: -10px; }
+            @keyframes pulse-gold {
+                0% { transform: translateX(50%) scale(1); }
+                50% { transform: translateX(50%) scale(1.05); }
+                100% { transform: translateX(50%) scale(1); }
+            }
+        }
+    </style>
 
-    <!-- Testimonial Slider Start -->
+    <!-- ===== TESTIMONIALS ===== -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="testimonials">
         <div class="container">
             <div class="text-center">
@@ -2110,7 +1713,7 @@
                         {% for testimonial in testimonials %}
                         <div class="testimonial-item text-center">
                             {% if testimonial.avatar %}
-                                <img class="border rounded-circle p-2 mx-auto mb-3" src="{{ testimonial.avatar.url }}" alt="{{ testimonial.client_name }}" style="width: 80px; height: 80px; object-fit: cover;">
+                                <img class="border rounded-circle p-2 mx-auto mb-3" src="{{ testimonial.avatar.url }}" alt="{{ testimonial.client_name }}" style="width: 80px; height: 80px; object-fit: cover;" loading="lazy">
                             {% else %}
                                 <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3E{{ testimonial.client_name|slice:':2'|upper }}%3C/text%3E%3C/svg%3E" alt="{{ testimonial.client_name }}">
                             {% endif %}
@@ -2124,7 +1727,7 @@
                         {% for testimonial in testimonials %}
                         <div class="testimonial-item text-center">
                             {% if testimonial.avatar %}
-                                <img class="border rounded-circle p-2 mx-auto mb-3" src="{{ testimonial.avatar.url }}" alt="{{ testimonial.client_name }}" style="width: 80px; height: 80px; object-fit: cover;">
+                                <img class="border rounded-circle p-2 mx-auto mb-3" src="{{ testimonial.avatar.url }}" alt="{{ testimonial.client_name }}" style="width: 80px; height: 80px; object-fit: cover;" loading="lazy">
                             {% else %}
                                 <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3E{{ testimonial.client_name|slice:':2'|upper }}%3C/text%3E%3C/svg%3E" alt="{{ testimonial.client_name }}">
                             {% endif %}
@@ -2136,30 +1739,7 @@
                         </div>
                         {% endfor %}
                     {% else %}
-                        <div class="testimonial-item text-center">
-                            <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EEO%3C/text%3E%3C/svg%3E" alt="Event Organizer">
-                            <h5 class="mb-0">Event Organizer</h5>
-                            <p>IMEX America</p>
-                            <div class="testimonial-text bg-light text-center p-4">
-                                <p class="mb-0">"Pamela doesn't just speak, she transforms. Her sessions ignite courage, clarity, and connection."</p>
-                            </div>
-                        </div>
-                        <div class="testimonial-item text-center">
-                            <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EVPS%3C/text%3E%3C/svg%3E" alt="Vice President">
-                            <h5 class="mb-0">Vice President of Sales</h5>
-                            <p>Luxury Hotel Group</p>
-                            <div class="testimonial-text bg-light text-center p-4">
-                                <p class="mb-0">"Her energy is unmatched, our team left inspired and aligned."</p>
-                            </div>
-                        </div>
-                        <div class="testimonial-item text-center">
-                            <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EDD%3C/text%3E%3C/svg%3E" alt="Development Director">
-                            <h5 class="mb-0">Development Director</h5>
-                            <p>Russian Hospitality Awards</p>
-                            <div class="testimonial-text bg-light text-center p-4">
-                                <p class="mb-0">"Pamela was exceptionally well-spoken, engaging, and demonstrated a deep understanding of the hospitality industry."</p>
-                            </div>
-                        </div>
+                        <!-- Default testimonials -->
                         <div class="testimonial-item text-center">
                             <img class="border rounded-circle p-2 mx-auto mb-3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23053e91'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-family='Arial'%3EEO%3C/text%3E%3C/svg%3E" alt="Event Organizer">
                             <h5 class="mb-0">Event Organizer</h5>
@@ -2189,9 +1769,8 @@
             </div>
         </div>
     </div>
-    <!-- Testimonial Slider End -->
 
-    <!-- ===== BLOG SECTION - DYNAMIC FROM ADMIN ===== -->
+    <!-- ===== BLOG SECTION ===== -->
     {% if blog_posts %}
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="blog">
         <div class="container">
@@ -2204,9 +1783,9 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-card card">
                         {% if post.image %}
-                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}" loading="lazy">
                         {% else %}
-                        <img src="https://via.placeholder.com/400x220/053e91/ffffff?text=Fusion+Force" class="card-img-top" alt="Blog post">
+                        <img src="https://via.placeholder.com/400x220/053e91/ffffff?text=Fusion+Force" class="card-img-top" alt="Blog post" loading="lazy">
                         {% endif %}
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">{{ post.title }}</h5>
@@ -2229,7 +1808,7 @@
                             </div>
                             <div class="modal-body">
                                 {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded" loading="lazy">
                                 {% endif %}
                                 <div class="mt-3">
                                     {{ post.content|safe }}
@@ -2249,9 +1828,8 @@
         </div>
     </div>
     {% endif %}
-    <!-- ===== END BLOG SECTION ===== -->
 
-    <!-- Newsletter Section Start - UPDATED WITH EBOOK FEATURE -->
+    <!-- ===== NEWSLETTER ===== -->
     <div class="container-xxl py-5" id="newsletter">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -2265,9 +1843,9 @@
                     {% if newsletter %}
                         <div class="position-relative h-100 rounded overflow-hidden" style="border: 3px solid #053e91; border-radius: 3px; padding: 4px; background: white;">
                             {% if newsletter.image %}
-                                <img class="img-fluid w-100 h-100" src="{{ newsletter.image.url }}" alt="{{ newsletter.title }}" style="object-fit: cover; min-height: 400px; border-radius: 15px;">
+                                <img class="img-fluid w-100 h-100" src="{{ newsletter.image.url }}" alt="{{ newsletter.title }}" style="object-fit: cover; min-height: 400px; border-radius: 15px;" loading="lazy">
                             {% else %}
-                                <img class="img-fluid w-100 h-100" src="{% static 'img/1.png' %}" alt="{{ newsletter.title }}" style="object-fit: cover; min-height: 400px; border-radius: 15px;">
+                                <img class="img-fluid w-100 h-100" src="{% static 'img/1.png' %}" alt="{{ newsletter.title }}" style="object-fit: cover; min-height: 400px; border-radius: 15px;" loading="lazy">
                             {% endif %}
                         </div>
                         
@@ -2283,17 +1861,6 @@
                             {% endif %}
                             <div id="downloadStatus" class="mt-2"></div>
                         </div>
-                    {% else %}
-                        <div class="position-relative h-100 rounded overflow-hidden" style="border: 3px solid #053e91; border-radius: 3px; padding: 4px; background: white;">
-                            <img class="img-fluid w-100 h-100" src="{% static 'img/1.png' %}" alt="Fusion Force Monthly Insights" style="object-fit: cover; min-height: 400px; border-radius: 15px;">
-                        </div>
-                        
-                        <div class="text-center mt-4">
-                            <button class="btn btn-primary btn-lg px-4 py-3" id="downloadPdfBtn">
-                                <i class="fas fa-file-pdf me-2"></i>Download Newsletter PDF
-                            </button>
-                            <div id="downloadStatus" class="mt-2"></div>
-                        </div>
                     {% endif %}
                 </div>
 
@@ -2304,16 +1871,10 @@
                         
                         <div class="row mb-4">
                             {% if newsletter and newsletter.benefits_list %}
-                                {% for benefit in newsletter.benefits_list %}
-                                    {% if forloop.counter <= 3 %}
+                                {% for benefit in newsletter.benefits_list|slice:":6" %}
                                     <div class="col-sm-6">
                                         <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>{{ benefit }}</p>
                                     </div>
-                                    {% elif forloop.counter <= 6 %}
-                                    <div class="col-sm-6">
-                                        <p class="mb-2"><i class="fa fa-check text-primary me-2"></i>{{ benefit }}</p>
-                                    </div>
-                                    {% endif %}
                                 {% endfor %}
                             {% else %}
                                 <div class="col-sm-6">
@@ -2436,174 +1997,168 @@
             </div>
         </div>
     </div>
-    <!-- Newsletter End -->
 
-    <!-- Contact Form Start -->
-<div class="container-xxl py-5" id="contact">
-    <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Book Pamela</h6>
-            <p class="mb-3 small text-muted" style="font-size: 0.9rem; letter-spacing: 1px;"> The Confidence Architect</p>
-            <h1 class="mb-2">Work with Fusion Force</h1>
-            <p class="mb-4">Whether you need to elevate your team or you need a speaker who engages and transforms</p>
-        </div>
-        
-        <div class="row g-5">
-            <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="bg-primary text-white rounded p-5 h-100 d-flex flex-column">
-                    <h4 class="text-white mb-4">Connect With Us</h4>
-                    
-                    <!-- Quick Booking Option -->
-                    <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-calendar-check fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1">Quick Booking</h6>
-                            <p class="mb-0">Select your preferred engagement type</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Virtual or In-Person Option -->
-                    <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-video fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1">Virtual or In-Person</h6>
-                            <p class="mb-0">Flexible delivery options</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Physical Address -->
-                    <div class="contact-option d-flex align-items-start mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
-                        <div class="contact-icon me-3">
-                            <i class="fas fa-map-marker-alt fa-2x"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-1">Mailing Address</h6>
-                            <p class="mb-0">
-                                Pamela Robinson<br>
-                                PO Box 184<br>
-                                Schnecksville, PA 18078
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-auto">
-                        <!-- Working Days -->
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fas fa-calendar-week fa-lg me-3"></i>
+    <!-- ===== CONTACT FORM ===== -->
+    <div class="container-xxl py-5" id="contact">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Book Pamela</h6>
+                <p class="mb-3 small text-muted" style="font-size: 0.9rem; letter-spacing: 1px;"> The Confidence Architect</p>
+                <h1 class="mb-2">Work with Fusion Force</h1>
+                <p class="mb-4">Whether you need to elevate your team or you need a speaker who engages and transforms</p>
+            </div>
+            
+            <div class="row g-5">
+                <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-primary text-white rounded p-5 h-100 d-flex flex-column">
+                        <h4 class="text-white mb-4">Connect With Us</h4>
+                        
+                        <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-calendar-check fa-2x"></i>
+                            </div>
                             <div>
-                                <h6 class="mb-0">Working Days</h6>
-                                <span class="text-white">MONDAY - FRIDAY</span>
+                                <h6 class="mb-1">Quick Booking</h6>
+                                <p class="mb-0">Select your preferred engagement type</p>
                             </div>
                         </div>
                         
-                        <!-- Mobile Number -->
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fas fa-mobile-alt fa-lg me-3"></i>
+                        <div class="contact-option d-flex align-items-center mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-video fa-2x"></i>
+                            </div>
                             <div>
-                                <h6 class="mb-0">Mobile Number</h6>
-                                <span class="text-white">+1-443-545-4565</span>
+                                <h6 class="mb-1">Virtual or In-Person</h6>
+                                <p class="mb-0">Flexible delivery options</p>
                             </div>
                         </div>
                         
-                        <!-- Email -->
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-envelope fa-lg me-3"></i>
+                        <div class="contact-option d-flex align-items-start mb-4 p-3 rounded" style="background: rgba(255,255,255,0.1);">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-map-marker-alt fa-2x"></i>
+                            </div>
                             <div>
-                                <h6 class="mb-0">Email</h6>
-                                {% if site_settings and site_settings.contact_email %}
-                                    <span class="text-white">{{ site_settings.contact_email }}</span>
-                                {% else %}
-                                    <span class="text-white">info@pamela-fusionforce.com</span>
-                                {% endif %}
+                                <h6 class="mb-1">Mailing Address</h6>
+                                <p class="mb-0">
+                                    Pamela Robinson<br>
+                                    PO Box 184<br>
+                                    Schnecksville, PA 18078
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-calendar-week fa-lg me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Working Days</h6>
+                                    <span class="text-white">MONDAY - FRIDAY</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-mobile-alt fa-lg me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Mobile Number</h6>
+                                    <span class="text-white">+1-443-545-4565</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-envelope fa-lg me-3"></i>
+                                <div>
+                                    <h6 class="mb-0">Email</h6>
+                                    {% if site_settings and site_settings.contact_email %}
+                                        <span class="text-white">{{ site_settings.contact_email }}</span>
+                                    {% else %}
+                                        <span class="text-white">info@pamela-fusionforce.com</span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="bg-light rounded p-5 h-100">
-                    <form id="bookingForm" class="needs-validation" novalidate>
-                        <input type="hidden" name="_subject" value="New Booking Request - FUSION FORCE LLC">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="hidden" name="_cc" value="info@fusionforce.com">
-                        <input type="hidden" name="_replyto" id="replyToBooking">
-                        <input type="hidden" name="_autoresponse" value="Thank you for your booking request with Fusion Force LLC! Pamela Robinson will review your speaking engagement details and get back to you within 24 hours. We look forward to potentially working with you!">
+                <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="bg-light rounded p-5 h-100">
+                        <form id="bookingForm" class="needs-validation" novalidate>
+                            <input type="hidden" name="_subject" value="New Booking Request - FUSION FORCE LLC">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_cc" value="info@fusionforce.com">
+                            <input type="hidden" name="_replyto" id="replyToBooking">
+                            <input type="hidden" name="_autoresponse" value="Thank you for your booking request with Fusion Force LLC! Pamela Robinson will review your speaking engagement details and get back to you within 24 hours. We look forward to potentially working with you!">
+                            
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Your Full Name" required>
+                                        <label for="fullName">Your Full Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Work Email" required>
+                                        <label for="emailAddress">Work Email *</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="organization" name="organization" placeholder="Organization Name" required>
+                                        <label for="organization">Organization Name *</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="eventType" name="event_type" required>
+                                            <option value="" selected disabled>Select event type</option>
+                                            <option value="keynote">Keynote Speech</option>
+                                            <option value="workshop">Workshop</option>
+                                            <option value="training">Corporate Training</option>
+                                            <option value="consultation">Consultation</option>
+                                        </select>
+                                        <label for="eventType">Event Type *</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Tell us about your event..." 
+                                                  id="eventDetails" name="event_details" style="height: 120px" required></textarea>
+                                        <label for="eventDetails">Event Details *</label>
+                                    </div>
+                                </div>
+                                
+                                <input type="hidden" name="company" value="FUSION FORCE LLC">
+                                <input type="hidden" name="source" value="Website Booking Form">
+                                <input type="hidden" name="submission_date" id="submissionDate">
+                                
+                                <div class="col-12">
+                                    <button class="btn btn-primary btn-lg w-100 py-3" type="submit" id="bookingSubmit">
+                                        <i class="fas fa-rocket me-2"></i>Book Pamela
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                         
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Your Full Name" required>
-                                    <label for="fullName">Your Full Name *</label>
+                        <div class="form-success-message mt-4" id="bookingSuccessMessage" style="display: none;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-check-circle fa-2x text-success me-3"></i>
+                                <div>
+                                    <h5 class="mb-1 text-success">Booking Request Sent!</h5>
+                                    <p class="mb-0">Thank you for your booking request! Pamela will review your details and get back to you within 24 hours.</p>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Work Email" required>
-                                    <label for="emailAddress">Work Email *</label>
-                                </div>
-                            </div>
-                            
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="organization" name="organization" placeholder="Organization Name" required>
-                                    <label for="organization">Organization Name *</label>
-                                </div>
-                            </div>
-                            
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <select class="form-select" id="eventType" name="event_type" required>
-                                        <option value="" selected disabled>Select event type</option>
-                                        <option value="keynote">Keynote Speech</option>
-                                        <option value="workshop">Workshop</option>
-                                        <option value="training">Corporate Training</option>
-                                        <option value="consultation">Consultation</option>
-                                    </select>
-                                    <label for="eventType">Event Type *</label>
-                                </div>
-                            </div>
-                            
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Tell us about your event..." 
-                                              id="eventDetails" name="event_details" style="height: 120px" required></textarea>
-                                    <label for="eventDetails">Event Details *</label>
-                                </div>
-                            </div>
-                            
-                            <input type="hidden" name="company" value="FUSION FORCE LLC">
-                            <input type="hidden" name="source" value="Website Booking Form">
-                            <input type="hidden" name="submission_date" id="submissionDate">
-                            
-                            <div class="col-12">
-                                <button class="btn btn-primary btn-lg w-100 py-3" type="submit" id="bookingSubmit">
-                                    <i class="fas fa-rocket me-2"></i>Book Pamela
-                                </button>
                             </div>
                         </div>
-                    </form>
-                    
-                    <div class="form-success-message mt-4" id="bookingSuccessMessage" style="display: none;">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-check-circle fa-2x text-success me-3"></i>
-                            <div>
-                                <h5 class="mb-1 text-success">Booking Request Sent!</h5>
-                                <p class="mb-0">Thank you for your booking request! Pamela will review your details and get back to you within 24 hours.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-error-message mt-4" id="bookingErrorMessage" style="display: none;">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-exclamation-triangle fa-2x text-danger me-3"></i>
-                            <div>
-                                <h5 class="mb-1 text-danger">Booking Failed</h5>
-                                <p class="mb-0" id="bookingErrorText">Please try again or contact us directly.</p>
+                        
+                        <div class="form-error-message mt-4" id="bookingErrorMessage" style="display: none;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-triangle fa-2x text-danger me-3"></i>
+                                <div>
+                                    <h5 class="mb-1 text-danger">Booking Failed</h5>
+                                    <p class="mb-0" id="bookingErrorText">Please try again or contact us directly.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2611,10 +2166,8 @@
             </div>
         </div>
     </div>
-</div>
-<!-- Contact Form End -->
 
-    <!-- ===== EXPRESSIONS FIRESIDE CHAT SERIES - GALLERY ===== -->
+    <!-- ===== EXPRESSIONS GALLERY ===== -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="expressions">
         <div class="container">
             <div class="text-center">
@@ -2623,39 +2176,35 @@
                 <p class="lead mb-5">Moments of connection, conversation, and inspiration.</p>
             </div>
             
-            <!-- Images Row - sliding left to right slowly -->
             <div class="expressions-slider-wrapper" id="imageSliderWrapper">
                 <div class="expressions-track" id="imageTrack">
-                    <!-- We'll duplicate items for seamless loop -->
                     {% for item in expressions_images %}
                     <div class="expressions-slide-item" data-type="image">
-                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy">
                         <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
                     {% endfor %}
-                    <!-- Duplicate for seamless loop -->
                     {% for item in expressions_images %}
                     <div class="expressions-slide-item" data-type="image">
-                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy">
                         <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
                             <i class="fas fa-search-plus"></i>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
-                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/1e4db1/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
+                    <div class="expressions-slide-item"><img src="https://via.placeholder.com/280x220/053e91/ffffff?text=Placeholder" alt="Placeholder" loading="lazy"><div class="zoom-overlay"><i class="fas fa-search-plus"></i></div></div>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Videos Row - sliding opposite direction (right to left) slowly -->
             <div class="expressions-slider-wrapper mt-4" id="videoSliderWrapper">
                 <div class="expressions-track" id="videoTrack">
                     {% for item in expressions_videos %}
@@ -2672,7 +2221,6 @@
                     <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
                     <div class="expressions-slide-item"><video muted playsinline><source src="#" type="video/mp4"></video><div class="play-overlay"><i class="fas fa-play-circle"></i></div></div>
                     {% endfor %}
-                    <!-- Duplicate for seamless loop -->
                     {% for item in expressions_videos %}
                     <div class="expressions-slide-item" data-type="video">
                         <video muted playsinline preload="metadata" data-src="{{ item.video_file.url }}">
@@ -2699,14 +2247,14 @@
             <div class="modal-content bg-transparent border-0">
                 <div class="modal-body text-center">
                     <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 10px;"></button>
-                    <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" class="img-fluid rounded" style="max-height: 90vh;">
+                    <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" class="img-fluid rounded" style="max-height: 90vh;" loading="lazy">
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
 
-    <!-- Footer Start -->
+    <!-- ===== FOOTER ===== -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5 justify-content-center">
@@ -2720,7 +2268,6 @@
                             <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#services">
                                 <i class="fas fa-microphone me-2"></i>Speaking Topics
                             </a>
-                           
                             <a class="btn btn-link text-center text-md-start px-0 mb-2 w-100" href="#events">
                                 <i class="fas fa-images me-2"></i>Past Events
                             </a>
@@ -2869,7 +2416,6 @@
             </div>
         </div>
     </div>
-    <!-- Footer End -->
 
     <!-- Success Modals -->
     <div class="modal fade" id="newsletterSuccessModal" tabindex="-1" aria-labelledby="newsletterSuccessModalLabel" aria-hidden="true">
@@ -2944,13 +2490,14 @@
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
     
-    <!-- Combined JavaScript for all forms and functionality -->
+    <!-- Combined JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Toast notification
         function showToast(message, type = 'success') {
             const toastId = 'toast-' + Date.now();
-            const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
-            const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            const bgColor = type === 'success' ? 'bg-success' : type === 'info' ? 'bg-info' : 'bg-danger';
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle';
             
             const toastHtml = `
                 <div id="${toastId}" class="toast align-items-center text-white ${bgColor} border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -2967,17 +2514,14 @@
             
             setTimeout(() => {
                 const toast = document.getElementById(toastId);
-                if (toast) {
-                    toast.remove();
-                }
+                if (toast) toast.remove();
             }, 5000);
         }
         
-        const newsletterModal = new bootstrap.Modal(document.getElementById('newsletterSuccessModal'));
-        const contactModal = new bootstrap.Modal(document.getElementById('contactSuccessModal'));
-        
+        // Current year
         document.getElementById('current-year').textContent = new Date().getFullYear();
         
+        // URL params
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('subscribed') === 'true') {
             showToast('Successfully subscribed to newsletter! Check for your free eBook.', 'success');
@@ -2990,6 +2534,127 @@
             }
         }
         
+        // ===== LAZY LOAD IMAGES =====
+        if ('IntersectionObserver' in window) {
+            const lazyImages = document.querySelectorAll('.lazy');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.removeAttribute('loading');
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+        
+        // ===== GALLERY LOAD MORE =====
+        const loadMoreBtn = document.getElementById('loadMoreGallery');
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMore = true;
+        
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', async function() {
+                if (isLoading || !hasMore) return;
+                
+                isLoading = true;
+                this.innerHTML = '<span class="loading-spinner"></span> Loading...';
+                this.disabled = true;
+                
+                try {
+                    const response = await fetch(`/api/gallery-images/?page=${currentPage + 1}`);
+                    const data = await response.json();
+                    
+                    if (data.images && data.images.length > 0) {
+                        const grid = document.getElementById('galleryGrid');
+                        
+                        data.images.forEach(img => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'gallery-item-wrapper';
+                            wrapper.style.display = 'block';
+                            
+                            let colClass = 'col-md-4';
+                            let height = '200px';
+                            let itemClass = 'gallery-item';
+                            
+                            if (img.position === 'large') {
+                                colClass = 'col-lg-8';
+                                height = '300px';
+                                itemClass = 'gallery-item-large';
+                            } else if (img.position === 'tall') {
+                                colClass = 'col-lg-4';
+                                height = '530px';
+                                itemClass = 'gallery-item-tall';
+                            }
+                            
+                            wrapper.innerHTML = `
+                                <div class="${colClass}">
+                                    <div class="position-relative ${itemClass}" style="border-radius: ${img.position === 'large' ? '20px' : '15px'}; overflow: hidden; height: ${height};">
+                                        <img src="${img.url}" alt="${img.title}" 
+                                             class="img-fluid w-100 lazy" 
+                                             loading="lazy"
+                                             decoding="async"
+                                             style="${img.position === 'tall' ? 'object-fit: cover; height: 100%; width: 100%;' : `height: ${height}; object-fit: cover; width: 100%;`}">
+                                        <div class="gallery-overlay">
+                                            <div class="gallery-content">
+                                                <${img.position === 'large' ? 'h4' : 'h5'} class="text-white mb-2">${img.title}</${img.position === 'large' ? 'h4' : 'h5'}>
+                                                ${img.description ? `<p class="text-white mb-0">${img.description}</p>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            grid.appendChild(wrapper);
+                        });
+                        
+                        currentPage = data.next_page || currentPage + 1;
+                        hasMore = data.has_next;
+                        
+                        if (hasMore) {
+                            const remaining = data.total - data.loaded;
+                            this.innerHTML = `
+                                <i class="fas fa-images me-2"></i>Load More Images
+                                <span class="badge bg-light text-dark ms-2">${remaining} remaining</span>
+                            `;
+                            this.disabled = false;
+                        } else {
+                            this.innerHTML = '<i class="fas fa-check me-2"></i>All Images Loaded';
+                            this.disabled = true;
+                            this.classList.remove('btn-primary');
+                            this.classList.add('btn-success');
+                        }
+                        
+                        // Trigger lazy loading for new images
+                        if ('IntersectionObserver' in window) {
+                            const newLazyImages = document.querySelectorAll('.lazy');
+                            const newObserver = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        const img = entry.target;
+                                        img.removeAttribute('loading');
+                                        img.classList.remove('lazy');
+                                        newObserver.unobserve(img);
+                                    }
+                                });
+                            });
+                            newLazyImages.forEach(img => newObserver.observe(img));
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading gallery:', error);
+                    this.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Error loading. Click to retry.';
+                    this.disabled = false;
+                } finally {
+                    isLoading = false;
+                }
+            });
+        }
+        
+        // ===== BOOKING FORM =====
         const bookingForm = document.getElementById('bookingForm');
         if (bookingForm) {
             bookingForm.addEventListener('submit', async function(e) {
@@ -3038,18 +2703,18 @@
                     
                     if (formSubmitResult.success && djangoResult.status === 'success') {
                         document.getElementById('bookingSuccessMessage').style.display = 'block';
-                        showToast('Booking request sent successfully! We\'ll contact you within 24 hours.', 'success');
+                        showToast('Booking request sent successfully!', 'success');
                         bookingForm.reset();
                         setTimeout(() => {
-                            document.getElementById('bookingSuccessMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            document.getElementById('bookingSuccessMessage').scrollIntoView({ behavior: 'smooth' });
                         }, 300);
                     } else {
-                        throw new Error('One or both submissions failed');
+                        throw new Error('Submission failed');
                     }
                     
                 } catch (error) {
                     console.error('Error:', error);
-                    document.getElementById('bookingErrorText').textContent = 'An error occurred. Please try again later or contact us directly at info@fusionforce.com';
+                    document.getElementById('bookingErrorText').textContent = 'An error occurred. Please try again later.';
                     document.getElementById('bookingErrorMessage').style.display = 'block';
                     showToast('Booking submission failed. Please try again.', 'error');
                 } finally {
@@ -3059,6 +2724,7 @@
             });
         }
         
+        // ===== NEWSLETTER FORM =====
         const newsletterForm = document.getElementById('newsletterSubscriptionForm');
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', async function(e) {
@@ -3115,12 +2781,12 @@
                         showToast('Successfully subscribed! Check for your free eBook.', 'success');
                         newsletterForm.reset();
                     } else {
-                        throw new Error('One or both submissions failed');
+                        throw new Error('Submission failed');
                     }
                     
                 } catch (error) {
                     console.error('Error:', error);
-                    document.getElementById('errorMessageText').textContent = 'An error occurred. Please try again later or contact us directly at info@fusionforce.com';
+                    document.getElementById('errorMessageText').textContent = 'An error occurred. Please try again later.';
                     document.getElementById('subscriptionErrorMessage').style.display = 'block';
                     showToast('Subscription failed. Please try again.', 'error');
                 } finally {
@@ -3130,6 +2796,7 @@
             });
         }
         
+        // ===== FOOTER NEWSLETTER =====
         const footerNewsletterForm = document.getElementById('footerNewsletterForm');
         if (footerNewsletterForm) {
             footerNewsletterForm.addEventListener('submit', async function(e) {
@@ -3200,7 +2867,7 @@
                         
                         footerNewsletterForm.reset();
                     } else {
-                        throw new Error('One or both submissions failed');
+                        throw new Error('Submission failed');
                     }
                     
                 } catch (error) {
@@ -3220,9 +2887,12 @@
             });
         }
         
-        const footerDownloadEbookBtn = document.getElementById('footerDownloadEbookBtn');
-        if (footerDownloadEbookBtn) {
-            footerDownloadEbookBtn.addEventListener('click', async function() {
+        // ===== EBOOK DOWNLOADS =====
+        function setupEbookDownload(btnId) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            
+            btn.addEventListener('click', async function() {
                 const ebookId = this.dataset.ebookId;
                 const ebookTitle = this.dataset.ebookTitle;
                 const ebookUrl = this.dataset.ebookUrl;
@@ -3252,10 +2922,9 @@
                         link.click();
                         document.body.removeChild(link);
                         
-                        showToast(`"${ebookTitle}" download started! Check your downloads folder.`, 'success');
+                        showToast(`"${ebookTitle}" download started!`, 'success');
                         
-                        this.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded Successfully!';
-                        this.classList.remove('download-ebook-btn');
+                        this.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded!';
                         this.classList.add('btn-success');
                         this.disabled = true;
                     } else {
@@ -3264,64 +2933,17 @@
                     
                 } catch (error) {
                     console.error('Error:', error);
-                    showToast('Failed to download eBook. Please try again or contact support.', 'error');
+                    showToast('Failed to download eBook. Please try again.', 'error');
                     this.innerHTML = originalText;
                     this.disabled = false;
                 }
             });
         }
         
-        const downloadEbookBtn = document.getElementById('downloadEbookBtn');
-        if (downloadEbookBtn) {
-            downloadEbookBtn.addEventListener('click', async function() {
-                const ebookId = this.dataset.ebookId;
-                const ebookTitle = this.dataset.ebookTitle;
-                const ebookUrl = this.dataset.ebookUrl;
-                const originalText = this.innerHTML;
-                
-                this.innerHTML = '<span class="loading-spinner"></span> Preparing download...';
-                this.disabled = true;
-                
-                try {
-                    const response = await fetch(`/api/download-ebook/${ebookId}/`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        }
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        const link = document.createElement('a');
-                        link.href = result.download_url || ebookUrl;
-                        link.download = ebookTitle.replace(/\s+/g, '-') + '.pdf';
-                        link.style.display = 'none';
-                        
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        showToast(`"${ebookTitle}" download started! Check your downloads folder.`, 'success');
-                        
-                        this.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded!';
-                        this.classList.remove('download-ebook-btn');
-                        this.classList.add('btn-secondary');
-                        this.disabled = true;
-                    } else {
-                        throw new Error(result.message || 'Download failed');
-                    }
-                    
-                } catch (error) {
-                    console.error('Error:', error);
-                    showToast('Failed to download eBook. Please try again or contact support.', 'error');
-                    this.innerHTML = originalText;
-                    this.disabled = false;
-                }
-            });
-        }
+        setupEbookDownload('downloadEbookBtn');
+        setupEbookDownload('footerDownloadEbookBtn');
         
+        // ===== COOKIE HELPER =====
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -3337,6 +2959,7 @@
             return cookieValue;
         }
         
+        // ===== FORM VALIDATION =====
         const forms = document.querySelectorAll('.needs-validation');
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
@@ -3348,6 +2971,7 @@
             }, false);
         });
         
+        // ===== SMOOTH SCROLL =====
         document.querySelectorAll('.footer a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -3364,39 +2988,7 @@
             });
         });
         
-        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-        if (downloadPdfBtn && !downloadPdfBtn.hasAttribute('href')) {
-            downloadPdfBtn.addEventListener('click', function() {
-                const pdfFileName = 'FUSION-FORCE.pdf';
-                
-                const originalText = this.innerHTML;
-                this.innerHTML = '<span class="loading-spinner"></span> Preparing PDF...';
-                this.disabled = true;
-                
-                function startDownload() {
-                    const link = document.createElement('a');
-                    link.href = pdfFileName;
-                    link.download = 'Fusion-Force-Newsletter.pdf';
-                    link.style.display = 'none';
-                    
-                    document.body.appendChild(link);
-                    link.click();
-                    
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                        setTimeout(() => {
-                            showToast('Newsletter PDF download started!', 'success');
-                            downloadPdfBtn.innerHTML = originalText;
-                            downloadPdfBtn.disabled = false;
-                        }, 1000);
-                    }, 100);
-                }
-                
-                startDownload();
-            });
-        }
-
-        // ===== EXPRESSIONS GALLERY SLIDER LOGIC =====
+        // ===== EXPRESSIONS SLIDER =====
         function setupSlider(trackId, direction = 1, speed = 0.3) {
             const track = document.getElementById(trackId);
             if (!track) return;
@@ -3404,7 +2996,7 @@
             let animationId = null;
             let isPaused = false;
             let position = 0;
-            const itemWidth = 300; // 280 + 20 gap
+            const itemWidth = 300;
 
             function getTotalWidth() {
                 return track.children.length * itemWidth;
@@ -3420,7 +3012,6 @@
                 animationId = requestAnimationFrame(animate);
             }
 
-            // Pause on hover over any slide in this wrapper
             wrapper.addEventListener('mouseenter', () => {
                 isPaused = true;
                 wrapper.classList.add('slider-paused');
@@ -3430,14 +3021,12 @@
                 wrapper.classList.remove('slider-paused');
             });
 
-            // Video play controls
             const slides = track.querySelectorAll('.expressions-slide-item[data-type="video"]');
             slides.forEach(slide => {
                 const video = slide.querySelector('video');
                 const playOverlay = slide.querySelector('.play-overlay');
                 if (!video || !playOverlay) return;
 
-                // Load video on hover to save bandwidth
                 slide.addEventListener('mouseenter', () => {
                     if (video.dataset.src && !video.src) {
                         video.src = video.dataset.src;
@@ -3450,7 +3039,6 @@
                     if (video.paused) {
                         video.play();
                         slide.classList.add('playing');
-                        // pause slider globally
                         document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.add('slider-paused'));
                         isPaused = true;
                     } else {
@@ -3466,11 +3054,8 @@
                     document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.remove('slider-paused'));
                     isPaused = false;
                 });
-
-                // Stop video when slide leaves viewport (optional)
             });
 
-            // Duplicate items for seamless loop if not enough
             const children = track.children;
             if (children.length < 6) {
                 const cloneCount = Math.ceil(6 / children.length);
@@ -3485,9 +3070,8 @@
             animate();
         }
 
-        // Initialize both sliders with opposite directions
-        setupSlider('imageTrack', 1, 0.4); // left to right
-        setupSlider('videoTrack', -1, 0.4); // right to left
+        setupSlider('imageTrack', 1, 0.4);
+        setupSlider('videoTrack', -1, 0.4);
     });
     </script>
 </body>
