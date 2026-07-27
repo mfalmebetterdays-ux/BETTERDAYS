@@ -2172,7 +2172,7 @@
         </div>
     </div>
 
-    <!-- ===== OPTIMIZED EXPRESSIONS GALLERY ===== -->
+    <!-- ===== EXPRESSIONS GALLERY - FIXED (NO DUPLICATES) ===== -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="expressions">
         <div class="container">
             <div class="text-center">
@@ -2181,19 +2181,10 @@
                 <p class="lead mb-5">Moments of connection, conversation, and inspiration.</p>
             </div>
             
-            <!-- Images Row - Optimized with lazy loading -->
+            <!-- Images Row - ONLY ONE LOOP -->
             {% if expressions_images %}
             <div class="expressions-slider-wrapper" id="imageSliderWrapper">
                 <div class="expressions-track" id="imageTrack">
-                    {% for item in expressions_images|slice:":8" %}
-                    <div class="expressions-slide-item" data-type="image">
-                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy" decoding="async">
-                        <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
-                            <i class="fas fa-search-plus"></i>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <!-- Duplicate once for seamless loop -->
                     {% for item in expressions_images|slice:":8" %}
                     <div class="expressions-slide-item" data-type="image">
                         <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy" decoding="async">
@@ -2206,21 +2197,10 @@
             </div>
             {% endif %}
 
-            <!-- Videos Row - Optimized with preload="none" -->
+            <!-- Videos Row - ONLY ONE LOOP -->
             {% if expressions_videos %}
             <div class="expressions-slider-wrapper mt-4" id="videoSliderWrapper">
                 <div class="expressions-track" id="videoTrack">
-                    {% for item in expressions_videos|slice:":6" %}
-                    <div class="expressions-slide-item" data-type="video">
-                        <video muted playsinline preload="none" data-src="{{ item.video_file.url }}">
-                            <source src="{{ item.video_file.url }}" type="video/mp4">
-                        </video>
-                        <div class="play-overlay">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <!-- Duplicate once for seamless loop -->
                     {% for item in expressions_videos|slice:":6" %}
                     <div class="expressions-slide-item" data-type="video">
                         <video muted playsinline preload="none" data-src="{{ item.video_file.url }}">
@@ -2237,7 +2217,7 @@
         </div>
     </div>
 
-    <!-- Image Modals - Only for images that exist -->
+    <!-- Image Modals - ONLY ONE LOOP -->
     {% for item in expressions_images|slice:":8" %}
     <div class="modal fade modal-zoom" id="imageModal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -2985,7 +2965,7 @@
             });
         });
         
-        // ===== OPTIMIZED EXPRESSIONS SLIDER =====
+        // ===== EXPRESSIONS SLIDER - WITH CLONING FOR SEAMLESS LOOP =====
         function setupSlider(trackId, direction = 1, speed = 0.3) {
             const track = document.getElementById(trackId);
             if (!track) return;
@@ -2995,6 +2975,16 @@
             let position = 0;
             const itemWidth = 300;
 
+            // Clone items for seamless loop (only if there are items)
+            if (track.children.length > 0) {
+                const children = Array.from(track.children);
+                // Clone each item once for seamless loop
+                children.forEach(child => {
+                    const clone = child.cloneNode(true);
+                    track.appendChild(clone);
+                });
+            }
+
             function getTotalWidth() {
                 return track.children.length * itemWidth;
             }
@@ -3003,8 +2993,15 @@
                 if (!isPaused && track.children.length > 0) {
                     position += direction * speed;
                     const totalWidth = getTotalWidth();
-                    if (position >= totalWidth / 2) position = 0;
-                    if (position < 0) position = totalWidth / 2 - itemWidth;
+                    // Reset position when we've scrolled through half the items
+                    if (position >= totalWidth / 2) {
+                        position = 0;
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(0px)`;
+                        // Force reflow
+                        track.offsetHeight;
+                        track.style.transition = '';
+                    }
                     track.style.transform = `translateX(-${position}px)`;
                 }
                 animationId = requestAnimationFrame(animate);
@@ -3019,19 +3016,17 @@
                 wrapper.classList.remove('slider-paused');
             });
 
-            // Video play controls - only for video items
+            // Video play controls
             const slides = track.querySelectorAll('.expressions-slide-item[data-type="video"]');
             slides.forEach(slide => {
                 const video = slide.querySelector('video');
                 const playOverlay = slide.querySelector('.play-overlay');
                 if (!video || !playOverlay) return;
 
-                // Load and play video only on click
                 playOverlay.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     
                     if (video.paused) {
-                        // Load video if not loaded
                         if (video.dataset.src && !video.src) {
                             video.src = video.dataset.src;
                             video.load();
@@ -3066,7 +3061,7 @@
             }
         }
 
-        // Initialize sliders only if they exist
+        // Initialize sliders
         if (document.getElementById('imageTrack')) {
             setupSlider('imageTrack', 1, 0.3);
         }
