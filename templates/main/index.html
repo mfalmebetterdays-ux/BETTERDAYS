@@ -543,7 +543,7 @@
             transform: translateX(5px);
         }
         
-        /* Expressions slider */
+        /* ===== OPTIMIZED EXPRESSIONS SLIDER ===== */
         .expressions-slider-wrapper {
             overflow: hidden;
             position: relative;
@@ -572,6 +572,9 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+        }
+        .expressions-slide-item img {
+            background: #f0f0f0;
         }
         .expressions-slide-item:hover img,
         .expressions-slide-item:hover video {
@@ -612,6 +615,7 @@
             font-size: 3.5rem;
             text-shadow: 0 0 30px rgba(0,0,0,0.5);
             pointer-events: none;
+            z-index: 2;
         }
         .expressions-slide-item:hover .play-overlay {
             opacity: 1;
@@ -626,6 +630,7 @@
         .expressions-slide-item video {
             transform: scale(1.3);
             transition: transform 0.4s ease;
+            background: #000;
         }
         .expressions-slide-item.playing video {
             transform: scale(1);
@@ -2167,7 +2172,85 @@
         </div>
     </div>
 
-   
+    <!-- ===== OPTIMIZED EXPRESSIONS GALLERY ===== -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s" id="expressions">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="section-title bg-white text-center text-primary px-3">Expressions</h6>
+                <h1 class="mb-3">Fireside Chat Series</h1>
+                <p class="lead mb-5">Moments of connection, conversation, and inspiration.</p>
+            </div>
+            
+            <!-- Images Row - Optimized with lazy loading -->
+            {% if expressions_images %}
+            <div class="expressions-slider-wrapper" id="imageSliderWrapper">
+                <div class="expressions-track" id="imageTrack">
+                    {% for item in expressions_images|slice:":8" %}
+                    <div class="expressions-slide-item" data-type="image">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy" decoding="async">
+                        <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Duplicate once for seamless loop -->
+                    {% for item in expressions_images|slice:":8" %}
+                    <div class="expressions-slide-item" data-type="image">
+                        <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" loading="lazy" decoding="async">
+                        <div class="zoom-overlay" data-bs-toggle="modal" data-bs-target="#imageModal{{ forloop.counter }}">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Videos Row - Optimized with preload="none" -->
+            {% if expressions_videos %}
+            <div class="expressions-slider-wrapper mt-4" id="videoSliderWrapper">
+                <div class="expressions-track" id="videoTrack">
+                    {% for item in expressions_videos|slice:":6" %}
+                    <div class="expressions-slide-item" data-type="video">
+                        <video muted playsinline preload="none" data-src="{{ item.video_file.url }}">
+                            <source src="{{ item.video_file.url }}" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Duplicate once for seamless loop -->
+                    {% for item in expressions_videos|slice:":6" %}
+                    <div class="expressions-slide-item" data-type="video">
+                        <video muted playsinline preload="none" data-src="{{ item.video_file.url }}">
+                            <source src="{{ item.video_file.url }}" type="video/mp4">
+                        </video>
+                        <div class="play-overlay">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Image Modals - Only for images that exist -->
+    {% for item in expressions_images|slice:":8" %}
+    <div class="modal fade modal-zoom" id="imageModal{{ forloop.counter }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10; background: rgba(0,0,0,0.5); border-radius: 50%; padding: 10px;"></button>
+                    <img src="{{ item.image.url }}" alt="{{ item.title|default:'Expression' }}" class="img-fluid rounded" style="max-height: 90vh;" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
     <!-- ===== FOOTER ===== -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -2902,7 +2985,7 @@
             });
         });
         
-        // ===== EXPRESSIONS SLIDER =====
+        // ===== OPTIMIZED EXPRESSIONS SLIDER =====
         function setupSlider(trackId, direction = 1, speed = 0.3) {
             const track = document.getElementById(trackId);
             if (!track) return;
@@ -2917,10 +3000,11 @@
             }
 
             function animate() {
-                if (!isPaused) {
+                if (!isPaused && track.children.length > 0) {
                     position += direction * speed;
-                    if (position >= getTotalWidth() / 2) position = 0;
-                    if (position < 0) position = getTotalWidth() / 2 - itemWidth;
+                    const totalWidth = getTotalWidth();
+                    if (position >= totalWidth / 2) position = 0;
+                    if (position < 0) position = totalWidth / 2 - itemWidth;
                     track.style.transform = `translateX(-${position}px)`;
                 }
                 animationId = requestAnimationFrame(animate);
@@ -2935,26 +3019,32 @@
                 wrapper.classList.remove('slider-paused');
             });
 
+            // Video play controls - only for video items
             const slides = track.querySelectorAll('.expressions-slide-item[data-type="video"]');
             slides.forEach(slide => {
                 const video = slide.querySelector('video');
                 const playOverlay = slide.querySelector('.play-overlay');
                 if (!video || !playOverlay) return;
 
-                slide.addEventListener('mouseenter', () => {
-                    if (video.dataset.src && !video.src) {
-                        video.src = video.dataset.src;
-                        video.load();
-                    }
-                });
-
-                playOverlay.addEventListener('click', (e) => {
+                // Load and play video only on click
+                playOverlay.addEventListener('click', async (e) => {
                     e.stopPropagation();
+                    
                     if (video.paused) {
-                        video.play();
-                        slide.classList.add('playing');
-                        document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.add('slider-paused'));
-                        isPaused = true;
+                        // Load video if not loaded
+                        if (video.dataset.src && !video.src) {
+                            video.src = video.dataset.src;
+                            video.load();
+                        }
+                        
+                        try {
+                            await video.play();
+                            slide.classList.add('playing');
+                            document.querySelectorAll('.expressions-slider-wrapper').forEach(w => w.classList.add('slider-paused'));
+                            isPaused = true;
+                        } catch (err) {
+                            console.log('Video play failed:', err);
+                        }
                     } else {
                         video.pause();
                         slide.classList.remove('playing');
@@ -2970,22 +3060,19 @@
                 });
             });
 
-            const children = track.children;
-            if (children.length < 6) {
-                const cloneCount = Math.ceil(6 / children.length);
-                for (let i = 0; i < cloneCount; i++) {
-                    for (let j = 0; j < children.length; j++) {
-                        const clone = children[j].cloneNode(true);
-                        track.appendChild(clone);
-                    }
-                }
+            // Start animation if there are items
+            if (track.children.length > 0) {
+                animate();
             }
-
-            animate();
         }
 
-        setupSlider('imageTrack', 1, 0.4);
-        setupSlider('videoTrack', -1, 0.4);
+        // Initialize sliders only if they exist
+        if (document.getElementById('imageTrack')) {
+            setupSlider('imageTrack', 1, 0.3);
+        }
+        if (document.getElementById('videoTrack')) {
+            setupSlider('videoTrack', -1, 0.3);
+        }
     });
     </script>
 </body>
