@@ -69,12 +69,34 @@ export_as_json.short_description = "📤 Export selected as JSON"
 class CloudinaryAdminMixin:
     """Mixin to handle Cloudinary uploads with auto-compression"""
     
+    def is_image_file(self, file_obj):
+        """Check if a file is an image that can be compressed"""
+        if not file_obj:
+            return False
+        
+        # Check by content type
+        content_type = getattr(file_obj, 'content_type', '')
+        if content_type:
+            return content_type.startswith('image/')
+        
+        # Check by file extension
+        if hasattr(file_obj, 'name'):
+            image_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp', '.tiff', '.ico')
+            return file_obj.name.lower().endswith(image_extensions)
+        
+        return False
+    
     def compress_image(self, image_field, max_size=1920, quality=85):
         """
         Compress image before uploading to Cloudinary.
         Returns an InMemoryUploadedFile that can be saved to CloudinaryField.
+        ONLY works for actual image files.
         """
         if not image_field:
+            return image_field
+        
+        # Double-check this is actually an image
+        if not self.is_image_file(image_field):
             return image_field
         
         try:
@@ -135,7 +157,7 @@ class CloudinaryAdminMixin:
             return image_field
     
     def save_model(self, request, obj, form, change):
-        """Handle file uploads with auto-compression"""
+        """Handle file uploads - ONLY compress images, leave other files alone"""
         # Get all Cloudinary fields
         cloudinary_fields = self.get_cloudinary_fields()
         
@@ -143,28 +165,25 @@ class CloudinaryAdminMixin:
             file_obj = form.cleaned_data.get(field_name)
             if file_obj and hasattr(file_obj, 'file'):
                 try:
-                    # Check if it's an image file
-                    is_image = False
-                    content_type = getattr(file_obj, 'content_type', '')
-                    if content_type:
-                        is_image = content_type.startswith('image/')
-                    elif hasattr(file_obj, 'name'):
-                        is_image = file_obj.name.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'))
+                    # Check if this is an image file that can be compressed
+                    is_image = self.is_image_file(file_obj)
                     
                     if is_image:
-                        # Compress image - this returns an InMemoryUploadedFile
+                        # This is an image - compress it
                         compressed = self.compress_image(file_obj)
                         if compressed:
-                            # Set the field directly - CloudinaryField will handle it
                             setattr(obj, field_name, compressed)
                             messages.success(request, f"✅ {field_name} compressed successfully!")
                     else:
-                        # For non-image files, check size and warn
+                        # This is NOT an image (PDF, video, etc.) - just save as-is
+                        setattr(obj, field_name, file_obj)
+                        
+                        # Check file size and warn if large
                         if hasattr(file_obj, 'size') and file_obj.size > 10 * 1024 * 1024:  # > 10MB
                             messages.warning(
                                 request, 
                                 f"⚠️ {field_name} is {file_obj.size / 1024 / 1024:.1f} MB. "
-                                f"Consider compressing large files for better performance."
+                                f"Large files may take longer to upload."
                             )
                             
                 except Exception as e:
