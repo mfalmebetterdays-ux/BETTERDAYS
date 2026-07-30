@@ -1942,9 +1942,11 @@
                         
                         <div class="text-center mt-4">
                             {% if newsletter.pdf_file %}
-                                <a href="{{ newsletter.pdf_file.url }}" class="btn btn-primary btn-lg px-4 py-3" id="downloadPdfBtn" download>
+                                <button class="btn btn-primary btn-lg px-4 py-3" id="downloadPdfBtn" 
+                                        data-pdf-url="{{ newsletter.pdf_file.url }}"
+                                        data-pdf-title="{{ newsletter.title }}">
                                     <i class="fas fa-file-pdf me-2"></i>Download {{ newsletter.title }}
-                                </a>
+                                </button>
                             {% else %}
                                 <button class="btn btn-secondary btn-lg px-4 py-3" disabled>
                                     <i class="fas fa-file-pdf me-2"></i>PDF Coming Soon
@@ -2950,61 +2952,77 @@
             });
         }
         
-        // ===== EBOOK DOWNLOADS =====
+        // ===== FIXED EBOOK DOWNLOAD - SIMPLIFIED =====
         function setupEbookDownload(btnId) {
             const btn = document.getElementById(btnId);
             if (!btn) return;
             
-            btn.addEventListener('click', async function() {
-                const ebookId = this.dataset.ebookId;
-                const ebookTitle = this.dataset.ebookTitle;
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
                 const ebookUrl = this.dataset.ebookUrl;
-                const originalText = this.innerHTML;
+                const ebookTitle = this.dataset.ebookTitle || 'ebook';
                 
-                this.innerHTML = '<span class="loading-spinner"></span> Preparing download...';
-                this.disabled = true;
+                if (!ebookUrl || ebookUrl === 'undefined' || ebookUrl === '') {
+                    showToast('❌ eBook file is not available. Please contact support.', 'error');
+                    return;
+                }
                 
-                try {
-                    const response = await fetch(`/api/download-ebook/${ebookId}/`, {
+                // Direct download
+                const link = document.createElement('a');
+                link.href = ebookUrl;
+                link.download = ebookTitle.replace(/\s+/g, '-') + '.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Track download (fire and forget)
+                const ebookId = this.dataset.ebookId;
+                if (ebookId) {
+                    fetch(`/api/download-ebook/${ebookId}/`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRFToken': getCookie('csrftoken')
                         }
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        const link = document.createElement('a');
-                        link.href = result.download_url || ebookUrl;
-                        link.download = ebookTitle.replace(/\s+/g, '-') + '.pdf';
-                        link.style.display = 'none';
-                        
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        showToast(`"${ebookTitle}" download started!`, 'success');
-                        
-                        this.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded!';
-                        this.classList.add('btn-success');
-                        this.disabled = true;
-                    } else {
-                        throw new Error(result.message || 'Download failed');
-                    }
-                    
-                } catch (error) {
-                    console.error('Error:', error);
-                    showToast('Failed to download eBook. Please try again.', 'error');
-                    this.innerHTML = originalText;
-                    this.disabled = false;
+                    }).catch(err => console.log('Download tracking failed:', err));
                 }
+                
+                showToast(`📄 "${ebookTitle}" download started!`, 'success');
             });
         }
         
+        // ===== PDF DOWNLOAD =====
+        function setupPdfDownload(btnId) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const pdfUrl = this.dataset.pdfUrl;
+                const pdfTitle = this.dataset.pdfTitle || 'newsletter';
+                
+                if (!pdfUrl || pdfUrl === 'undefined' || pdfUrl === '') {
+                    showToast('❌ PDF file is not available. Please try again later.', 'error');
+                    return;
+                }
+                
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = pdfTitle.replace(/\s+/g, '-') + '.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showToast(`📄 "${pdfTitle}" download started!`, 'success');
+            });
+        }
+        
+        // Initialize downloads
         setupEbookDownload('downloadEbookBtn');
         setupEbookDownload('footerDownloadEbookBtn');
+        setupPdfDownload('downloadPdfBtn');
         
         // ===== COOKIE HELPER =====
         function getCookie(name) {
